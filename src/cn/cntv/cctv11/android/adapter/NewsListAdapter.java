@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.R;
+
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -105,7 +107,7 @@ public class NewsListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		ImageLoader.getInstance().displayImage(model.img, holder.img);
+		ImageLoader.getInstance().displayImage(model.img, holder.img,DisplayOptions.IMG.getOptions());
 
 		holder.title.setText(model.title);
 

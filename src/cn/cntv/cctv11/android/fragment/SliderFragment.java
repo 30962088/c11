@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.R;
+
 
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -149,7 +151,7 @@ public class SliderFragment extends Fragment {
 			View view = LayoutInflater.from(getActivity()).inflate(
 					R.layout.slider_item, null);
 			ImageView imageView = (ImageView) view.findViewById(R.id.img);
-			ImageLoader.getInstance().displayImage(model.img, imageView);
+			ImageLoader.getInstance().displayImage(model.img, imageView,DisplayOptions.IMG.getOptions());
 			container.addView(view);
 			view.setOnClickListener(new OnClickListener() {
 				
