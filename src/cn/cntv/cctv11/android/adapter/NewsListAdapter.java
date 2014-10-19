@@ -1,11 +1,13 @@
 package cn.cntv.cctv11.android.adapter;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.SpecialDetailActivity.Params;
 
 
 import android.content.Context;
@@ -18,15 +20,15 @@ import android.widget.ImageView;
 
 import android.widget.TextView;
 
-public class NewsListAdapter extends BaseAdapter {
+public class NewsListAdapter extends BaseAdapter implements Serializable{
 
-	public static class Model {
+	public static class Model implements Serializable{
 
-		public static class Category {
-			public enum Background{
+		public static class Category implements Serializable{
+			public enum Background implements Serializable{
 				GREEN(R.drawable.rect_green),PURPLE(R.drawable.rect_purple),RED(R.drawable.rect_red);
 				private int background;
-				private Background(int background) {
+				Background(int background) {
 					this.background = background;
 				}
 				
@@ -41,6 +43,8 @@ public class NewsListAdapter extends BaseAdapter {
 			
 			
 		}
+		
+		private String id;
 
 		private String img;
 
@@ -51,17 +55,43 @@ public class NewsListAdapter extends BaseAdapter {
 		private boolean isNew;
 		
 		private Category category;
+		
+		private String subtitle;
 
-		public Model(String img, String title, int comment, boolean isNew,
-				Category category) {
+		private boolean isZhuanlan;
+		
+		
+		
+		public Model(String id, String img, String title, int comment,
+				boolean isNew, Category category, String subtitle,
+				boolean isZhuanlan) {
 			super();
+			this.id = id;
 			this.img = img;
 			this.title = title;
 			this.comment = comment;
 			this.isNew = isNew;
 			this.category = category;
+			this.subtitle = subtitle;
+			this.isZhuanlan = isZhuanlan;
 		}
 
+		public Params toDetailParams(){
+			Params params = null;
+			if(isZhuanlan){
+				params = new Params(id, title, subtitle, img, comment);
+			}else{
+				params = new Params(id, title, subtitle, null, comment);
+			}
+			return params;
+		}
+
+
+		public boolean isZhuanlan() {
+			return isZhuanlan;
+		}
+	
+		
 		
 	}
 
@@ -126,7 +156,7 @@ public class NewsListAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private static class ViewHolder {
+	public static class ViewHolder {
 
 		private ImageView img;
 

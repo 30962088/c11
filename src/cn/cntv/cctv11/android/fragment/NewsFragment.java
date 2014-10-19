@@ -6,6 +6,7 @@ import java.util.List;
 
 
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.SpecialDetailActivity;
 import cn.cntv.cctv11.android.adapter.NewsListAdapter;
 import cn.cntv.cctv11.android.adapter.NewsListAdapter.Model;
 import cn.cntv.cctv11.android.fragment.SliderFragment.OnSliderItemClickListener;
@@ -21,8 +22,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class NewsFragment extends BaseFragment implements OnLoadListener,OnSliderItemClickListener{
+public class NewsFragment extends BaseFragment implements OnLoadListener,OnSliderItemClickListener,OnItemClickListener{
 	
 	public static NewsFragment newInstance(int categoryId){
 		NewsFragment fragment = new NewsFragment();
@@ -33,6 +36,10 @@ public class NewsFragment extends BaseFragment implements OnLoadListener,OnSlide
 	}
 	
 	private int categoryId;
+	
+	public NewsFragment() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +55,7 @@ public class NewsFragment extends BaseFragment implements OnLoadListener,OnSlide
 		return inflater.inflate(R.layout.common_list, null);
 	}
 	
-	private List<Model> list = new ArrayList<Model>();
+	private ArrayList<Model> list = new ArrayList<Model>();
 	
 	private NewsListAdapter adapter;
 	
@@ -63,6 +70,7 @@ public class NewsFragment extends BaseFragment implements OnLoadListener,OnSlide
 		listView.setOnLoadListener(this);
 		listHeader = LayoutInflater.from(getActivity()).inflate(R.layout.list_header, null);
 		listView.getRefreshableView().addHeaderView(listHeader);
+		listView.setOnItemClickListener(this);
 		listHeaderInner = listHeader.findViewById(R.id.list_header);
 		adapter = new NewsListAdapter(getActivity(), list);
 		listView.setAdapter(adapter);
@@ -87,13 +95,13 @@ public class NewsFragment extends BaseFragment implements OnLoadListener,OnSlide
 	@Override
 	public BaseClient onLoad(int offset, int limit) {
 		// TODO Auto-generated method stub
-		return new ContentsRequest(new ContentsRequest.Params(categoryId, offset, limit));
+		return new ContentsRequest(getActivity(), new ContentsRequest.Params( categoryId, offset, limit));
 	}
 
 	@Override
 	public boolean onLoadSuccess(Object object, int offset, int limit) {
 		Result result = (Result) object;
-		List<News> list = result.getList();
+		ArrayList<News> list = result.getList();
 		if(offset == 1){
 			this.list.clear();
 			ArrayList<SliderFragment.Model> sliderList =  News.toSliderList(result.getLunbolist());
@@ -124,6 +132,17 @@ public class NewsFragment extends BaseFragment implements OnLoadListener,OnSlide
 	public Type getRequestType() {
 		// TODO Auto-generated method stub
 		return Type.PAGE;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		
+		Model model = (Model) adapter.getItem(position-2);
+		SpecialDetailActivity.open(getActivity(), model.toDetailParams());
+		
+		
+		
 	}
 	
 	

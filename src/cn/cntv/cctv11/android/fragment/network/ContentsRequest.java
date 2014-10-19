@@ -1,6 +1,9 @@
 package cn.cntv.cctv11.android.fragment.network;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +11,7 @@ import java.util.Map;
 import org.apache.http.Header;
 
 
+import android.content.Context;
 import cn.cntv.cctv11.android.adapter.NewsListAdapter.Model;
 import cn.cntv.cctv11.android.adapter.NewsListAdapter.Model.Category;
 import cn.cntv.cctv11.android.adapter.NewsListAdapter.Model.Category.Background;
@@ -19,21 +23,21 @@ import com.loopj.android.http.RequestParams;
 
 public class ContentsRequest extends BaseClient{
 
-	public static class Result{
-		private List<News> list;
-		private List<News> lunbolist;
-		public List<News> getList() {
+	public static class Result implements Serializable{
+		private ArrayList<News> list;
+		private ArrayList<News> lunbolist;
+		public ArrayList<News> getList() {
 			return list;
 		}
-		public List<News> getLunbolist() {
+		public ArrayList<News> getLunbolist() {
 			return lunbolist;
 		}
 	}
 	
 	
 	
-	public static class News{
-		private int contentsid;
+	public static class News implements Serializable{
+		private String contentsid;
 		private String contentstitle;
 		private String poemauthor;
 		private int ishavevideo;
@@ -45,6 +49,7 @@ public class ContentsRequest extends BaseClient{
 		private Attachment attachment;
 		private int commentcount;
 		private String contentsdate;
+		private static SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
 		private Background getBackground(int id){
 			Map<Integer, Background> map = new HashMap<Integer, Background>();
 			map.put(1, Background.RED);
@@ -56,13 +61,19 @@ public class ContentsRequest extends BaseClient{
 			}
 			return background;
 		}
+		
+		private Date getDate(){
+			long count = Long.parseLong(contentsdate.replaceAll("\\/Date\\((.*)\\)\\/", "$1"));
+			return new Date(count);
+		}
+		
 		public Model toNewsModel(){
 			Category category = null;
 			
 			if(istoutiao == 1 && categoryname != null){
 				category = new Category(getBackground(categoryid),categoryname);
 			}
-			return new Model(attachment.attachmentimgurl, contentstitle, commentcount, false,category);
+			return new Model(contentsid, attachment.attachmentimgurl, contentstitle, commentcount, false,category,poemauthor+" "+format.format(getDate()),categoryid == 3 ? true:false);
 		}
 		public static List<Model> toNewsList(List<News> list){
 			List<Model> models = new ArrayList<Model>();
@@ -74,7 +85,7 @@ public class ContentsRequest extends BaseClient{
 			return models;
 		}
 		public SliderFragment.Model toSliderModel(){
-			return new SliderFragment.Model(contentsid, attachment.attachmentimgurl, contentstitle);
+			return new SliderFragment.Model(contentsid, attachment.attachmentimgurl, contentstitle,poemauthor+" "+format.format(getDate()),categoryid == 3 ? true:false);
 		}
 		public static ArrayList<SliderFragment.Model> toSliderList(List<News> list){
 			ArrayList<SliderFragment.Model> models = new ArrayList<SliderFragment.Model>();
@@ -90,7 +101,7 @@ public class ContentsRequest extends BaseClient{
 		}
 	}
 	
-	public static class Attachment{
+	public static class Attachment implements Serializable{
 		private int attachmentid;
 		private String attachmentname;
 		private String attachmentguid;
@@ -119,8 +130,8 @@ public class ContentsRequest extends BaseClient{
 
 	private Params param;
 
-	public ContentsRequest(Params param) {
-		super();
+	public ContentsRequest(Context context, Params param) {
+		super(context);
 		this.param = param;
 	}
 

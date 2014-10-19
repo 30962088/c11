@@ -2,6 +2,8 @@ package cn.cntv.cctv11.android;
 
 
 
+import java.io.Serializable;
+
 import cn.cntv.cctv11.android.fragment.MainFragment1;
 import cn.cntv.cctv11.android.fragment.MainFragment2;
 import android.app.Activity;
@@ -15,7 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class MainActivity extends FragmentActivity implements OnClickListener{
+public class MainActivity extends BaseActivity implements OnClickListener{
 
 	public static void open(Context context){
 		Intent intent = new Intent(context, MainActivity.class);

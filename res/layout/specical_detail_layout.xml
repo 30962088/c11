@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:background="@drawable/bg_head_shadow" >
+
+        <RelativeLayout
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+            <View
+                android:layout_width="11.5dp"
+                android:layout_height="19dp"
+                android:background="@drawable/icon_back" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center" >
+
+            <RelativeLayout
+                android:layout_width="78dp"
+                android:layout_height="25dp" >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/icon_scale_center" />
+
+                <View
+                    android:id="@+id/scaleUp"
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:id="@+id/scaleDown"
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/share"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+            <View
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:background="@drawable/icon_share" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50.5dp"
+        android:layout_marginTop="36dp" >
+
+        <ViewStub
+            android:id="@+id/sepical_detail_template"
+            android:layout="@layout/sepical_detail_template"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        
+        <ViewStub
+            android:id="@+id/detail_template"
+            android:layout="@layout/detail_template"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        
+    </FrameLayout>
+
+    
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_bottom_shadow"
+        android:gravity="center" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="12dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_border1"
+            android:gravity="center"
+            android:paddingLeft="4dp"
+            android:paddingRight="7dp" >
+
+            <View
+                android:layout_width="11dp"
+                android:layout_height="16dp"
+                android:background="@drawable/icon_pen" />
+
+            <EditText
+                android:id="@+id/edit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:hint="写跟帖"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:textColorHint="#6a6a6a"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:background="@drawable/icon_send" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="15dp"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="245跟帖"
+                android:textColor="#6e6e6e"
+                android:textSize="13sp" />
+
+            <View
+                android:layout_width="12.5dp"
+                android:layout_height="10.5dp"
+                android:layout_alignTop="@id/comment"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="-6dp"
+                android:layout_toRightOf="@id/comment"
+                android:background="@drawable/icon_comment_red" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

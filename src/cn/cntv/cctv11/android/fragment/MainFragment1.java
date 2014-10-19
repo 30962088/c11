@@ -48,12 +48,12 @@ public class MainFragment1 extends BaseFragment{
 	}
 	
 	private void request(){
-		CategoryRequest request = new CategoryRequest();
+		CategoryRequest request = new CategoryRequest(getActivity());
 		request.request(new BaseClient.SimpleRequestHandler(){
 			@Override
 			public void onSuccess(Object object) {
 				Result result = (Result)object;
-				TabsAdapter adapter = new TabsAdapter(getChildFragmentManager(), Category.toPagers(result.getCategorylist()));
+				TabsAdapter adapter = new TabsAdapter(getFragmentManager(), Category.toPagers(result.getCategorylist()));
 				pager.setAdapter(adapter);
 				indicator.setViewPager(pager);
 				pager.setOffscreenPageLimit(adapter.getCount());

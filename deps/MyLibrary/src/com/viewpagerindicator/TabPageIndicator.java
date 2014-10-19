@@ -16,6 +16,8 @@
  */
 package com.viewpagerindicator;
 
+import java.io.Serializable;
+
 import com.cheshang8.library.R;
 
 import android.content.Context;
@@ -36,7 +38,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * This widget implements the dynamic action bar tab behavior that can change
  * across different configurations or circumstances.
  */
-public class TabPageIndicator extends HorizontalScrollView implements PageIndicator {
+public class TabPageIndicator extends HorizontalScrollView implements PageIndicator,Serializable{
     /** Title text used when no title is provided by the adapter. */
     private static final CharSequence EMPTY_TITLE = "";
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.http.Header;
 
+import android.content.Context;
 import cn.cntv.cctv11.android.adapter.TabsAdapter;
 import cn.cntv.cctv11.android.adapter.TabsAdapter.Pager;
 import cn.cntv.cctv11.android.fragment.NewsFragment;
@@ -39,9 +40,10 @@ public class CategoryRequest extends BaseClient {
 			return categorylist;
 		}
 	}
+	
 
-	public CategoryRequest() {
-		super();
+	public CategoryRequest(Context context) {
+		super(context);
 	}
 
 	@Override
