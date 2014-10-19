@@ -48,7 +48,7 @@ public class MainFragment2 extends BaseFragment{
 		indicator = (TabPageIndicator) view.findViewById(R.id.indicator);
 		List<Pager> list = new ArrayList<Pager>();
 		
-		list.add(new Pager("直播间", new Fragment()));
+		list.add(new Pager("直播间", LiveFragment.newInstance()));
 		
 		list.add(new Pager("节目单", new Fragment()));
 		

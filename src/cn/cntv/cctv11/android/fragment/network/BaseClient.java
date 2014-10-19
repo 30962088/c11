@@ -170,9 +170,19 @@ public abstract class BaseClient implements HttpResponseHandler {
 		}
 
 	}
+	
+	protected boolean isRelativeUrl(){
+		return true;
+	}
 
-	private static String getAbsoluteUrl(String relativeUrl) {
-		return BASE_URL + relativeUrl;
+	private  String getAbsoluteUrl(String relativeUrl) {
+		String url = "";
+		if(isRelativeUrl()){
+			url = BASE_URL + relativeUrl;
+		}else{
+			url = relativeUrl;
+		}
+		return url;
 	}
 
 	protected boolean useOffline() {
