@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="31dp"
+        android:background="#ef3d23"
+        android:gravity="center"
+        android:text="戏台"
+        android:textColor="#fff"
+        android:textSize="16sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_stage" >
+
+        <RelativeLayout
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <View
+                android:id="@+id/bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_stage_inner" >
+            </View>
+
+            
+            
+            <se.emilsjolander.stickylistheaders.StickyListHeadersListView
+                android:id="@+id/listview" 
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="15dp"
+                android:clipToPadding="false"
+                android:scrollbarStyle="outsideOverlay"
+                android:paddingRight="15dp"
+                android:scrollbars="none"
+                android:layout_marginTop="36dp"
+                android:layout_marginBottom="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></se.emilsjolander.stickylistheaders.StickyListHeadersListView>
+            
+            <View
+                android:layout_marginTop="-8dp"
+                android:layout_alignRight="@id/bg"
+                android:layout_alignTop="@id/bg"
+                android:layout_width="26.5dp"
+                android:layout_marginRight="15dp"
+                android:layout_height="50dp" 
+                android:background="@drawable/icon_stage"/>
+            
+        </RelativeLayout>
+    </FrameLayout>
+
+</LinearLayout>

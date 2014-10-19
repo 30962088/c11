@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -41,7 +42,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.Toast;
 
-
 import android.net.NetworkInfo;
 import android.view.animation.Transformation;
 
@@ -52,6 +52,18 @@ import android.view.animation.Transformation;
  */
 public class Utils {
 
+	public static String getWeekOfDate(Date dt) {
+		String[] weekDays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dt);
+
+		int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+		if (w < 0)
+			w = 0;
+
+		return weekDays[w];
+	}
+
 	public static String getString(String str) {
 		return str == null ? "" : str;
 	}
@@ -60,11 +72,9 @@ public class Utils {
 		view.destroyDrawingCache();
 		view.buildDrawingCache();
 		Bitmap bitmap = view.getDrawingCache();
-		
+
 		return bitmap;
 	}
-	
-	
 
 	public static boolean isMyAppRunning(Context context) {
 		ActivityManager am = (ActivityManager) context
@@ -152,8 +162,6 @@ public class Utils {
 		return cursor.getString(column_index);
 	}
 
-	
-
 	public static int dpToPx(Context context, int dp) {
 		return (int) (dp * context.getResources().getDisplayMetrics().density);
 	}
@@ -190,7 +198,6 @@ public class Utils {
 		return result;
 	}
 
-	
 	public static void setGridViewHeightBasedOnChildren(GridView gridView) {
 		BaseAdapter listAdapter = (BaseAdapter) gridView.getAdapter();
 		if (listAdapter == null) {
