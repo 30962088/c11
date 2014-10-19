@@ -6,9 +6,10 @@ import java.util.List;
 
 import org.apache.http.Header;
 
-import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
-import se.emilsjolander.stickylistheaders.pulltorefresh.PullToRefreshListView;
-import se.emilsjolander.stickylistheaders.pulltorefresh.PullToRefreshListView.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshPinnedSectionListView;
+
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.adapter.StageListAdapter;
 import cn.cntv.cctv11.android.adapter.StageListAdapter.StageGroup;
@@ -16,11 +17,13 @@ import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
 import cn.cntv.cctv11.android.fragment.network.StageRequest;
 import cn.cntv.cctv11.android.fragment.network.StageRequest.Result;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
-public class StageFragment extends BaseFragment implements OnRefreshListener{
+public class StageFragment extends BaseFragment implements OnRefreshListener<ListView>{
 
 	public static StageFragment newInstance(){
 		StageFragment fragment = new StageFragment();
@@ -42,21 +45,18 @@ public class StageFragment extends BaseFragment implements OnRefreshListener{
 
 
 	
-	private StickyListHeadersListView listView;
-	
-	private PullToRefreshListView refreshListView;
+	private PullToRefreshPinnedSectionListView listView;
 
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
-		listView = (StickyListHeadersListView) view
+		listView = (PullToRefreshPinnedSectionListView) view
 				.findViewById(R.id.listview);
-		refreshListView = (PullToRefreshListView)listView.getWrappedList();
-		refreshListView.setOnRefreshListener(this);
-		listView.setAreHeadersSticky(true);
+		listView.setOnRefreshListener(this);
 		request();
+		
 	}
 
 	private void request() {
@@ -71,7 +71,15 @@ public class StageFragment extends BaseFragment implements OnRefreshListener{
 			public void onSuccess(Object object) {
 				Result result = (Result) object;
 				listView.setAdapter(new StageListAdapter(getActivity(),result.toStageListModel()));
-				refreshListView.onRefreshComplete();
+				listView.onRefreshComplete();
+				String label = DateUtils.formatDateTime(getActivity(),
+						System.currentTimeMillis(),
+						DateUtils.FORMAT_SHOW_TIME
+								| DateUtils.FORMAT_SHOW_DATE
+								| DateUtils.FORMAT_ABBREV_ALL);
+
+				listView.getLoadingLayoutProxy()
+						.setLastUpdatedLabel("最近更新:" + label);
 			}
 
 			@Override
@@ -90,8 +98,9 @@ public class StageFragment extends BaseFragment implements OnRefreshListener{
 	}
 
 	@Override
-	public void onRefresh() {
+	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 		request();
+		
 	}
 
 }

@@ -36,7 +36,7 @@
 
             
             
-            <se.emilsjolander.stickylistheaders.StickyListHeadersListView
+            <com.handmark.pulltorefresh.library.PullToRefreshPinnedSectionListView
                 android:id="@+id/listview" 
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -48,7 +48,7 @@
                 android:layout_marginTop="36dp"
                 android:layout_marginBottom="2dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></se.emilsjolander.stickylistheaders.StickyListHeadersListView>
+                android:layout_height="match_parent"></com.handmark.pulltorefresh.library.PullToRefreshPinnedSectionListView>
             
             <View
                 android:layout_marginTop="-8dp"
