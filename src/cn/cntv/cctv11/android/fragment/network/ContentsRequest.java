@@ -166,7 +166,7 @@ public class ContentsRequest extends BaseClient{
 	@Override
 	protected String getUrl() {
 		// TODO Auto-generated method stub
-		return "contents";
+		return "cctv11/contents";
 	}
 
 	@Override

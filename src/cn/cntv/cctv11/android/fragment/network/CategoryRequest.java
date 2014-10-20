@@ -75,7 +75,7 @@ public class CategoryRequest extends BaseClient {
 	@Override
 	protected String getUrl() {
 		// TODO Auto-generated method stub
-		return "category";
+		return "cctv11/category";
 	}
 
 	@Override

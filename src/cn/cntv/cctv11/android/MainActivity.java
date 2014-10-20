@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import cn.cntv.cctv11.android.fragment.MainFragment1;
 import cn.cntv.cctv11.android.fragment.MainFragment2;
+import cn.cntv.cctv11.android.fragment.MainFragment4;
 import cn.cntv.cctv11.android.fragment.StageFragment;
 import android.app.Activity;
 import android.content.Context;
@@ -31,7 +32,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_main);
-		fragments = new Fragment[]{MainFragment1.newInstance(),MainFragment2.newInstance(),StageFragment.newInstance(),new Fragment(),new Fragment()};
+		fragments = new Fragment[]{MainFragment1.newInstance(),MainFragment2.newInstance(),StageFragment.newInstance(),MainFragment4.newInstance(),new Fragment()};
 		findViewById(R.id.tab1).setOnClickListener(this);
 		findViewById(R.id.tab2).setOnClickListener(this);
 		findViewById(R.id.tab3).setOnClickListener(this);

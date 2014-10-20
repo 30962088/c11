@@ -65,7 +65,7 @@ public class DescripitionRequest extends BaseClient{
 	@Override
 	protected String getUrl() {
 		// TODO Auto-generated method stub
-		return "description";
+		return "cctv11/description";
 	}
 
 	@Override

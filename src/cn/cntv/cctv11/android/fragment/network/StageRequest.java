@@ -131,7 +131,7 @@ public class StageRequest extends BaseClient {
 	@Override
 	protected String getUrl() {
 		// TODO Auto-generated method stub
-		return "stagecount";
+		return "cctv11/stagecount";
 	}
 
 	@Override
