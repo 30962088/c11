@@ -3,6 +3,7 @@ package cn.cntv.cctv11.android.adapter;
 import java.io.Serializable;
 import java.util.List;
 
+import com.hb.views.PinnedSectionListView.PinnedSectionListAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
@@ -20,7 +21,7 @@ import android.widget.ImageView;
 
 import android.widget.TextView;
 
-public class NewsListAdapter extends BaseAdapter implements Serializable{
+public class NewsListAdapter extends BaseAdapter implements Serializable,PinnedSectionListAdapter{
 
 	public static class Model implements Serializable{
 
@@ -177,6 +178,18 @@ public class NewsListAdapter extends BaseAdapter implements Serializable{
 
 		}
 
+	}
+
+	@Override
+	public boolean isItemViewTypePinned(int viewType) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public int getViewTypeCount() {
+		// TODO Auto-generated method stub
+		return 2;
 	}
 
 }

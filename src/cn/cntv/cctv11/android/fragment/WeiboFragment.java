@@ -4,20 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.WeiboDetailActivity;
 import cn.cntv.cctv11.android.adapter.WeiboListAdapter;
-import cn.cntv.cctv11.android.adapter.WeiboListAdapter.Model;
+
 import cn.cntv.cctv11.android.fragment.network.BaseClient;
 import cn.cntv.cctv11.android.fragment.network.GetWeiboRequest;
 import cn.cntv.cctv11.android.fragment.network.GetWeiboRequest.Result;
 import cn.cntv.cctv11.android.widget.BaseListView;
 import cn.cntv.cctv11.android.widget.BaseListView.OnLoadListener;
 import cn.cntv.cctv11.android.widget.BaseListView.Type;
+import cn.cntv.cctv11.android.widget.WeiboItemView.Model;
+import cn.cntv.cctv11.android.widget.WeiboItemView;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class WeiboFragment extends BaseFragment implements OnLoadListener{
+public class WeiboFragment extends BaseFragment implements OnLoadListener,OnItemClickListener{
 	
 	
 	public static WeiboFragment newInstance(){
@@ -38,7 +43,7 @@ public class WeiboFragment extends BaseFragment implements OnLoadListener{
 	}
 	
 	
-	private List<WeiboListAdapter.Model> list = new ArrayList<WeiboListAdapter.Model>();
+	private List<WeiboItemView.Model> list = new ArrayList<WeiboItemView.Model>();
 	private WeiboListAdapter adapter;
 	
 	@Override
@@ -46,6 +51,7 @@ public class WeiboFragment extends BaseFragment implements OnLoadListener{
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
 		BaseListView listView = (BaseListView) view.findViewById(R.id.listview);
+		listView.setOnItemClickListener(this);
 		adapter = new WeiboListAdapter(getActivity(), list);
 		listView.setAdapter(adapter);
 		listView.setOnLoadListener(this);
@@ -60,7 +66,7 @@ public class WeiboFragment extends BaseFragment implements OnLoadListener{
 
 	@Override
 	public boolean onLoadSuccess(Object object, int offset, int limit) {
-		List<Model> results = ((Result)object).toModelList();
+		List<WeiboItemView.Model> results = ((Result)object).toModelList();
 		if(offset == 0){
 			list.clear();
 		}
@@ -79,6 +85,14 @@ public class WeiboFragment extends BaseFragment implements OnLoadListener{
 	public Type getRequestType() {
 		// TODO Auto-generated method stub
 		return Type.PAGE;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		
+		Model model = list.get(position);
+		WeiboDetailActivity.open(getActivity(), model);
 	}
 
 }

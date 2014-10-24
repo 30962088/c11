@@ -8,6 +8,7 @@ import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
 import com.cheshang8.library.R;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.PullToRefreshPinnedSectionListView;
 
 import android.content.Context;
 import android.text.format.DateUtils;
@@ -15,7 +16,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ListView;
 
-public class BaseListView extends PullToRefreshListView {
+public class BaseListView extends PullToRefreshPinnedSectionListView {
 	public static interface OnLoadListener {
 		public BaseClient onLoad(int offset, int limit);
 

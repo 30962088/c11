@@ -135,8 +135,8 @@ public class WeiboUtils {
 		public void OnSymbolClick(WeiboSymbol symbol);
 	}
 
-	public static List<WeiboSymboResult> build(String text,OnSymbolClickLisenter listener){
-		List<WeiboSymboResult> list = new ArrayList<WeiboUtils.WeiboSymboResult>();
+	public static ArrayList<WeiboSymboResult> build(String text,OnSymbolClickLisenter listener){
+		ArrayList<WeiboSymboResult> list = new ArrayList<WeiboUtils.WeiboSymboResult>();
 		list.addAll(build(Synbol.URL, text, listener));
 		list.addAll(build(Synbol.AT, text, listener));
 		list.addAll(build(Synbol.TOPIC, text, listener));

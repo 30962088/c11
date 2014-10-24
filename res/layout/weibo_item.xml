@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:text="戏曲风采"
                 android:textColor="#000"
-                android:textSize="18sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/time"
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="今天20:30"
                 android:textColor="#b3000000"
-                android:textSize="12sp" />
+                android:textSize="10sp" />
         </LinearLayout>
 
         <View
@@ -69,7 +69,7 @@
         android:layout_marginTop="10dp"
         android:text="1"
         android:textColor="#000"
-        android:textSize="12sp" />
+        android:textSize="16sp" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -88,7 +88,8 @@
             android:id="@+id/retweeted"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:background="@drawable/bg_border2">
 
             <TextView
                 android:id="@+id/retweetedText"
@@ -98,7 +99,7 @@
                 android:layout_marginTop="10dp"
                 android:text="1"
                 android:textColor="#000"
-                android:textSize="12sp" />
+                android:textSize="15sp" />
 
             <GridView
                 android:id="@+id/retweetedPhotogrid"
@@ -108,6 +109,15 @@
                 android:numColumns="auto_fit"
                 android:verticalSpacing="5dp" >
             </GridView>
+            
+            <TextView 
+                android:id="@+id/retweetedCount"
+                android:gravity="right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#b3000000"
+                android:textSize="9sp"/>
+            
         </LinearLayout>
     </FrameLayout>
 

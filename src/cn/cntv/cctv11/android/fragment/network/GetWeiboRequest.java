@@ -1,5 +1,6 @@
 package cn.cntv.cctv11.android.fragment.network;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,16 +12,18 @@ import org.apache.http.Header;
 import android.content.Context;
 
 import cn.cntv.cctv11.android.adapter.WeiboListAdapter;
-import cn.cntv.cctv11.android.adapter.WeiboListAdapter.Content;
-import cn.cntv.cctv11.android.adapter.WeiboListAdapter.Model;
-import cn.cntv.cctv11.android.adapter.WeiboListAdapter.Photo;
+import cn.cntv.cctv11.android.widget.WeiboItemView.Content;
+import cn.cntv.cctv11.android.widget.WeiboItemView.Count;
+import cn.cntv.cctv11.android.widget.WeiboItemView.Model;
+import cn.cntv.cctv11.android.widget.WeiboItemView.Photo;
+
 
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 
 public class GetWeiboRequest extends BaseClient {
 
-	public static class Weibo {
+	public static class Weibo implements Serializable{
 		private String weibouserid;
 		private String weibocontentid;
 		private String created_at;
@@ -42,12 +45,12 @@ public class GetWeiboRequest extends BaseClient {
 				"HH:mm");
 
 		public Content toContent() {
-			List<Photo> list = new ArrayList<WeiboListAdapter.Photo>() {
+			ArrayList<Photo> list = new ArrayList<Photo>() {
 				{
-					add(new WeiboListAdapter.Photo(bmiddle_pic));
+					add(new Photo(bmiddle_pic,original_pic));
 				}
 			};
-			return new Content(text, list);
+			return new Content(text, list,new Count(reposts_count, comments_count));
 		}
 
 		public Model toModel() throws ParseException {
@@ -56,6 +59,7 @@ public class GetWeiboRequest extends BaseClient {
 			Content retweetedContent = null;
 			if(retweeted_status != null){
 				retweetedContent = retweeted_status.toContent();
+				
 			}
 			return new Model(user.profile_image_url, user.name,
 					DATE_FORMAT2.format(date), toContent(),
@@ -63,7 +67,7 @@ public class GetWeiboRequest extends BaseClient {
 		}
 	}
 
-	public static class User {
+	public static class User implements Serializable{
 		private String screen_name;
 		private String name;
 		private String description;
@@ -88,7 +92,7 @@ public class GetWeiboRequest extends BaseClient {
 	public static class Result {
 		private List<Weibo> statuses;
 		public List<Model> toModelList(){
-			List<Model> list = new ArrayList<WeiboListAdapter.Model>();
+			List<Model> list = new ArrayList<Model>();
 			for(Weibo weibo:statuses){
 				try {
 					list.add(weibo.toModel());
