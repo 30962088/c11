@@ -36,8 +36,6 @@ public class WallPagerActivity extends BaseActivity implements OnClickListener{
 	}
 	
 	
-	
-	
 	public static class Model implements Serializable{
 		private String thunbnail;
 		private String name;

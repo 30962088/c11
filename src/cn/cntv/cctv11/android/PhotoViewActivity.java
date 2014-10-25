@@ -53,6 +53,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 /**
  * Lock/Unlock button is added to the ActionBar. Use it to temporarily disable
@@ -74,18 +75,6 @@ public class PhotoViewActivity extends BaseActivity {
 			this.thumbnail = thumbnail;
 			this.origin = origin;
 		}
-		
-		private Drawable getThumbnail(Context context){
-			File file = DiscCacheUtil.findInCache(thumbnail, ImageLoader.getInstance().getDiscCache());
-			Drawable thumbnail = null;
-			if(file.exists()){
-				thumbnail = Drawable.createFromPath(file.toString());
-			}else{
-				thumbnail = context.getResources().getDrawable(R.drawable.empty);
-			}
-			return thumbnail;
-		}
-
 	}
 
 	private class Container extends FrameLayout {
@@ -183,21 +172,23 @@ public class PhotoViewActivity extends BaseActivity {
 			Photo photo = photos.get(position);
 			View view = LayoutInflater.from(container.getContext()).inflate(
 					R.layout.photoview_item, null);
-			PhotoView photoView = (PhotoView) view.findViewById(R.id.photoview);
+			final PhotoView photoView = (PhotoView) view.findViewById(R.id.photoview);
+			photoView.setVisibility(View.GONE);
 			final View loading = view.findViewById(R.id.loading);
 			loading.setVisibility(View.VISIBLE);
-			final Drawable thumbnail = photo.getThumbnail(container.getContext());
+			final ImageView thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+			ImageLoader.getInstance().displayImage(photo.thumbnail, thumbnail,DisplayOptions.IMG.getOptions());
 			ImageLoader.getInstance().displayImage(
 					photo.origin,
 					photoView,
-					new Builder().showImageForEmptyUri(thumbnail)
-					.showImageOnLoading(thumbnail)
-							.cacheInMemory(true).cacheOnDisc(true).build(),
+					DisplayOptions.IMG.getOptions(),
 					new SimpleImageLoadingListener() {
 						@Override
 						public void onLoadingComplete(String imageUri,
 								View view, Bitmap loadedImage) {
 							loading.setVisibility(View.GONE);
+							thumbnail.setVisibility(View.GONE);
+							photoView.setVisibility(View.VISIBLE);
 						}
 					});
 
