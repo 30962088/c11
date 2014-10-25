@@ -9,7 +9,7 @@ import com.loopj.android.http.*;
 
 public abstract class BaseClient implements HttpResponseHandler {
 	
-	private static final String BASE_URL = "http://cctv11news.1du1du.com:8081/";
+	public static final String BASE_URL = "http://cctv11news.1du1du.com:8081/";
 
 	private static AsyncHttpClient client = new AsyncHttpClient();
 
