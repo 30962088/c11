@@ -5,6 +5,26 @@
     android:orientation="vertical" >
 
     <FrameLayout
+        android:id="@+id/realtabcontent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <android.support.v4.app.FragmentTabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="44dp" 
+        android:background="#4b5187">
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+    </android.support.v4.app.FragmentTabHost>
+
+    <!--
+    <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -148,5 +168,6 @@
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>
+    -->
 
 </LinearLayout>

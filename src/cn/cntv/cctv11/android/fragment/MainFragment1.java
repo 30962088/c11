@@ -53,7 +53,7 @@ public class MainFragment1 extends BaseFragment{
 			@Override
 			public void onSuccess(Object object) {
 				Result result = (Result)object;
-				TabsAdapter adapter = new TabsAdapter(getFragmentManager(), Category.toPagers(result.getCategorylist()));
+				TabsAdapter adapter = new TabsAdapter(getChildFragmentManager(), Category.toPagers(result.getCategorylist()));
 				pager.setAdapter(adapter);
 				indicator.setViewPager(pager);
 				pager.setOffscreenPageLimit(adapter.getCount());
