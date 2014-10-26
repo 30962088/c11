@@ -8,7 +8,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        
         android:orientation="vertical"
         android:paddingBottom="15dp"
         android:paddingLeft="17dp"
@@ -77,14 +76,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="接受短信大约需要60秒"
-            android:gravity="center"
             android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="接受短信大约需要60秒"
             android:textColor="#803c3c3c"
             android:textSize="13sp" />
 
         <EditText
-            android:password="true"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
@@ -93,12 +91,12 @@
             android:hint="请设置密码"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
+            android:password="true"
             android:textColor="#333"
             android:textColorHint="#6b6b6b"
             android:textSize="16sp" />
-        
+
         <EditText
-            android:password="true"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
@@ -107,22 +105,32 @@
             android:hint="确认密码"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
+            android:password="true"
             android:textColor="#333"
             android:textColorHint="#6b6b6b"
             android:textSize="16sp" />
-        
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginBottom="14dp"
             android:layout_marginTop="18dp"
             android:background="@drawable/shape_red_radius_border"
             android:gravity="center"
-            android:text="提交"
+            android:text="下一步"
             android:textColor="#fff"
             android:textSize="16sp" />
 
-        
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shape_gray_radius_border"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="#fff"
+            android:textSize="16sp" />
     </LinearLayout>
 
 </ScrollView>

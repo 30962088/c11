@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <TextView 
+        android:id="@+id/header"
+         android:background="@drawable/bg_drop_shadow"
+         android:layout_width="match_parent"
+         android:layout_height="36dp"
+         android:text="会员中心"
+         android:textSize="17sp"
+         android:gravity="center"
+         android:textColor="#333"/>
+    
+    <FrameLayout 
+        android:layout_below="@id/header"
+      	android:layout_marginTop="-4px"
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+
+</RelativeLayout>
