@@ -8,15 +8,23 @@ import org.apache.http.Header;
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.adapter.LiveListAdapter;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
+import cn.cntv.cctv11.android.fragment.network.GetLiveUrlRequest;
 import cn.cntv.cctv11.android.fragment.network.LiveProgramRequest;
 import cn.cntv.cctv11.android.fragment.network.LiveProgramRequest.Result;
+import cn.cntv.cctv11.android.widget.VideoView;
+import cn.cntv.cctv11.android.widget.VideoView.OnToggleFullScreenListener;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnErrorListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
-public class LiveFragment extends BaseFragment {
+public class LiveFragment extends BaseFragment implements OnToggleFullScreenListener,OnClickListener,OnErrorListener,OnCompletionListener{
 	
 	public static LiveFragment newInstance(){
 		return new LiveFragment();
@@ -39,14 +47,69 @@ public class LiveFragment extends BaseFragment {
 	
 	private LiveListAdapter adapter;
 	
+	private FrameLayout headLayout,fullscreenOuter,fullscreenIuter;
+	
+	private VideoView videoView;
+	
+	private View playView;
+	
+	private String[] playList;
+	
+	private int currentPlayUrl;
+	
+	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
+		playView = view.findViewById(R.id.play);
+		playView.setOnClickListener(this);
+		videoView = (VideoView) view.findViewById(R.id.video);
+		videoView.setOnToggleFullScreenListener(this);
+		headLayout = (FrameLayout) view.findViewById(R.id.head);
+		fullscreenOuter = (FrameLayout) view.findViewById(R.id.fullscreen_outer);
+		fullscreenIuter = (FrameLayout) view.findViewById(R.id.fullscreen_inner);
 		ListView listView = (ListView) view.findViewById(R.id.listview);
 		adapter = new LiveListAdapter(getActivity(), list);
 		listView.setAdapter(adapter);
 		request();
+	}
+	
+	private void playUrl(){
+		String str = playList[0];
+		videoView.setVideoPath(str, this, this);
+		currentPlayUrl++;
+		if(currentPlayUrl>playList.length-1){
+			currentPlayUrl = 0;
+		}
+	}
+
+	private void requestLiveStream() {
+		GetLiveUrlRequest request = new GetLiveUrlRequest(getActivity());
+		request.request(new RequestHandler() {
+			
+			@Override
+			public void onSuccess(Object object) {
+				playList = ((GetLiveUrlRequest.Result)object).getHls_url().toList();
+				playUrl();
+				
+				
+			}
+			
+			@Override
+			public void onServerError(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onError(int error) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 	}
 
 	private void request() {
@@ -75,6 +138,46 @@ public class LiveFragment extends BaseFragment {
 
 			}
 		});
+	}
+
+	@Override
+	public void onToggleFullScreen(boolean isFullScreen) {
+		if(isFullScreen){
+			fullscreenOuter.setVisibility(View.VISIBLE);
+			headLayout.removeView(videoView);
+			fullscreenIuter.addView(videoView);
+		}else{
+			fullscreenOuter.setVisibility(View.GONE);
+			fullscreenIuter.removeView(videoView);
+			headLayout.addView(videoView);
+		}
+		
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.play:
+			playView.setVisibility(View.GONE);
+			requestLiveStream();
+			break;
+
+		default:
+			break;
+		}
+		
+	}
+
+	@Override
+	public void onCompletion(MediaPlayer mp) {
+		
+		
+	}
+
+	@Override
+	public boolean onError(MediaPlayer mp, int what, int extra) {
+		playUrl();
+		return true;
 	}
 
 }
