@@ -572,7 +572,10 @@ public class VideoControllerView extends FrameLayout {
             show(sDefaultTimeout);
         }
     };
-
+    
+    public void fullscreenButtonPerformClick(){
+    	mFullscreenButton.performClick();
+    }
     private View.OnClickListener mFfwdListener = new View.OnClickListener() {
         public void onClick(View v) {
             if (mPlayer == null) {

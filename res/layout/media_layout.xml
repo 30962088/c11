@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
-    <cn.cntv.cctv11.android.widget.VideoView
+    <io.vov.vitamio.widget.VideoView
         android:id="@+id/video"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></cn.cntv.cctv11.android.widget.VideoView>
+        android:layout_height="match_parent"></io.vov.vitamio.widget.VideoView>
     
 </RelativeLayout>

@@ -13,18 +13,25 @@ import cn.cntv.cctv11.android.fragment.network.LiveProgramRequest;
 import cn.cntv.cctv11.android.fragment.network.LiveProgramRequest.Result;
 import cn.cntv.cctv11.android.widget.VideoView;
 import cn.cntv.cctv11.android.widget.VideoView.OnToggleFullScreenListener;
+import android.content.Context;
+import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 
-public class LiveFragment extends BaseFragment implements OnToggleFullScreenListener,OnClickListener,OnErrorListener,OnCompletionListener{
+public class LiveFragment extends BaseFragment implements OnClickListener,OnErrorListener,OnCompletionListener{
 	
 	public static LiveFragment newInstance(){
 		return new LiveFragment();
@@ -47,7 +54,7 @@ public class LiveFragment extends BaseFragment implements OnToggleFullScreenList
 	
 	private LiveListAdapter adapter;
 	
-	private FrameLayout headLayout,fullscreenOuter,fullscreenIuter;
+
 	
 	private VideoView videoView;
 	
@@ -65,10 +72,6 @@ public class LiveFragment extends BaseFragment implements OnToggleFullScreenList
 		playView = view.findViewById(R.id.play);
 		playView.setOnClickListener(this);
 		videoView = (VideoView) view.findViewById(R.id.video);
-		videoView.setOnToggleFullScreenListener(this);
-		headLayout = (FrameLayout) view.findViewById(R.id.head);
-		fullscreenOuter = (FrameLayout) view.findViewById(R.id.fullscreen_outer);
-		fullscreenIuter = (FrameLayout) view.findViewById(R.id.fullscreen_inner);
 		ListView listView = (ListView) view.findViewById(R.id.listview);
 		adapter = new LiveListAdapter(getActivity(), list);
 		listView.setAdapter(adapter);
@@ -139,20 +142,36 @@ public class LiveFragment extends BaseFragment implements OnToggleFullScreenList
 			}
 		});
 	}
-
+	
+	
+	private boolean isPlaying;
 	@Override
-	public void onToggleFullScreen(boolean isFullScreen) {
-		if(isFullScreen){
-			fullscreenOuter.setVisibility(View.VISIBLE);
-			headLayout.removeView(videoView);
-			fullscreenIuter.addView(videoView);
-		}else{
-			fullscreenOuter.setVisibility(View.GONE);
-			fullscreenIuter.removeView(videoView);
-			headLayout.addView(videoView);
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		isPlaying = videoView.isPlaying();
+		if(videoView.isPrepared() && videoView.isPlaying()){
+			videoView.pause();
 		}
 		
 	}
+	
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		videoView.release();
+	}
+
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		if(videoView.isPrepared() && isPlaying){
+			videoView.start();
+		}
+	}
+	
 
 	@Override
 	public void onClick(View v) {

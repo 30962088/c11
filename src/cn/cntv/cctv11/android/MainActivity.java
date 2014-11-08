@@ -89,6 +89,8 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		}
 		lastView = v;
 	}
+	
+	
 
 
 }
