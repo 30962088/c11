@@ -1,5 +1,9 @@
 package cn.cntv.cctv11.android;
 
+import java.util.Dictionary;
+
+import cn.cntv.cctv11.android.utils.Dirctionary;
+
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -60,7 +64,7 @@ public class APP extends Application {
 				.tasksProcessingOrder(QueueProcessingType.LIFO).build();
 		// 初始化ImageLoader的与配置。
 		mImageLoader.init(config);
-
+		Dirctionary.init(this);
 		
 
 	}

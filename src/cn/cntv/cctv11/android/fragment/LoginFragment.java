@@ -1,6 +1,11 @@
 package cn.cntv.cctv11.android.fragment;
 
+import org.apache.http.Header;
+
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.fragment.FillInfoFragment.Model;
+import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
+import cn.cntv.cctv11.android.fragment.network.IsHaveSingerRequest;
 import cn.cntv.cctv11.android.utils.OauthUtils;
 import cn.cntv.cctv11.android.utils.OauthUtils.OauthCallback;
 import cn.cntv.cctv11.android.utils.OauthUtils.Result;
@@ -66,8 +71,38 @@ public class LoginFragment extends BaseFragment implements OnClickListener,Oauth
 	}
 
 	@Override
-	public void onSuccess(Result params) {
-		System.out.println(params);
+	public void onSuccess(Result result) {
+		final Model model = result.toModel();
+		IsHaveSingerRequest request = new IsHaveSingerRequest(getActivity(), result.toParams());
+		request.request(new RequestHandler() {
+			
+			@Override
+			public void onSuccess(Object object) {
+				IsHaveSingerRequest.Result result = (IsHaveSingerRequest.Result)object;
+				if(result.getPkey() == null){
+					getParentFragment()
+					.getChildFragmentManager()
+					.beginTransaction()
+					.replace(R.id.fragment_container,
+							FillInfoFragment.newInstance(model))
+					.addToBackStack("fillinfo").commit();
+				}
+				
+			}
+			
+			@Override
+			public void onServerError(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onError(int error) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 	}
 

@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
+import cn.cntv.cctv11.android.fragment.FillInfoFragment.Model;
+import cn.cntv.cctv11.android.fragment.FillInfoFragment.Sex;
+import cn.cntv.cctv11.android.fragment.network.IsHaveSingerRequest.Params;
 
+import com.umeng.socialize.bean.Gender;
 import com.umeng.socialize.bean.RequestType;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SnsAccount;
@@ -23,21 +27,47 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 	public static class Result {
 
 		private String sid;
+
+		private Sex sex;
+
+		private String nickname;
 		
+		private String avatar;
+
 		private SHARE_MEDIA media;
 
-		public Result(String sid, SHARE_MEDIA media) {
+		
+
+		public Result(String sid, Sex sex, String nickname, String avatar,
+				SHARE_MEDIA media) {
 			super();
 			this.sid = sid;
+			this.sex = sex;
+			this.nickname = nickname;
+			this.avatar = avatar;
 			this.media = media;
-		} 
-		
+		}
+
 		public SHARE_MEDIA getMedia() {
 			return media;
 		}
+
 		public String getSid() {
 			return sid;
 		}
+
+		public Params toParams() {
+			int type = 0;
+			if (media == SHARE_MEDIA.SINA) {
+				type = 1;
+			}
+			return new Params(sid, type);
+		}
+
+		public Model toModel() {
+			return new Model(sex, nickname, sid,avatar);
+		}
+
 	}
 
 	private UMSocialService mController;
@@ -54,7 +84,8 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 
 	public OauthUtils(Context context) {
 		this.context = context;
-		mController = UMServiceFactory.getUMSocialService("com.umeng.login",RequestType.SOCIAL);
+		mController = UMServiceFactory.getUMSocialService("com.umeng.login",
+				RequestType.SOCIAL);
 	}
 
 	public void setOauthCallback(OauthCallback callback) {
@@ -80,8 +111,10 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 
 	public void qqOauth() {
 		media = SHARE_MEDIA.QQ;
-		/*mController.getConfig().supportAPlatform((Activity) context,
-				"100424468", "http://www.umeng.com/social", "social");*/
+		/*
+		 * mController.getConfig().supportAPlatform((Activity) context,
+		 * "100424468", "http://www.umeng.com/social", "social");
+		 */
 		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler((Activity) context,
 				"100424468", "c7394704798a158208a74ab60104f0ba");
 		qqSsoHandler.addToSocialSDK();
@@ -98,21 +131,11 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 
 	}
 
-	private Result params;
+	private Result result;
 
 	@Override
 	public void onComplete(Bundle arg0, SHARE_MEDIA arg1) {
 		mController.getUserInfo(context, this);
-		if (arg1 == SHARE_MEDIA.TENCENT) {
-			params = new Result(arg0.getString("uid"),SHARE_MEDIA.TENCENT);
-		} else if (arg1 == SHARE_MEDIA.QQ) {
-			params = new Result(arg0.getString("uid"),SHARE_MEDIA.QQ);
-		
-		} else if (arg1 == SHARE_MEDIA.SINA) {
-			params = new Result(arg0.getString("uid"),SHARE_MEDIA.SINA);
-		} else if (arg1 == SHARE_MEDIA.RENREN) {
-			params = new Result(arg0.getString("uid"),SHARE_MEDIA.RENREN);
-		}
 	}
 
 	@Override
@@ -152,10 +175,26 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 				}
 
 			}
+			Sex sex = null;
+			Gender gender = snsAccount.getGender();
+			switch (gender) {
+			case FEMALE:
+				sex = Sex.Female;
+				break;
+
+			case MALE:
+				sex = Sex.Male;
+				break;
+			default:
+				sex = Sex.UnKouwn;
+				break;
+			}
+			result = new Result(snsAccount.getUsid(), sex, snsAccount.getUserName(),snsAccount.getAccountIconUrl(), media);
 		}
 		
+		
 		if (callback != null) {
-			callback.onSuccess(params);
+			callback.onSuccess(result);
 		}
 	}
 

@@ -15,6 +15,7 @@
         android:paddingTop="10dp" >
 
         <com.makeramen.PhotoView
+            android:id="@+id/avatar"
             android:layout_width="84dp"
             android:layout_height="84dp"
             android:layout_gravity="center_horizontal"
@@ -30,6 +31,7 @@
         </com.makeramen.PhotoView>
 
         <LinearLayout
+            android:id="@+id/avatar_setting"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="7dp"
@@ -52,7 +54,8 @@
                 android:background="@drawable/icon_arrow" />
         </LinearLayout>
 
-        <TextView
+        <EditText
+            android:id="@+id/nickname"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginBottom="14dp"
@@ -89,30 +92,35 @@
                     android:textSize="15sp" />
 
                 <RadioGroup
+                    android:id="@+id/sexGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal" >
 
                     <RadioButton
+                        android:id="@+id/male"
+                        android:tag="Male"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:button="@null"
                         android:drawableLeft="@drawable/radio"
-                        android:drawablePadding="20dp"
+                        android:drawablePadding="1dp"
                         android:text="男"
                         android:textColor="#2b2b2b"
                         android:textSize="15sp" />
 
                     <RadioButton
+                        android:id="@+id/female"
+                        android:tag="Female"
+                        android:layout_marginLeft="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:button="@null"
-                        android:checked="true"
                         android:drawableLeft="@drawable/radio"
-                        android:drawablePadding="20dp"
+                        android:drawablePadding="1dp"
                         android:text="女"
                         android:textColor="#2b2b2b"
                         android:textSize="15sp" />
@@ -125,6 +133,7 @@
                 android:background="#e3e3e3" />
 
             <LinearLayout
+                android:id="@+id/cityBtn"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:gravity="center_vertical"
@@ -140,6 +149,7 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/city"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
@@ -171,6 +181,7 @@
             android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/cancel"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginBottom="14dp"
