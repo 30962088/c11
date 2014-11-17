@@ -79,14 +79,14 @@ public class LoginFragment extends BaseFragment implements OnClickListener,Oauth
 			@Override
 			public void onSuccess(Object object) {
 				IsHaveSingerRequest.Result result = (IsHaveSingerRequest.Result)object;
-				if(result.getPkey() == null){
+//				if(result.getPkey() == null){
 					getParentFragment()
 					.getChildFragmentManager()
 					.beginTransaction()
 					.replace(R.id.fragment_container,
 							FillInfoFragment.newInstance(model))
 					.addToBackStack("fillinfo").commit();
-				}
+//				}
 				
 			}
 			

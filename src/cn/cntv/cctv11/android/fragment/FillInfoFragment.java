@@ -1,5 +1,6 @@
 package cn.cntv.cctv11.android.fragment;
 
+import java.io.File;
 import java.io.Serializable;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -9,14 +10,20 @@ import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.BaseActivity.OnCitySelectionListener;
 import cn.cntv.cctv11.android.BaseActivity.OnGallerySelectionListener;
+import cn.cntv.cctv11.android.utils.AliyunUtils;
+import cn.cntv.cctv11.android.utils.AliyunUtils.UploadListener;
 import cn.cntv.cctv11.android.utils.Dirctionary;
+import cn.cntv.cctv11.android.utils.AliyunUtils.UploadResult;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow.OnItemClickListener;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.MediaStore.MediaColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,9 +152,30 @@ public class FillInfoFragment extends BaseFragment implements OnClickListener,On
 		}
 
 	}
-
+	private File uri2File(Uri uri) {  
+        File file = null;  
+        String[] proj = { MediaStore.Images.Media.DATA };  
+        Cursor actualimagecursor = getActivity().managedQuery(uri, proj, null,  
+                null, null);  
+        int actual_image_column_index = actualimagecursor  
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);  
+        actualimagecursor.moveToFirst();  
+        String img_path = actualimagecursor  
+                .getString(actual_image_column_index);  
+        file = new File(img_path);  
+        return file;  
+    }   
 	@Override
 	public void onGallerySelection(Uri uri) {
+		
+		AliyunUtils.getInstance().upload(uri2File(uri), new UploadListener() {
+			
+			@Override
+			public void onsuccess(UploadResult result) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		ImageLoader.getInstance().displayImage(uri.toString(), avatarImageView,
 				DisplayOptions.IMG.getOptions());
 
