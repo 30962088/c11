@@ -1,5 +1,6 @@
 package cn.cntv.cctv11.android;
 
+import java.io.File;
 import java.util.Dictionary;
 
 import cn.cntv.cctv11.android.utils.Dirctionary;
@@ -14,6 +15,8 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.umeng.socialize.sso.UMQQSsoHandler;
 
 import android.app.Application;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class APP extends Application {
 
@@ -65,9 +68,9 @@ public class APP extends Application {
 		// 初始化ImageLoader的与配置。
 		mImageLoader.init(config);
 		Dirctionary.init(this);
-		
 
 	}
+
 
 	public static APP getInstance() {
 		return instance;

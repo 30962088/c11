@@ -2,9 +2,11 @@ package cn.cntv.cctv11.android.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -120,7 +122,12 @@ public class AliyunUtils {
 		@Override
 		protected UploadResult doInBackground(Void... params) {
 			UploadResult result = getFilenameBySha1(file);
-			client.uploadObject(BUCKET_NAME, result.filename, file.toString());
+			try {
+				client.uploadObject(BUCKET_NAME, result.filename, FileUtils.readFileToByteArray(file));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return result;
 		}
 

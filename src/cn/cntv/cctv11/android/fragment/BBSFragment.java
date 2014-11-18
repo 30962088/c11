@@ -3,6 +3,7 @@ package cn.cntv.cctv11.android.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.cntv.cctv11.android.BBSDetailActivity;
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.adapter.BBSListAdapter;
 import cn.cntv.cctv11.android.fragment.network.BaseClient;
@@ -16,8 +17,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class BBSFragment extends BaseFragment implements OnLoadListener{
+public class BBSFragment extends BaseFragment implements OnLoadListener,OnItemClickListener{
 
 	
 	public static BBSFragment newInstance(){
@@ -49,6 +52,7 @@ public class BBSFragment extends BaseFragment implements OnLoadListener{
 		super.onViewCreated(view, savedInstanceState);
 		headerView = new BBSHeaderView(getActivity());
 		BaseListView listView = (BaseListView) view.findViewById(R.id.listview);
+		listView.setOnItemClickListener(this);
 		listView.getRefreshableView().addHeaderView(headerView);
 		headerView.setModel(new BBSHeaderView.Model(10, 10));
 		adapter = new BBSListAdapter(getActivity(), list);
@@ -85,6 +89,12 @@ public class BBSFragment extends BaseFragment implements OnLoadListener{
 	public Type getRequestType() {
 		// TODO Auto-generated method stub
 		return Type.PAGE;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+		BBSDetailActivity.open(getActivity(), list.get(position-2).toModel()); 
+		
 	}
 	
 }

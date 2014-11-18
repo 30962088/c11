@@ -37,7 +37,7 @@ public class GetTopicRequest extends BaseClient {
 		private int commentcount;
 		private String colstatus;
 		public BBSListAdapter.Model toModel(){
-			return new BBSListAdapter.Model(topictitle, username, getDate(), commentcount);
+			return new BBSListAdapter.Model(topicid,topictitle,topiccontent,userimgurl, username, getDate(), commentcount);
 		}
 		private Date getDate(){
 			long count = Long.parseLong(datetime.replaceAll("\\/Date\\((.*)\\)\\/", "$1"));

@@ -11,6 +11,7 @@ import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.SpecialDetailActivity.Params;
 import cn.cntv.cctv11.android.utils.RelativeDateFormat;
+import cn.cntv.cctv11.android.widget.BBSDetailHeaderView;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -25,17 +26,26 @@ import android.widget.TextView;
 public class BBSListAdapter extends BaseAdapter implements Serializable,PinnedSectionListAdapter {
 
 	public static class Model implements Serializable {
-
+		private String id;
 		private String title;
+		private String content;
 		private String nickname;
+		private String avatar;
 		private String time;
 		private int comment;
-		public Model(String title, String nickname, Date date,int comment) {
+		public Model(String id, String title, String content,String avatar, String nickname,
+				Date time, int comment) {
 			super();
+			this.id = id;
 			this.title = title;
+			this.avatar = avatar;
+			this.content = content;
 			this.nickname = nickname;
-			this.time = RelativeDateFormat.format(date);
+			this.time = RelativeDateFormat.format(time);;
 			this.comment = comment;
+		}
+		public BBSDetailHeaderView.Model toModel(){
+			return new BBSDetailHeaderView.Model(id, title, avatar, nickname, time, content);
 		}
 		
 

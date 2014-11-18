@@ -12,7 +12,9 @@ import cn.cntv.cctv11.android.BaseActivity.OnCitySelectionListener;
 import cn.cntv.cctv11.android.BaseActivity.OnGallerySelectionListener;
 import cn.cntv.cctv11.android.utils.AliyunUtils;
 import cn.cntv.cctv11.android.utils.AliyunUtils.UploadListener;
+import cn.cntv.cctv11.android.utils.CropImageUtils;
 import cn.cntv.cctv11.android.utils.Dirctionary;
+import cn.cntv.cctv11.android.utils.LoadingPopup;
 import cn.cntv.cctv11.android.utils.AliyunUtils.UploadResult;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow.OnItemClickListener;
@@ -35,7 +37,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class FillInfoFragment extends BaseFragment implements OnClickListener,OnCitySelectionListener,
-		OnGallerySelectionListener {
+		OnGallerySelectionListener,UploadListener {
 
 	public enum Sex {
 		Female("female"), Male("male"), UnKouwn("unkouwn");
@@ -152,31 +154,12 @@ public class FillInfoFragment extends BaseFragment implements OnClickListener,On
 		}
 
 	}
-	private File uri2File(Uri uri) {  
-        File file = null;  
-        String[] proj = { MediaStore.Images.Media.DATA };  
-        Cursor actualimagecursor = getActivity().managedQuery(uri, proj, null,  
-                null, null);  
-        int actual_image_column_index = actualimagecursor  
-                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);  
-        actualimagecursor.moveToFirst();  
-        String img_path = actualimagecursor  
-                .getString(actual_image_column_index);  
-        file = new File(img_path);  
-        return file;  
-    }   
+	
 	@Override
-	public void onGallerySelection(Uri uri) {
-		
-		AliyunUtils.getInstance().upload(uri2File(uri), new UploadListener() {
-			
-			@Override
-			public void onsuccess(UploadResult result) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		ImageLoader.getInstance().displayImage(uri.toString(), avatarImageView,
+	public void onGallerySelection(File file) {
+		LoadingPopup.show(getActivity());
+		AliyunUtils.getInstance().upload(CropImageUtils.cropImage(file, 300, 300),this);
+		ImageLoader.getInstance().displayImage(Uri.fromFile(file).toString(), avatarImageView,
 				DisplayOptions.IMG.getOptions());
 
 	}
@@ -184,6 +167,12 @@ public class FillInfoFragment extends BaseFragment implements OnClickListener,On
 	@Override
 	public void onCitySelection(String city) {
 		cityTextView.setText(city);
+		
+	}
+
+	@Override
+	public void onsuccess(UploadResult result) {
+		
 		
 	}
 
