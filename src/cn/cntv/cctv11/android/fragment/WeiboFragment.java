@@ -6,6 +6,7 @@ import java.util.List;
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.WeiboDetailActivity;
 import cn.cntv.cctv11.android.adapter.WeiboListAdapter;
+import cn.cntv.cctv11.android.adapter.WeiboCommentListAdapter.CommentItem;
 
 import cn.cntv.cctv11.android.fragment.network.BaseClient;
 import cn.cntv.cctv11.android.fragment.network.GetWeiboRequest;
@@ -23,6 +24,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class WeiboFragment extends BaseFragment implements OnLoadListener,OnItemClickListener{
+	
+	
 	
 	
 	public static WeiboFragment newInstance(){

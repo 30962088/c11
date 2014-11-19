@@ -63,15 +63,16 @@ public class WeiboItemView extends FrameLayout {
 	}
 	
 	public static class Model implements Serializable {
-
+		private String id;
 		private String avatar;
 		private String name;
 		private String time;
 		private Content content;
 		private Content retweetedContent;
-		public Model(String avatar, String name, String time, Content content,
+		public Model(String id,String avatar, String name, String time, Content content,
 				Content retweetedContent) {
 			super();
+			this.id = id;
 			this.avatar = avatar;
 			this.name = name;
 			this.time = time;
@@ -81,6 +82,9 @@ public class WeiboItemView extends FrameLayout {
 		
 		public Content getContent() {
 			return content;
+		}
+		public String getId() {
+			return id;
 		}
 
 		

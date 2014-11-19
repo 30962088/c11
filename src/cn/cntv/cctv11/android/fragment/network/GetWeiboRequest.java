@@ -61,7 +61,7 @@ public class GetWeiboRequest extends BaseClient {
 				retweetedContent = retweeted_status.toContent();
 				
 			}
-			return new Model(user.profile_image_url, user.name,
+			return new Model(id,user.profile_image_url, user.name,
 					DATE_FORMAT2.format(date), toContent(),
 					retweetedContent);
 		}

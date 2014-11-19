@@ -111,8 +111,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
-        
-        
+        <!-- 用于获取评论 -->
+        <meta-data android:name="weibo_app_key" android:value="\ 3636217490" />
 
         <meta-data
             android:name="UMENG_APPKEY"

@@ -52,15 +52,15 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 
 	public static class TitleItem implements Serializable{
 		
-		private int share;
+		private long share;
 
-		private int comment;
+		private long comment;
 
 		
-		public void setShare(int share) {
+		public void setShare(long share) {
 			this.share = share;
 		}
-		public void setComment(int comment) {
+		public void setComment(long comment) {
 			this.comment = comment;
 		}
 

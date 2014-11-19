@@ -20,7 +20,8 @@ public class Preferences {
 			preferences = context.getSharedPreferences(NAME, 0);
 			this.context = context;
 		}
-	
+
+		
 		public void setSid(String sid){
 			preferences.edit().putString("sid", sid).commit();
 		}

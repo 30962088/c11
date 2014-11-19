@@ -157,6 +157,7 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 			for (SnsAccount account : user.mAccounts) {
 				if (media == SHARE_MEDIA.SINA
 						&& "sina".equals(account.getPlatform())) {
+					
 					snsAccount = account;
 					break;
 				} else if (media == SHARE_MEDIA.TENCENT

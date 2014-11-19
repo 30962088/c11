@@ -152,16 +152,29 @@ public abstract class BaseClient implements HttpResponseHandler {
 
 	private void get(String url, RequestParams params,
 			HttpResponseHandler handler) {
-		handle = client.get(getAbsoluteUrl(url), params, new ResponseHandler(
-				handler));
+		Header[] headers = fillHeaders();
+		if(headers == null){
+			handle = client.get(getAbsoluteUrl(url), params, new ResponseHandler(
+					handler));
+		}else{
+			handle = client.get(context,getAbsoluteUrl(url),headers, params, new ResponseHandler(
+					handler));
+		}
+		
 
 	}
 
 	private void post(String url, RequestParams params,
 			HttpResponseHandler handler) {
-
-		handle = client.post(getAbsoluteUrl(url), params, new ResponseHandler(
-				handler));
+		Header[] headers = fillHeaders();
+		if(headers == null){
+			handle = client.post(getAbsoluteUrl(url), new ResponseHandler(
+					handler));
+		}else{
+			handle = client.post(context,getAbsoluteUrl(url),headers, params,contentType(), new ResponseHandler(
+					handler));
+		}
+		
 	}
 
 	public void cancel(boolean mayInterruptIfRunning) {
@@ -171,8 +184,16 @@ public abstract class BaseClient implements HttpResponseHandler {
 
 	}
 	
+	protected Header[] fillHeaders(){
+		return null;
+	}
+	
 	protected boolean isRelativeUrl(){
 		return true;
+	}
+	
+	protected String contentType(){
+		return "application/json";
 	}
 
 	private  String getAbsoluteUrl(String relativeUrl) {

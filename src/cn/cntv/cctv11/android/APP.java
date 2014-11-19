@@ -15,11 +15,22 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.umeng.socialize.sso.UMQQSsoHandler;
 
 import android.app.Application;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 
 public class APP extends Application {
 
+	public static class Meta{
+		private static String weiboAppKey;
+		public static String getWeiboAppKey() {
+			return weiboAppKey;
+		}
+	}
+	
 	public enum DisplayOptions {
 		IMG(new Builder().showImageForEmptyUri(R.drawable.empty)
 				.showImageOnLoading(R.drawable.empty).cacheInMemory(true)
@@ -68,7 +79,19 @@ public class APP extends Application {
 		// 初始化ImageLoader的与配置。
 		mImageLoader.init(config);
 		Dirctionary.init(this);
-
+		initMeta();
+	}
+	
+	private void initMeta(){
+		try {
+			ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+			Bundle bundle = ai.metaData;
+			Meta.weiboAppKey = bundle.getString("weibo_app_key");
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
 	}
 
 

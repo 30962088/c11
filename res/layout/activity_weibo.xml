@@ -44,12 +44,12 @@
         
     </LinearLayout>
     
-    <cn.cntv.cctv11.android.widget.BaseListView 
+    <com.handmark.pulltorefresh.library.PullToRefreshPinnedSectionListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#faf8f7"
         android:divider="@null"
-        android:layout_weight="1"></cn.cntv.cctv11.android.widget.BaseListView>
+        android:layout_weight="1"></com.handmark.pulltorefresh.library.PullToRefreshPinnedSectionListView>
 
 </LinearLayout>
