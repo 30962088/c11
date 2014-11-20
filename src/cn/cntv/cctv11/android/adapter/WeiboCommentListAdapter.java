@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hb.views.PinnedSectionListView.PinnedSectionListAdapter;
+import com.mengle.lib.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.adapter.WeiboCommentListAdapter.HeaderAnimation.Direct;
 import cn.cntv.cctv11.android.adapter.WeiboCommentListAdapter.TitleItem.Current;
 import cn.cntv.cctv11.android.utils.WeiboUtils;
 import cn.cntv.cctv11.android.utils.WeiboUtils.OnSymbolClickLisenter;
@@ -23,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -48,7 +51,7 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 		private String content;
 
 		private String time;
-		
+
 		private SpannableString spannableString;
 
 		public CommentItem(String avatar, String name, String content,
@@ -59,7 +62,7 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 			this.content = content;
 			this.time = time;
 		}
-		
+
 		public SpannableString getSpannableString() {
 			if (spannableString == null) {
 				ArrayList<WeiboSymboResult> list = WeiboUtils.build(content,
@@ -81,38 +84,37 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 			return spannableString;
 		}
 
-		
-
 	}
-	
-	public static interface OnTitleClickListener{
+
+	public static interface OnTitleClickListener {
 		public void onCommentClick();
+
 		public void onShareClick();
 	}
 
-	public static class TitleItem implements Serializable{
-		
-		public enum Current{
-			Share,Comment
+	public static class TitleItem implements Serializable {
+
+		public enum Current {
+			Share, Comment
 		}
-		
+
 		private long share;
 
 		private long comment;
-		
+
 		private Current current = Current.Comment;
-		
-		
+
 		public void setShare(long share) {
 			this.share = share;
 		}
+
 		public void setComment(long comment) {
 			this.comment = comment;
 		}
 
 	}
 
-	public static class Model implements Serializable{
+	public static class Model implements Serializable {
 		private TitleItem titleItem;
 		private List<CommentItem> list;
 
@@ -132,21 +134,22 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 	}
 
 	private OnTitleClickListener onTitleClickListener;
-	
+
 	private Context context;
 
 	private List<Object> datas;
 
 	private Model model;
-	
-	public WeiboCommentListAdapter(Context context, Model model,OnTitleClickListener onTitleClickListener) {
+
+	public WeiboCommentListAdapter(Context context, Model model,
+			OnTitleClickListener onTitleClickListener) {
 		super();
 		this.onTitleClickListener = onTitleClickListener;
 		this.context = context;
 		this.model = model;
 		this.datas = model.toDatas();
 	}
-	
+
 	@Override
 	public void notifyDataSetChanged() {
 		this.datas = model.toDatas();
@@ -171,6 +174,8 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 		return position;
 	}
 
+	private Current current;
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -184,30 +189,32 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 			holder.commentItemHolder.container.setTag(holder);
 			View titleItem = LayoutInflater.from(context).inflate(
 					R.layout.comment_header, null);
-			
+
 			holder.titleItemHolder = new TitleItemHolder(titleItem);
-			
-			holder.titleItemHolder.comment.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					
-					model.titleItem.current = Current.Comment;
-					
-					onTitleClickListener.onCommentClick();
-					
-				}
-			});
-			holder.titleItemHolder.share.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					model.titleItem.current = Current.Share;
-					
-					onTitleClickListener.onShareClick();
-					
-				}
-			});
+
+			holder.titleItemHolder.comment
+					.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+
+							model.titleItem.current = Current.Comment;
+
+							onTitleClickListener.onCommentClick();
+
+						}
+					});
+			holder.titleItemHolder.share
+					.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							model.titleItem.current = Current.Share;
+
+							onTitleClickListener.onShareClick();
+
+						}
+					});
 			holder.titleItemHolder.container.setTag(holder);
 			if (isItemViewTypePinned(getItemViewType(position))) {
 				convertView = holder.titleItemHolder.container;
@@ -221,50 +228,31 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 
 		if (isItemViewTypePinned(getItemViewType(position))) {
 			final TitleItem item = (TitleItem) datas.get(position);
-			final ViewHolder h = holder;
-			holder.titleItemHolder.container.post(new Runnable() {
-				
-				@Override
-				public void run() {
-					int x,comment_x,share_x = 0;
-					RelativeLayout.LayoutParams comment_params = (LayoutParams) h.titleItemHolder.comment.getLayoutParams();
-					RelativeLayout.LayoutParams share_params = (LayoutParams) h.titleItemHolder.share.getLayoutParams();
-					comment_x = share_params.leftMargin+h.titleItemHolder.share.getMeasuredWidth() + 
-							comment_params.leftMargin+h.titleItemHolder.comment.getMeasuredWidth()/2;
-					share_x = share_params.leftMargin + h.titleItemHolder.share.getMeasuredWidth()/2;
-					
-					
-					if(item.current == Current.Comment){
-						x = comment_x;
-						h.titleItemHolder.comment.setSelected(true);
-						h.titleItemHolder.share.setSelected(false);
-					}else{
-						x = share_x;
-						h.titleItemHolder.comment.setSelected(false);
-						h.titleItemHolder.share.setSelected(true);
-					}
-					RelativeLayout.LayoutParams params = (LayoutParams) h.titleItemHolder.tag.getLayoutParams();
-					params.leftMargin = x;
-					/*int fx = params.leftMargin+params.width/2;
-					int fy = params.topMargin;
-					
-					Animation animation = new TranslateAnimation(fx, x, fy, fy);
-					
-					animation.setDuration(500);
-					animation.setFillBefore(false);
-					animation.setFillAfter(true);*/
 
-//					holder.titleItemHolder.tag.startAnimation(animation);
-					h.titleItemHolder.tag.setLayoutParams(params);
+			
+			
+			
+
+			holder.titleItemHolder.comment.setText("评论" + item.comment);
+
+			holder.titleItemHolder.share.setText("转发" + item.share);
+			
+
+			if(current != item.current){
+				Direct direct = null;
+				
+				if (item.current == Current.Comment) {
+					direct = Direct.Right;
+					holder.titleItemHolder.comment.setSelected(true);
+					holder.titleItemHolder.share.setSelected(false);
+				} else {
+					direct = Direct.Left;
+					holder.titleItemHolder.comment.setSelected(false);
+					holder.titleItemHolder.share.setSelected(true);
 				}
-			});
-			
-			
-			holder.titleItemHolder.comment.setText("评论"+item.comment);
-			
-			holder.titleItemHolder.share.setText("转发"+item.share);
-			
-			
+				
+				new HeaderAnimation(holder.titleItemHolder, direct).start();
+			}
 
 		} else {
 			CommentItem item = (CommentItem) datas.get(position);
@@ -274,7 +262,7 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 			holder.commentItemHolder.content.setText(item.getSpannableString());
 
 			holder.commentItemHolder.time.setText(item.time);
-			
+
 			ImageLoader.getInstance().displayImage(item.avatar,
 					holder.commentItemHolder.avatar,
 					DisplayOptions.IMG.getOptions());
@@ -313,7 +301,7 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 
 	}
 
-	public static class TitleItemHolder{
+	public static class TitleItemHolder {
 		private TextView share;
 		private TextView comment;
 		private View container;
@@ -325,9 +313,6 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 			comment = (TextView) view.findViewById(R.id.comment);
 			tag = view.findViewById(R.id.tag);
 		}
-		
-
-		
 
 	}
 
@@ -354,4 +339,91 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 		}
 		return type;
 	}
+	
+	public static class HeaderAnimation implements AnimationListener{
+		
+		public enum Direct{
+			Left,Right
+		}
+		
+		private View tag;
+		
+		private Animation animation;
+		
+		private Direct direct;
+		
+		private TitleItemHolder holder;
+		
+		public HeaderAnimation(TitleItemHolder holder,Direct direct) {
+			this.direct = direct;
+			this.holder = holder;
+			tag = holder.tag;
+			
+			holder.container.measure(View.MeasureSpec.UNSPECIFIED,
+					View.MeasureSpec.UNSPECIFIED);
+		
+			
+			RelativeLayout.LayoutParams params = (LayoutParams) tag.getLayoutParams();
+			if(direct == Direct.Right){
+				params.leftMargin = holder.comment.getLeft()+holder.comment.getMeasuredWidth()/2;
+//				tag.setLeft(holder.comment.getLeft()+holder.comment.getMeasuredWidth()/2);
+			}else{
+				params.leftMargin = holder.share.getLeft()+holder.share.getMeasuredWidth()/2;
+			}
+			
+			tag.layout(params.leftMargin, tag.getTop(), tag.getRight(), tag.getBottom());
+			
+			holder.container.measure(View.MeasureSpec.UNSPECIFIED,
+					View.MeasureSpec.UNSPECIFIED);
+			holder.container.requestLayout();
+			holder.container.invalidate();
+//			tag.setLayoutParams(params);
+			
+			/*int distance = holder.comment.getLeft()+holder.comment.getMeasuredWidth() - holder.share.getLeft()-holder.share.getMeasuredWidth();
+			
+			if(direct == Direct.Left){
+				distance = -distance;
+			}
+			
+			animation = new TranslateAnimation(0, distance, 0, 0);
+			animation.setFillBefore(false);
+			animation.setDuration(200);
+			animation.setFillAfter(true);
+			animation.setAnimationListener(this);*/
+		}
+		
+		public void start(){
+//			tag.startAnimation(animation);
+		}
+
+		@Override
+		public void onAnimationStart(Animation animation) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onAnimationEnd(Animation animation) {
+			RelativeLayout.LayoutParams params = (LayoutParams) tag.getLayoutParams();
+			if(direct == Direct.Right){
+				params.leftMargin = holder.comment.getLeft()+holder.comment.getMeasuredWidth()/2;
+//				tag.setLeft(holder.comment.getLeft()+holder.comment.getMeasuredWidth()/2);
+			}else{
+				params.leftMargin = holder.share.getLeft()+holder.share.getMeasuredWidth()/2;
+			}
+			
+			tag.setLayoutParams(params);
+		}
+
+		@Override
+		public void onAnimationRepeat(Animation animation) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
+		
+	}
+
+
 }
