@@ -9,10 +9,12 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.adapter.WeiboCommentListAdapter.TitleItem.Current;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -49,13 +51,24 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 		
 
 	}
+	
+	public static interface OnTitleClickListener{
+		public void onCommentClick();
+		public void onShareClick();
+	}
 
 	public static class TitleItem implements Serializable{
+		
+		public enum Current{
+			Share,Comment
+		}
 		
 		private long share;
 
 		private long comment;
-
+		
+		private Current current = Current.Comment;
+		
 		
 		public void setShare(long share) {
 			this.share = share;
@@ -85,14 +98,17 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 
 	}
 
+	private OnTitleClickListener onTitleClickListener;
+	
 	private Context context;
 
 	private List<Object> datas;
 
 	private Model model;
 	
-	public WeiboCommentListAdapter(Context context, Model model) {
+	public WeiboCommentListAdapter(Context context, Model model,OnTitleClickListener onTitleClickListener) {
 		super();
+		this.onTitleClickListener = onTitleClickListener;
 		this.context = context;
 		this.model = model;
 		this.datas = model.toDatas();
@@ -135,6 +151,27 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 			View titleItem = LayoutInflater.from(context).inflate(
 					R.layout.comment_header, null);
 			holder.titleItemHolder = new TitleItemHolder(titleItem);
+			holder.titleItemHolder.comment.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					
+					model.titleItem.current = Current.Comment;
+					
+					onTitleClickListener.onCommentClick();
+					
+				}
+			});
+			holder.titleItemHolder.share.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					model.titleItem.current = Current.Share;
+					
+					onTitleClickListener.onShareClick();
+					
+				}
+			});
 			holder.titleItemHolder.container.setTag(holder);
 			if (isItemViewTypePinned(getItemViewType(position))) {
 				convertView = holder.titleItemHolder.container;
@@ -150,9 +187,19 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 
 			TitleItem item = (TitleItem) datas.get(position);
 
+			if(item.current == Current.Comment){
+				holder.titleItemHolder.comment.setSelected(true);
+				holder.titleItemHolder.share.setSelected(false);
+			}else{
+				holder.titleItemHolder.comment.setSelected(false);
+				holder.titleItemHolder.share.setSelected(true);
+			}
+			
 			holder.titleItemHolder.comment.setText("评论"+item.comment);
 			
 			holder.titleItemHolder.share.setText("转发"+item.share);
+			
+			
 
 		} else {
 			CommentItem item = (CommentItem) datas.get(position);
@@ -201,7 +248,7 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 
 	}
 
-	public static class TitleItemHolder {
+	public static class TitleItemHolder{
 		private TextView share;
 		private TextView comment;
 		private View container;
@@ -211,6 +258,8 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 			share = (TextView) view.findViewById(R.id.share);
 			comment = (TextView) view.findViewById(R.id.comment);
 		}
+
+		
 
 	}
 

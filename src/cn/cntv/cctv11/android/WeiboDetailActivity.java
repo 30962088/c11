@@ -13,11 +13,13 @@ import com.handmark.pulltorefresh.library.PullToRefreshPinnedSectionListView;
 import cn.cntv.cctv11.android.adapter.WeiboCommentListAdapter;
 import cn.cntv.cctv11.android.adapter.WeiboCommentListAdapter.CommentItem;
 import cn.cntv.cctv11.android.adapter.WeiboCommentListAdapter.Model;
+import cn.cntv.cctv11.android.adapter.WeiboCommentListAdapter.OnTitleClickListener;
 import cn.cntv.cctv11.android.adapter.WeiboCommentListAdapter.TitleItem;
 import cn.cntv.cctv11.android.fragment.network.BaseClient;
 import cn.cntv.cctv11.android.fragment.network.WeiboCommentRequest;
 import cn.cntv.cctv11.android.fragment.network.WeiboCountRequest;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
+import cn.cntv.cctv11.android.fragment.network.WeiboReportRequest;
 import cn.cntv.cctv11.android.widget.WeiboItemView;
 
 import android.content.Context;
@@ -30,7 +32,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
 
-public class WeiboDetailActivity extends BaseActivity implements OnLastItemVisibleListener,OnRefreshListener<ListView>,OnScrollListener{
+public class WeiboDetailActivity extends BaseActivity implements OnLastItemVisibleListener,OnRefreshListener<ListView>,OnScrollListener,OnTitleClickListener{
 	public static void open(Context context, WeiboItemView.Model model) {
 		Intent intent = new Intent(context, WeiboDetailActivity.class);
 		intent.putExtra("params", model);
@@ -68,7 +70,12 @@ public class WeiboDetailActivity extends BaseActivity implements OnLastItemVisib
 			super();
 			this.type = type;
 		}
-
+		
+		public void init(){
+			if(page == 1){
+				request();
+			}
+		}
 		
 
 		public void add(DataSource dataSource) {
@@ -96,6 +103,8 @@ public class WeiboDetailActivity extends BaseActivity implements OnLastItemVisib
 			BaseClient client = null;
 			if(type == WeiboType.Comment){
 				client = new WeiboCommentRequest(WeiboDetailActivity.this,new WeiboCommentRequest.Params(params.getId(), 30, page));
+			}else{
+				client = new WeiboReportRequest(WeiboDetailActivity.this,new WeiboReportRequest.Params(params.getId(), 30, page));
 			}
 			client.request(this);
 		}
@@ -112,7 +121,7 @@ public class WeiboDetailActivity extends BaseActivity implements OnLastItemVisib
 			}else{
 				mFooterLoading.setVisibility(View.GONE);
 			}
-			baseListView.onRefreshComplete();
+//			baseListView.onRefreshComplete();
 			adapter.notifyDataSetChanged();
 			
 		}
@@ -151,12 +160,15 @@ public class WeiboDetailActivity extends BaseActivity implements OnLastItemVisib
 	
 	private View mFooterLoading;
 	
+	private int currentItem;
+	
 	public void setCurrentdaDataSource(WeiboDataSource currentdaDataSource) {
 		this.currentdaDataSource = currentdaDataSource;
 		list = currentdaDataSource.list;
-		adapter = new WeiboCommentListAdapter(this, new Model(titleItem, list));
+		currentdaDataSource.init();
+		adapter = new WeiboCommentListAdapter(this, new Model(titleItem, list),this);
 		baseListView.setAdapter(adapter);
-//		baseListView.getRefreshableView().setSelection(currentdaDataSource.current);
+		baseListView.getRefreshableView().setSelection(currentItem);
 		
 	}
 
@@ -181,9 +193,10 @@ public class WeiboDetailActivity extends BaseActivity implements OnLastItemVisib
 		mFooterLoading = footer.findViewById(R.id.layout_checkmore);
 		mFooterLoading.setVisibility(View.GONE);
 		baseListView.setOnLastItemVisibleListener(this);
-			
-		setCurrentdaDataSource(commentDatasouce);
 		
+		setCurrentdaDataSource(commentDatasouce);
+		baseListView.setRefreshing(true);
+		baseListView.setOnScrollListener(this);
 	}
 
 	
@@ -198,8 +211,8 @@ public class WeiboDetailActivity extends BaseActivity implements OnLastItemVisib
 
 	@Override
 	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-		shareDataSource.reset();
-		commentDatasouce.reset();
+		/*shareDataSource.reset();
+		commentDatasouce.reset();*/
 		WeiboCountRequest request = new WeiboCountRequest(this, new WeiboCountRequest.Params(params.getId()));
 		request.request(new RequestHandler() {
 			
@@ -208,7 +221,8 @@ public class WeiboDetailActivity extends BaseActivity implements OnLastItemVisib
 				WeiboCountRequest.Result result = (WeiboCountRequest.Result)object;
 				titleItem.setComment(result.getComments());
 				titleItem.setShare(result.getReposts());
-				currentdaDataSource.request();
+				baseListView.onRefreshComplete();
+				adapter.notifyDataSetChanged();
 				
 			}
 			
@@ -236,8 +250,20 @@ public class WeiboDetailActivity extends BaseActivity implements OnLastItemVisib
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-		
+		currentItem = firstVisibleItem;
 		currentdaDataSource.setCurrent(visibleItemCount);
+		
+	}
+
+	@Override
+	public void onCommentClick() {
+		setCurrentdaDataSource(commentDatasouce);
+		
+	}
+
+	@Override
+	public void onShareClick() {
+		setCurrentdaDataSource(shareDataSource);
 		
 	}
 	

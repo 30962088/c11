@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="234转发"
             android:layout_marginLeft="22dp"
-            android:textColor="#80000000"
+            android:textColor="@color/weibo_header_color_selector"
             android:textSize="14sp" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="9dp"
             android:text="45评论"
-            android:textColor="#000000"
+            android:textColor="@color/weibo_header_color_selector"
             android:textSize="14sp" />
 
         <View
