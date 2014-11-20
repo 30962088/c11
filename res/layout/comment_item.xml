@@ -58,6 +58,7 @@
         </LinearLayout>
         
         <View 
+            android:id="@+id/comment_btn"
             android:layout_marginTop="10dp"
             android:layout_width="12.5dp"
             android:layout_height="10.5dp"

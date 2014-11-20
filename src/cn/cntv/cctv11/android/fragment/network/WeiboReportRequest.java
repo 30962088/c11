@@ -54,22 +54,15 @@ public class WeiboReportRequest extends BaseClient {
 		private User user;
 
 		public CommentItem toCommentItem() {
-			/*String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-					.format(getCreateDate());*/
+			String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+					.format(getCreateDate());
 			return new CommentItem(user.profile_image_url, user.screen_name,
-					text, "0:12");
+					text, time);
 		}
 
 		private Date getCreateDate() {
-			Date date = null;
-			try {
-				date = new SimpleDateFormat("EE MM dd HH:mm:ss Z yyyy")
-						.parse(created_at);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return date;
+			
+			return new Date(created_at);
 		}
 
 	}

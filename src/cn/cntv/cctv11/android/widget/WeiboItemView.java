@@ -116,8 +116,8 @@ public class WeiboItemView extends FrameLayout {
 		if (model.retweetedContent != null) {
 			holder.photogrid.setVisibility(View.GONE);
 			holder.retweeted.setVisibility(View.VISIBLE);
-			holder.retweetedText.setText(model.retweetedContent.text);
-			holder.retweetedText.setText(model.retweetedContent.text);
+			holder.retweetedText.setText(model.retweetedContent.getSpannableString());
+//			holder.retweetedText.setText(model.retweetedContent.text);
 			holder.retweetedCount.setText("转发（"+model.retweetedContent.count.share+"）| 评论（"+model.retweetedContent.count.comment+"）");
 			if (model.retweetedContent.photos != null) {
 				holder.retweetedPhotogrid.setVisibility(View.VISIBLE);

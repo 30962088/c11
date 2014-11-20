@@ -10,14 +10,24 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.adapter.WeiboCommentListAdapter.TitleItem.Current;
+import cn.cntv.cctv11.android.utils.WeiboUtils;
+import cn.cntv.cctv11.android.utils.WeiboUtils.OnSymbolClickLisenter;
+import cn.cntv.cctv11.android.utils.WeiboUtils.WeiboSymboResult;
+import cn.cntv.cctv11.android.utils.WeiboUtils.WeiboSymbol;
 
 import android.content.Context;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.SectionIndexer;
 
 import android.widget.TextView;
@@ -38,6 +48,8 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 		private String content;
 
 		private String time;
+		
+		private SpannableString spannableString;
 
 		public CommentItem(String avatar, String name, String content,
 				String time) {
@@ -46,6 +58,27 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 			this.name = name;
 			this.content = content;
 			this.time = time;
+		}
+		
+		public SpannableString getSpannableString() {
+			if (spannableString == null) {
+				ArrayList<WeiboSymboResult> list = WeiboUtils.build(content,
+						new OnSymbolClickLisenter() {
+
+							@Override
+							public void OnSymbolClick(WeiboSymbol symbol) {
+								System.out.println(symbol);
+
+							}
+						});
+				this.spannableString = new SpannableString(content);
+				for (WeiboSymboResult result : list) {
+					this.spannableString.setSpan(result.getClickableString(),
+							result.getStart(), result.getEnd(),
+							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				}
+			}
+			return spannableString;
 		}
 
 		
@@ -146,11 +179,14 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 			holder = new ViewHolder();
 			View commentItem = LayoutInflater.from(context).inflate(
 					R.layout.comment_item, null);
+			commentItem.findViewById(R.id.comment_btn).setVisibility(View.GONE);
 			holder.commentItemHolder = new CommentItemHolder(commentItem);
 			holder.commentItemHolder.container.setTag(holder);
 			View titleItem = LayoutInflater.from(context).inflate(
 					R.layout.comment_header, null);
+			
 			holder.titleItemHolder = new TitleItemHolder(titleItem);
+			
 			holder.titleItemHolder.comment.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -184,16 +220,45 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 		}
 
 		if (isItemViewTypePinned(getItemViewType(position))) {
+			final TitleItem item = (TitleItem) datas.get(position);
+			final ViewHolder h = holder;
+			holder.titleItemHolder.container.post(new Runnable() {
+				
+				@Override
+				public void run() {
+					int x,comment_x,share_x = 0;
+					RelativeLayout.LayoutParams comment_params = (LayoutParams) h.titleItemHolder.comment.getLayoutParams();
+					RelativeLayout.LayoutParams share_params = (LayoutParams) h.titleItemHolder.share.getLayoutParams();
+					comment_x = share_params.leftMargin+h.titleItemHolder.share.getMeasuredWidth() + 
+							comment_params.leftMargin+h.titleItemHolder.comment.getMeasuredWidth()/2;
+					share_x = share_params.leftMargin + h.titleItemHolder.share.getMeasuredWidth()/2;
+					
+					
+					if(item.current == Current.Comment){
+						x = comment_x;
+						h.titleItemHolder.comment.setSelected(true);
+						h.titleItemHolder.share.setSelected(false);
+					}else{
+						x = share_x;
+						h.titleItemHolder.comment.setSelected(false);
+						h.titleItemHolder.share.setSelected(true);
+					}
+					RelativeLayout.LayoutParams params = (LayoutParams) h.titleItemHolder.tag.getLayoutParams();
+					params.leftMargin = x;
+					/*int fx = params.leftMargin+params.width/2;
+					int fy = params.topMargin;
+					
+					Animation animation = new TranslateAnimation(fx, x, fy, fy);
+					
+					animation.setDuration(500);
+					animation.setFillBefore(false);
+					animation.setFillAfter(true);*/
 
-			TitleItem item = (TitleItem) datas.get(position);
-
-			if(item.current == Current.Comment){
-				holder.titleItemHolder.comment.setSelected(true);
-				holder.titleItemHolder.share.setSelected(false);
-			}else{
-				holder.titleItemHolder.comment.setSelected(false);
-				holder.titleItemHolder.share.setSelected(true);
-			}
+//					holder.titleItemHolder.tag.startAnimation(animation);
+					h.titleItemHolder.tag.setLayoutParams(params);
+				}
+			});
+			
 			
 			holder.titleItemHolder.comment.setText("评论"+item.comment);
 			
@@ -206,7 +271,7 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 
 			holder.commentItemHolder.name.setText(item.name);
 
-			holder.commentItemHolder.content.setText(item.content);
+			holder.commentItemHolder.content.setText(item.getSpannableString());
 
 			holder.commentItemHolder.time.setText(item.time);
 			
@@ -252,12 +317,15 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 		private TextView share;
 		private TextView comment;
 		private View container;
+		private View tag;
 
 		public TitleItemHolder(View view) {
 			container = view;
 			share = (TextView) view.findViewById(R.id.share);
 			comment = (TextView) view.findViewById(R.id.comment);
+			tag = view.findViewById(R.id.tag);
 		}
+		
 
 		
 
