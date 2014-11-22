@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.fragment.FillInfoFragment.Model;
 import cn.cntv.cctv11.android.fragment.FillInfoFragment.Sex;
 import cn.cntv.cctv11.android.fragment.network.IsHaveSingerRequest.Params;
@@ -135,7 +136,13 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 
 	@Override
 	public void onComplete(Bundle arg0, SHARE_MEDIA arg1) {
-		mController.getUserInfo(context, this);
+		if(arg1 == SHARE_MEDIA.SINA){
+			APP.getSession().setWeiboAccessToken(arg0.getString("access_key"));
+		}
+		
+		if(callback != null){
+			mController.getUserInfo(context, this);
+		}
 	}
 
 	@Override

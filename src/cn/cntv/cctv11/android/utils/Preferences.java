@@ -22,6 +22,14 @@ public class Preferences {
 		}
 
 		
+		public void setWeiboAccessToken(String access_token){
+			preferences.edit().putString("weibo_access_token", access_token).commit();
+		}
+		
+		public String getWeiboAccessToken(){
+			return preferences.getString("weibo_access_token",null);
+		}
+		
 		public void setSid(String sid){
 			preferences.edit().putString("sid", sid).commit();
 		}

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp" >
+    android:padding="16dp" 
+    android:id="@+id/container">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,10 +56,17 @@
                 android:textSize="10sp" />
         </LinearLayout>
 
-        <View
-            android:layout_width="12.5dp"
-            android:layout_height="10.5dp"
-            android:background="@drawable/icon_comment" />
+        <FrameLayout
+            android:id="@+id/comment_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp" >
+
+            <View
+                android:layout_width="12.5dp"
+                android:layout_height="10.5dp"
+                android:background="@drawable/icon_comment" />
+        </FrameLayout>
     </LinearLayout>
 
     <TextView
@@ -88,8 +96,8 @@
             android:id="@+id/retweeted"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" 
-            android:background="@drawable/bg_border2">
+            android:background="@drawable/bg_border2"
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/retweetedText"
@@ -109,15 +117,14 @@
                 android:numColumns="auto_fit"
                 android:verticalSpacing="5dp" >
             </GridView>
-            
-            <TextView 
+
+            <TextView
                 android:id="@+id/retweetedCount"
-                android:gravity="right"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:textColor="#b3000000"
-                android:textSize="9sp"/>
-            
+                android:textSize="9sp" />
         </LinearLayout>
     </FrameLayout>
 

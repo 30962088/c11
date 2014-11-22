@@ -21,6 +21,7 @@ import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
@@ -28,8 +29,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class WeiboItemView extends FrameLayout {
+public class WeiboItemView extends FrameLayout{
 
+	public static interface OnWeiboItemClickListener{
+		public void onCommentClick(Model model);
+		public void onItemClick(Model model);
+	}
+	
 	public WeiboItemView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		init();
@@ -45,6 +51,12 @@ public class WeiboItemView extends FrameLayout {
 		init();
 	}
 
+	private OnWeiboItemClickListener onWeiboItemClickListener;
+	
+	public void setOnWeiboItemClickListener(
+			OnWeiboItemClickListener onWeiboItemClickListener) {
+		this.onWeiboItemClickListener = onWeiboItemClickListener;
+	}
 	
 	public static class Count implements Serializable{
 		private int share;
@@ -95,11 +107,37 @@ public class WeiboItemView extends FrameLayout {
 
 	private void init() {
 		LayoutInflater.from(getContext()).inflate(R.layout.weibo_item, this);
+		
 		holder = new ViewHolder();
 
 	}
 
 	public void setModel(final Model model) {
+		
+		
+		
+		holder.commentBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(onWeiboItemClickListener != null){
+					onWeiboItemClickListener.onCommentClick(model);
+				}
+				
+			}
+		});
+		
+		holder.container.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(onWeiboItemClickListener != null){
+					onWeiboItemClickListener.onItemClick(model);
+				}
+				
+			}
+		});
+		
 		holder.name.setText(model.name);
 
 		holder.time.setText(model.time);
@@ -159,6 +197,8 @@ public class WeiboItemView extends FrameLayout {
 
 	public class ViewHolder {
 
+		private View commentBtn;
+		
 		private TextView time;
 
 		private TextView name;
@@ -176,8 +216,12 @@ public class WeiboItemView extends FrameLayout {
 		private GridView retweetedPhotogrid;
 		
 		private TextView retweetedCount;
+		
+		private View container;
 
 		public ViewHolder() {
+			container = findViewById(R.id.container);
+			commentBtn = findViewById(R.id.comment_btn);
 			time = (TextView) findViewById(R.id.time);
 			name = (TextView) findViewById(R.id.name);
 			avatar = (ImageView) findViewById(R.id.avatar);
@@ -268,5 +312,7 @@ public class WeiboItemView extends FrameLayout {
 		}
 		PhotoViewActivity.open(getContext(), list);
 	}
+
+	
 
 }

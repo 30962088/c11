@@ -24,6 +24,7 @@ import cn.cntv.cctv11.android.utils.WeiboUtils.WeiboSymbol;
 import cn.cntv.cctv11.android.utils.WeiboUtils.WeiboText;
 import cn.cntv.cctv11.android.widget.WeiboItemView;
 import cn.cntv.cctv11.android.widget.WeiboItemView.Model;
+import cn.cntv.cctv11.android.widget.WeiboItemView.OnWeiboItemClickListener;
 import cn.cntv.cctv11.android.widget.WeiboItemView.ViewHolder;
 
 import android.content.Context;
@@ -55,11 +56,14 @@ public class WeiboListAdapter extends BaseAdapter implements Serializable,Pinned
 	private Context context;
 
 	private List<Model> list;
+	
+	private OnWeiboItemClickListener onWeiboItemClickListener;
 
-	public WeiboListAdapter(Context context, List<Model> list) {
+	public WeiboListAdapter(Context context, List<Model> list,OnWeiboItemClickListener onWeiboItemClickListener) {
 		super();
 		this.context = context;
 		this.list = list;
+		this.onWeiboItemClickListener = onWeiboItemClickListener;
 	}
 
 	@Override
@@ -88,18 +92,21 @@ public class WeiboListAdapter extends BaseAdapter implements Serializable,Pinned
 		ViewHolder holder = null;
 		final Model model = list.get(position);
 		if (convertView == null) {
-			convertView = new WeiboItemView(context);
+			WeiboItemView itemView = new WeiboItemView(context);
+			itemView.setOnWeiboItemClickListener(onWeiboItemClickListener);
+			convertView = itemView;
+			
 		}
 		
 		WeiboItemView itemView = (WeiboItemView) convertView;
-		itemView.setOnClickListener(new OnClickListener() {
+		/*itemView.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				WeiboDetailActivity.open(context, model);
 				
 			}
-		});
+		});*/
 		itemView.setModel(model);
 
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.WeiboDetailActivity;
+import cn.cntv.cctv11.android.WeiboPublishActivity;
 import cn.cntv.cctv11.android.adapter.WeiboListAdapter;
 import cn.cntv.cctv11.android.adapter.WeiboCommentListAdapter.CommentItem;
 
@@ -15,6 +16,7 @@ import cn.cntv.cctv11.android.widget.BaseListView;
 import cn.cntv.cctv11.android.widget.BaseListView.OnLoadListener;
 import cn.cntv.cctv11.android.widget.BaseListView.Type;
 import cn.cntv.cctv11.android.widget.WeiboItemView.Model;
+import cn.cntv.cctv11.android.widget.WeiboItemView.OnWeiboItemClickListener;
 import cn.cntv.cctv11.android.widget.WeiboItemView;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,7 +25,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class WeiboFragment extends BaseFragment implements OnLoadListener,OnItemClickListener{
+public class WeiboFragment extends BaseFragment implements OnLoadListener,OnItemClickListener,OnWeiboItemClickListener{
 	
 	
 	
@@ -55,7 +57,7 @@ public class WeiboFragment extends BaseFragment implements OnLoadListener,OnItem
 		super.onViewCreated(view, savedInstanceState);
 		BaseListView listView = (BaseListView) view.findViewById(R.id.listview);
 		listView.setOnItemClickListener(this);
-		adapter = new WeiboListAdapter(getActivity(), list);
+		adapter = new WeiboListAdapter(getActivity(), list,this);
 		listView.setAdapter(adapter);
 		listView.setOnLoadListener(this);
 		listView.load(true);
@@ -97,5 +99,19 @@ public class WeiboFragment extends BaseFragment implements OnLoadListener,OnItem
 		Model model = list.get(position);
 		WeiboDetailActivity.open(getActivity(), model);
 	}
+
+	@Override
+	public void onCommentClick(Model model) {
+		WeiboPublishActivity.open(getActivity(), model.getId());
+		
+	}
+
+	@Override
+	public void onItemClick(Model model) {
+		WeiboDetailActivity.open(getActivity(), model);
+		
+	}
+
+	
 
 }

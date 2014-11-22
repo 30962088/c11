@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Dictionary;
 
 import cn.cntv.cctv11.android.utils.Dirctionary;
+import cn.cntv.cctv11.android.utils.Preferences.Session;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -24,6 +25,8 @@ import android.os.Bundle;
 
 public class APP extends Application {
 
+	
+	
 	public static class Meta{
 		private static String weiboAppKey;
 		public static String getWeiboAppKey() {
@@ -63,6 +66,8 @@ public class APP extends Application {
 
 	private static APP instance = null;
 
+	
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -80,8 +85,20 @@ public class APP extends Application {
 		mImageLoader.init(config);
 		Dirctionary.init(this);
 		initMeta();
+		initPreference();
 	}
 	
+	private static Session session;
+	
+	public static Session getSession() {
+		return session;
+	}
+	
+	private void initPreference() {
+		
+		session = new Session(this);
+	}
+
 	private void initMeta(){
 		try {
 			ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
