@@ -28,6 +28,12 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 	
 	private static final int ACTION_REQUEST_CITY = 3;
 	
+	private static final int ACTION_REQUEST_NICKNAME = 4;
+	
+	public static interface OnNicknameFillListener{
+		public void onNicknameFill(String nickname);
+	}
+	
 	public static interface OnGallerySelectionListener{
 		public void onGallerySelection(File file);
 	}
@@ -39,6 +45,15 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 	private OnGallerySelectionListener onGallerySelectionListener;
 	
 	private OnCitySelectionListener onCitySelectionListener;
+	
+	private OnNicknameFillListener onNicknameFillListener;
+	
+	public void getNickname(String nickname,OnNicknameFillListener onNicknameFillListener){
+		this.onNicknameFillListener = onNicknameFillListener;
+		Intent intent = new Intent(this, NicknameActivity.class);
+		intent.putExtra("nickname", nickname);
+		startActivityForResult(intent, ACTION_REQUEST_NICKNAME);
+	}
 	
 	public void getCity(OnCitySelectionListener onCitySelectionListener){
 		this.onCitySelectionListener = onCitySelectionListener;
@@ -123,7 +138,13 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 				}
 			}
 			break;
-		
+		case ACTION_REQUEST_NICKNAME:
+			if (resultCode == Activity.RESULT_OK) { 
+				if(onNicknameFillListener != null){
+					onNicknameFillListener.onNicknameFill(data.getStringExtra("nickname"));
+				}
+			}
+			break;
 		default:
 			break;
 		}

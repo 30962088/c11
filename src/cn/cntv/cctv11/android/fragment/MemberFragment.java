@@ -1,7 +1,9 @@
 package cn.cntv.cctv11.android.fragment;
 
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.R;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -26,13 +28,33 @@ public class MemberFragment extends BaseFragment {
 				FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 
+	public void fragment(Fragment fragment) {
+		getChildFragmentManager().beginTransaction()
+				.replace(R.id.fragment_container, fragment).commit();
+	}
+
+	public void initFragment(Fragment fragment) {
+		FragmentManager fm = getChildFragmentManager();
+		for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+			fm.popBackStack();
+		}
+		getChildFragmentManager().beginTransaction()
+				.replace(R.id.fragment_container, fragment).commit();
+	}
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
+		Fragment fragment = null;
+		if (APP.getSession().isLogin()) {
+			fragment = UserSettingFragment.newInstance(APP.getSession()
+					.getSid());
+		} else {
+			fragment = LoginFragment.newInstance();
+		}
 		getChildFragmentManager().beginTransaction()
-				.replace(R.id.fragment_container, LoginFragment.newInstance())
-				.commit();
+				.replace(R.id.fragment_container, fragment).commit();
 		view.setFocusableInTouchMode(true);
 		view.requestFocus();
 		view.setOnKeyListener(new OnKeyListener() {

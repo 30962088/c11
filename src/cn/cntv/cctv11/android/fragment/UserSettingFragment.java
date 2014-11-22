@@ -1,8 +1,25 @@
 package cn.cntv.cctv11.android.fragment;
 
-import java.io.Serializable;
 
+import java.io.File;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import cn.cntv.cctv11.android.BaseActivity;
+import cn.cntv.cctv11.android.BaseActivity.OnCitySelectionListener;
+import cn.cntv.cctv11.android.BaseActivity.OnNicknameFillListener;
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.APP.DisplayOptions;
+import cn.cntv.cctv11.android.BaseActivity.OnGallerySelectionListener;
+import cn.cntv.cctv11.android.fragment.network.BaseClient;
+import cn.cntv.cctv11.android.fragment.network.GetSingerInfoRequest;
+import cn.cntv.cctv11.android.fragment.network.UpdateSingerInfoRequest;
+import cn.cntv.cctv11.android.utils.AliyunUtils;
+import cn.cntv.cctv11.android.utils.AliyunUtils.UploadListener;
+import cn.cntv.cctv11.android.utils.AliyunUtils.UploadResult;
+import cn.cntv.cctv11.android.utils.CropImageUtils;
+import cn.cntv.cctv11.android.utils.LoadingPopup;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,29 +29,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class UserSettingFragment extends BaseFragment implements
-		OnClickListener {
+		OnClickListener,OnGallerySelectionListener,UploadListener,OnCitySelectionListener,OnNicknameFillListener{
 
-	public static class Model implements Serializable {
-		private String nickname;
-		private String avatar;
-		private String city;
-		private String phone;
+	
 
-		public Model(String nickname, String avatar, String city, String phone) {
-			super();
-			this.nickname = nickname;
-			this.avatar = avatar;
-			this.city = city;
-			this.phone = phone;
-		}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-		// private String passowrd;
-
-	}
-
-	public static UserSettingFragment newInstance(Model model) {
+	public static UserSettingFragment newInstance(String sid) {
 		Bundle args = new Bundle();
-		args.putSerializable("model", model);
+		args.putString("sid", sid);
 		UserSettingFragment fragment = new UserSettingFragment();
 		fragment.setArguments(args);
 		return fragment;
@@ -44,6 +50,7 @@ public class UserSettingFragment extends BaseFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		sid = getArguments().getString("sid");
 	}
 
 	@Override
@@ -52,6 +59,8 @@ public class UserSettingFragment extends BaseFragment implements
 		// TODO Auto-generated method stub
 		return inflater.inflate(R.layout.user_setting_layout, null);
 	}
+	
+	private String sid;
 
 	private ImageView avatar;
 
@@ -68,7 +77,9 @@ public class UserSettingFragment extends BaseFragment implements
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
 		avatar = (ImageView) view.findViewById(R.id.avatar);
+		
 		city = (TextView) view.findViewById(R.id.city);
+		
 		weiboBinding = view.findViewById(R.id.weibo_binding);
 		weiboUnBinding = view.findViewById(R.id.weibo_unbinding);
 		nickname = (TextView) view.findViewById(R.id.nickname);
@@ -80,18 +91,43 @@ public class UserSettingFragment extends BaseFragment implements
 		view.findViewById(R.id.setting_btn).setOnClickListener(this);
 		view.findViewById(R.id.logout).setOnClickListener(this);
 	}
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		GetSingerInfoRequest request = new GetSingerInfoRequest(getActivity(), 
+				new GetSingerInfoRequest.Params(sid));
+		request.request(new BaseClient.SimpleRequestHandler(){
+			@Override
+			public void onSuccess(Object object) {
+				GetSingerInfoRequest.Result result = (GetSingerInfoRequest.Result)object;
+				city.setText(result.getModels().getAddress());
+				ImageLoader.getInstance().displayImage(result.getModels().getSingerimgurl(), avatar,DisplayOptions.IMG.getOptions());
+				nickname.setText(result.getModels().getSingername());
+				String accessToken = APP.getSession().getWeiboAccessToken();
+				if(accessToken == null){
+					weiboBinding.setVisibility(View.GONE);
+					weiboUnBinding.setVisibility(View.VISIBLE);
+				}else{
+					weiboBinding.setVisibility(View.VISIBLE);
+					weiboUnBinding.setVisibility(View.GONE);
+				}
+			}
+		});
+	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.account_btn:
-
+			((BaseActivity) getActivity()).getNickname(nickname.getText().toString(), this);
 			break;
 		case R.id.avatar_btn:
-
+			((BaseActivity) getActivity()).getPhoto(this);
 			break;
 		case R.id.city_btn:
-
+			((BaseActivity) getActivity()).getCity(this);
 			break;
 		case R.id.phone_btn:
 
@@ -103,12 +139,79 @@ public class UserSettingFragment extends BaseFragment implements
 
 			break;
 		case R.id.logout:
-
+			onlogout();
 			break;
 		default:
 			break;
 		}
 
+	}
+
+	private void onlogout() {
+		APP.getSession().logout();
+		((MemberFragment) getParentFragment()).initFragment(LoginFragment.newInstance());
+		
+	}
+
+	@Override
+	public void onGallerySelection(File file) {
+		
+		AliyunUtils.getInstance().upload(CropImageUtils.cropImage(file, 300, 300),this);
+		
+	}
+
+	@Override
+	public void onsuccess(final UploadResult result) {
+		UpdateSingerInfoRequest request = new UpdateSingerInfoRequest(getActivity(), 
+				new UpdateSingerInfoRequest.Params(sid, result.getGuid(), result.getExt()));
+		LoadingPopup.show(getActivity());
+		request.request(new BaseClient.SimpleRequestHandler(){
+			@Override
+			public void onComplete() {
+				LoadingPopup.hide(getActivity());
+			}
+			@Override
+			public void onSuccess(Object object) {
+				onResume();
+			}
+		});
+		
+	}
+
+	@Override
+	public void onCitySelection(String city) {
+		UpdateSingerInfoRequest request = new UpdateSingerInfoRequest(getActivity(), 
+				new UpdateSingerInfoRequest.Params(sid, city));
+		LoadingPopup.show(getActivity());
+		request.request(new BaseClient.SimpleRequestHandler(){
+			@Override
+			public void onComplete() {
+				LoadingPopup.hide(getActivity());
+			}
+			@Override
+			public void onSuccess(Object object) {
+				onResume();
+			}
+		});
+		
+	}
+
+	@Override
+	public void onNicknameFill(String nickname) {
+		
+		UpdateSingerInfoRequest request = new UpdateSingerInfoRequest(getActivity(), 
+				new UpdateSingerInfoRequest.Params(sid, new UpdateSingerInfoRequest.Singername(nickname)));
+		LoadingPopup.show(getActivity());
+		request.request(new BaseClient.SimpleRequestHandler(){
+			@Override
+			public void onComplete() {
+				LoadingPopup.hide(getActivity());
+			}
+			@Override
+			public void onSuccess(Object object) {
+				onResume();
+			}
+		});
 	}
 
 }

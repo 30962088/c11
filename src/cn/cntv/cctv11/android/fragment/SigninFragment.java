@@ -10,6 +10,7 @@ import com.mengle.lib.utils.Utils;
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
 import cn.cntv.cctv11.android.fragment.network.GetVerifyCodeRequest;
+import cn.cntv.cctv11.android.fragment.network.IsHaveSingerRequest;
 import cn.cntv.cctv11.android.utils.RegexUtils;
 import android.app.Activity;
 import android.os.Bundle;
@@ -40,8 +41,6 @@ public class SigninFragment extends BaseFragment implements OnClickListener {
 
 	private EditText verifyEditText;
 
-	private TextView tipTextView;
-
 	private EditText passwordEditText;
 
 	private EditText repasswordEditText;
@@ -59,7 +58,6 @@ public class SigninFragment extends BaseFragment implements OnClickListener {
 		sendBtn = (TextView) view.findViewById(R.id.send);
 		sendBtn.setOnClickListener(this);
 		verifyEditText = (EditText) view.findViewById(R.id.verify);
-		tipTextView = (TextView) view.findViewById(R.id.tip);
 		passwordEditText = (EditText) view.findViewById(R.id.password);
 		repasswordEditText = (EditText) view.findViewById(R.id.repassword);
 		nextBtn = view.findViewById(R.id.next);
@@ -68,6 +66,8 @@ public class SigninFragment extends BaseFragment implements OnClickListener {
 
 	private void sendVerify() {
 		String phone = phoneEditText.getText().toString();
+
+		
 		if (TextUtils.isEmpty(phone)) {
 			Utils.tip(getActivity(), "手机号不能为空");
 			return;
@@ -77,7 +77,7 @@ public class SigninFragment extends BaseFragment implements OnClickListener {
 			return;
 		}
 		
-		startTimer();
+		
 
 		GetVerifyCodeRequest.Params params = new GetVerifyCodeRequest.Params(
 				phone, 1);
@@ -88,7 +88,13 @@ public class SigninFragment extends BaseFragment implements OnClickListener {
 			@Override
 			public void onSuccess(Object object) {
 				GetVerifyCodeRequest.Result result = (GetVerifyCodeRequest.Result) object;
-				verifyCode = result.getCode();
+				if(result.getResult() == 1015){
+					Utils.tip(getActivity(), "手机已经注册过了");
+				}else{
+					startTimer();
+					verifyCode = result.getCode();
+				}
+				
 			}
 
 			@Override
@@ -163,6 +169,9 @@ public class SigninFragment extends BaseFragment implements OnClickListener {
 			Utils.tip(getActivity(), "验证码输入有误");
 			return;
 		}
+		
+		((MemberFragment) getParentFragment()).fragment(FillInfoFragment.newInstance(
+				new FillInfoFragment.Model(new FillInfoFragment.PhoneAccount(phone,passwordEditText.getText().toString()))));
 		
 	}
 

@@ -10,12 +10,14 @@ import cn.cntv.cctv11.android.utils.OauthUtils;
 import cn.cntv.cctv11.android.utils.OauthUtils.OauthCallback;
 import cn.cntv.cctv11.android.utils.OauthUtils.Result;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-public class LoginFragment extends BaseFragment implements OnClickListener,OauthCallback {
+public class LoginFragment extends BaseFragment implements OnClickListener,
+		OauthCallback {
 
 	public static LoginFragment newInstance() {
 		return new LoginFragment();
@@ -73,43 +75,46 @@ public class LoginFragment extends BaseFragment implements OnClickListener,Oauth
 	@Override
 	public void onSuccess(Result result) {
 		final Model model = result.toModel();
-		IsHaveSingerRequest request = new IsHaveSingerRequest(getActivity(), result.toParams());
+		IsHaveSingerRequest request = new IsHaveSingerRequest(getActivity(),
+				result.toParams());
 		request.request(new RequestHandler() {
-			
+
 			@Override
 			public void onSuccess(Object object) {
-				IsHaveSingerRequest.Result result = (IsHaveSingerRequest.Result)object;
-//				if(result.getPkey() == null){
-					getParentFragment()
-					.getChildFragmentManager()
-					.beginTransaction()
-					.replace(R.id.fragment_container,
-							FillInfoFragment.newInstance(model))
-					.addToBackStack("fillinfo").commit();
-//				}
-				
+				IsHaveSingerRequest.Result result = (IsHaveSingerRequest.Result) object;
+				Fragment fragment;
+				if (result.getPkey() == null) {
+					fragment = FillInfoFragment.newInstance(model);
+				} else {
+					fragment = UserSettingFragment.newInstance(""
+							+ result.getSid());
+				}
+				getParentFragment().getChildFragmentManager()
+						.beginTransaction()
+						.replace(R.id.fragment_container, fragment)
+						.addToBackStack("fillinfo").commit();
 			}
-			
+
 			@Override
 			public void onServerError(int arg0, Header[] arg1, byte[] arg2,
 					Throwable arg3) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onError(int error) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void onComplete() {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 	}
 
 }

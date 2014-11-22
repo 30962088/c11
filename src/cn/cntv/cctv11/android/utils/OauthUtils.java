@@ -71,7 +71,7 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 			if(media == SHARE_MEDIA.SINA){
 				type = 1;
 			}
-			return new Model(new Account(sid, type) ,sex, nickname, sid,avatar);
+			return new Model(new Account(sid, type) ,sex, nickname,avatar);
 		}
 
 	}

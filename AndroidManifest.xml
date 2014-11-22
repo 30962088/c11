@@ -97,6 +97,14 @@
                 <action android:name="android.intent.action.MAIN" /> />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".NicknameActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" /> />
+            </intent-filter>
+        </activity>
+        
         
         <activity
             android:name="com.tencent.tauth.AuthActivity"

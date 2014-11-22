@@ -8,6 +8,7 @@ import org.apache.http.Header;
 import com.mengle.lib.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.BaseActivity;
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.APP.DisplayOptions;
@@ -15,6 +16,7 @@ import cn.cntv.cctv11.android.BaseActivity.OnCitySelectionListener;
 import cn.cntv.cctv11.android.BaseActivity.OnGallerySelectionListener;
 import cn.cntv.cctv11.android.fragment.network.BaseClient;
 import cn.cntv.cctv11.android.fragment.network.SetSingerRequest;
+import cn.cntv.cctv11.android.fragment.network.SetSingerUserRequest;
 import cn.cntv.cctv11.android.utils.AliyunUtils;
 import cn.cntv.cctv11.android.utils.AliyunUtils.UploadListener;
 import cn.cntv.cctv11.android.utils.CropImageUtils;
@@ -56,6 +58,19 @@ public class FillInfoFragment extends BaseFragment implements OnClickListener,On
 		}
 	}
 	
+	public static class PhoneAccount implements Serializable{
+		private String phone;
+		private String password;
+		public PhoneAccount(String phone, String password) {
+			super();
+			this.phone = phone;
+			this.password = password;
+		}
+
+		
+		
+	}
+	
 	public static class Account implements Serializable{
 		private String wbqqid;
 		private int type;
@@ -69,19 +84,25 @@ public class FillInfoFragment extends BaseFragment implements OnClickListener,On
 
 	public static class Model implements Serializable {
 		private Account account;
-		private Sex sex;
-		private String nickname;
-		private String sid;
-		private String avatar;
+		private PhoneAccount phoneAccount;
+		private Sex sex=Sex.Male;
+		private String nickname="";
+		private String avatar="";
 
-		public Model(Account account, Sex sex, String nickname, String sid, String avatar) {
+		public Model(Account account, Sex sex, String nickname, String avatar) {
 			super();
 			this.account = account;
 			this.sex = sex;
 			this.nickname = nickname;
-			this.sid = sid;
 			this.avatar = avatar;
 		}
+
+		public Model(PhoneAccount phoneAccount) {
+			super();
+			this.phoneAccount = phoneAccount;
+		}
+		
+		
 
 	}
 
@@ -195,12 +216,22 @@ public class FillInfoFragment extends BaseFragment implements OnClickListener,On
 			city = cityTextView.getTag().toString();
 		}
 		Sex sex = (Sex)sexRadioGroup.findViewById(sexRadioGroup.getCheckedRadioButtonId()).getTag();
-		SetSingerRequest request = new SetSingerRequest(getActivity(), 
-				new SetSingerRequest.Params(model.account.wbqqid, model.account.type, nickname, sex, result.getGuid(), result.getExt(), city));
+		
+		BaseClient request = null;
+		
+		if(model.account != null){
+			request = new SetSingerRequest(getActivity(), 
+					new SetSingerRequest.Params(model.account.wbqqid, model.account.type, nickname, sex, result.getGuid(), result.getExt(), city));
+		}else{
+			request = new SetSingerUserRequest(getActivity(), 
+					new SetSingerUserRequest.Params(nickname, sex.getCode(), result.getGuid(), result.getExt(), city, model.phoneAccount.phone,model.phoneAccount.password));
+		}
+
 		request.request(new BaseClient.SimpleRequestHandler(){
 			@Override
 			public void onSuccess(Object object) {
 				
+				((MemberFragment) getParentFragment()).initFragment(UserSettingFragment.newInstance(APP.getSession().getSid()));
 			}
 		});
 		
