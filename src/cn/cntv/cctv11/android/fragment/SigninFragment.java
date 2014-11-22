@@ -101,6 +101,12 @@ public class SigninFragment extends BaseFragment implements OnClickListener {
 			public void onError(int error) {
 				
 			}
+
+			@Override
+			public void onComplete() {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 
 	}

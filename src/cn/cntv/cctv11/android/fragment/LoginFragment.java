@@ -102,6 +102,12 @@ public class LoginFragment extends BaseFragment implements OnClickListener,Oauth
 				// TODO Auto-generated method stub
 				
 			}
+
+			@Override
+			public void onComplete() {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 		
 	}

@@ -94,6 +94,12 @@ public class StageFragment extends BaseFragment implements OnRefreshListener<Lis
 				// TODO Auto-generated method stub
 
 			}
+
+			@Override
+			public void onComplete() {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 	}
 

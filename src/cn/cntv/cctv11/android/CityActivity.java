@@ -93,6 +93,12 @@ public class CityActivity extends BaseActivity implements LocationListener {
 				// TODO Auto-generated method stub
 
 			}
+
+			@Override
+			public void onComplete() {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 
 	}

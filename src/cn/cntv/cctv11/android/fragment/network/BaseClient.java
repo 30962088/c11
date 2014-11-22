@@ -38,13 +38,17 @@ public abstract class BaseClient implements HttpResponseHandler {
 		@Override
 		public void onFailure(int arg0, Header[] arg1, byte[] arg2,
 				Throwable arg3) {
+			
 			handler.onServerError(arg0, arg1, arg2, arg3);
 			requestHandler.onServerError(arg0, arg1, arg2, arg3);
+			requestHandler.onComplete();
 		}
 
 		@Override
 		public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+			
 			requestHandler.onSuccess(handler.onSuccess(new String(arg2)));
+			requestHandler.onComplete();
 			/*String json = new String(arg2);
 			if (json.startsWith("[")) {
 				requestHandler.onSuccess(handler.onSuccess(json));
@@ -85,6 +89,9 @@ public abstract class BaseClient implements HttpResponseHandler {
 	protected abstract Method getMethod();
 
 	public static interface RequestHandler {
+		
+		public void onComplete();
+		
 		public void onSuccess(Object object);
 
 		public void onError(int error);
@@ -93,6 +100,8 @@ public abstract class BaseClient implements HttpResponseHandler {
 				Throwable arg3);
 
 	}
+	
+	
 
 	public static class SimpleRequestHandler implements RequestHandler {
 
@@ -113,6 +122,12 @@ public abstract class BaseClient implements HttpResponseHandler {
 				Throwable arg3) {
 			// TODO Auto-generated method stub
 
+		}
+
+		@Override
+		public void onComplete() {
+			// TODO Auto-generated method stub
+			
 		}
 
 	}
@@ -168,7 +183,7 @@ public abstract class BaseClient implements HttpResponseHandler {
 			HttpResponseHandler handler) {
 		Header[] headers = fillHeaders();
 		if(headers == null){
-			handle = client.post(getAbsoluteUrl(url), new ResponseHandler(
+			handle = client.post(getAbsoluteUrl(url),params, new ResponseHandler(
 					handler));
 		}else{
 			handle = client.post(context,getAbsoluteUrl(url),headers, params,contentType(), new ResponseHandler(

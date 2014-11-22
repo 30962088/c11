@@ -283,6 +283,12 @@ public class SpecialDetailActivity extends BaseActivity implements
 				// TODO Auto-generated method stub
 
 			}
+
+			@Override
+			public void onComplete() {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 
 	}
@@ -314,6 +320,12 @@ public class SpecialDetailActivity extends BaseActivity implements
 				@Override
 				public void onError(int error) {
 					Utils.tip(SpecialDetailActivity.this, "评论失败");
+					
+				}
+
+				@Override
+				public void onComplete() {
+					// TODO Auto-generated method stub
 					
 				}
 			});

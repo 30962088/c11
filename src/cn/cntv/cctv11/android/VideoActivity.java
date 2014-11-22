@@ -53,6 +53,12 @@ public class VideoActivity extends BaseActivity {
 				// TODO Auto-generated method stub
 				
 			}
+
+			@Override
+			public void onComplete() {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 	}
 	

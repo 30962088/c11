@@ -111,6 +111,12 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 				// TODO Auto-generated method stub
 				
 			}
+
+			@Override
+			public void onComplete() {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 		
 	}
@@ -139,6 +145,12 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 			public void onError(int error) {
 				// TODO Auto-generated method stub
 
+			}
+
+			@Override
+			public void onComplete() {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 	}

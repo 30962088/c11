@@ -145,6 +145,12 @@ public class NewsCommentActivity extends BaseActivity implements OnLoadListener,
 					Utils.tip(NewsCommentActivity.this, "评论失败");
 					
 				}
+
+				@Override
+				public void onComplete() {
+					// TODO Auto-generated method stub
+					
+				}
 			});
 			break;
 
