@@ -18,6 +18,7 @@ import cn.cntv.cctv11.android.utils.WeiboUtils.WeiboSymboResult;
 import cn.cntv.cctv11.android.utils.WeiboUtils.WeiboSymbol;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -199,7 +200,7 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 						public void onClick(View v) {
 
 							model.titleItem.current = Current.Comment;
-
+							
 							onTitleClickListener.onCommentClick();
 
 						}
@@ -210,7 +211,7 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 						@Override
 						public void onClick(View v) {
 							model.titleItem.current = Current.Share;
-
+							
 							onTitleClickListener.onShareClick();
 
 						}
@@ -359,24 +360,28 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 			this.holder = holder;
 			tag = holder.tag;
 			
-			holder.container.measure(View.MeasureSpec.UNSPECIFIED,
+			holder.comment.measure(View.MeasureSpec.UNSPECIFIED,
 					View.MeasureSpec.UNSPECIFIED);
-		
+			holder.share.measure(View.MeasureSpec.UNSPECIFIED,
+					View.MeasureSpec.UNSPECIFIED);
+			
+			
+			
 			
 			RelativeLayout.LayoutParams params = (LayoutParams) tag.getLayoutParams();
 			if(direct == Direct.Right){
-				params.leftMargin = holder.comment.getLeft()+holder.comment.getMeasuredWidth()/2;
+				params.leftMargin = Utils.dpToPx(tag.getContext(), 32)+holder.share.getMeasuredWidth() +holder.comment.getMeasuredWidth()/2;
 //				tag.setLeft(holder.comment.getLeft()+holder.comment.getMeasuredWidth()/2);
 			}else{
-				params.leftMargin = holder.share.getLeft()+holder.share.getMeasuredWidth()/2;
+				params.leftMargin = Utils.dpToPx(tag.getContext(), 22)+holder.share.getMeasuredWidth()/2;
 			}
+			tag.setLayoutParams(params);
+//			tag.layout(params.leftMargin, tag.getTop(), tag.getRight(), tag.getBottom());
 			
-			tag.layout(params.leftMargin, tag.getTop(), tag.getRight(), tag.getBottom());
-			
-			holder.container.measure(View.MeasureSpec.UNSPECIFIED,
+			/*holder.container.measure(View.MeasureSpec.UNSPECIFIED,
 					View.MeasureSpec.UNSPECIFIED);
 			holder.container.requestLayout();
-			holder.container.invalidate();
+			holder.container.invalidate();*/
 //			tag.setLayoutParams(params);
 			
 			/*int distance = holder.comment.getLeft()+holder.comment.getMeasuredWidth() - holder.share.getLeft()-holder.share.getMeasuredWidth();

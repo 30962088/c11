@@ -27,12 +27,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
 
-public class WeiboDetailActivity extends BaseActivity implements OnLastItemVisibleListener,OnRefreshListener<ListView>,OnScrollListener,OnTitleClickListener{
+public class WeiboDetailActivity extends BaseActivity implements OnClickListener,OnLastItemVisibleListener,OnRefreshListener<ListView>,OnScrollListener,OnTitleClickListener{
 	public static void open(Context context, WeiboItemView.Model model) {
 		Intent intent = new Intent(context, WeiboDetailActivity.class);
 		intent.putExtra("params", model);
@@ -182,6 +183,7 @@ public class WeiboDetailActivity extends BaseActivity implements OnLastItemVisib
 		commentDatasouce = new WeiboDataSource(WeiboType.Comment);
 		shareDataSource = new WeiboDataSource(WeiboType.Share);
 		setContentView(R.layout.activity_weibo);
+		findViewById(R.id.back).setOnClickListener(this);
 		itemView = new WeiboItemView(this);
 		itemView.setModel(params);
 		baseListView = (PullToRefreshPinnedSectionListView) findViewById(R.id.listview);
@@ -264,6 +266,19 @@ public class WeiboDetailActivity extends BaseActivity implements OnLastItemVisib
 	@Override
 	public void onShareClick() {
 		setCurrentdaDataSource(shareDataSource);
+		
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.back:
+			finish();
+			break;
+
+		default:
+			break;
+		}
 		
 	}
 	

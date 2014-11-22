@@ -10,6 +10,7 @@
         android:background="@drawable/shape_header1">
         
         <RelativeLayout 
+ 			android:id="@+id/back"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:gravity="center">
