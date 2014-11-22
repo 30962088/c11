@@ -3,6 +3,9 @@ package cn.cntv.cctv11.android.fragment;
 import java.io.File;
 import java.io.Serializable;
 
+import org.apache.http.Header;
+
+import com.mengle.lib.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.BaseActivity;
@@ -10,6 +13,8 @@ import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.BaseActivity.OnCitySelectionListener;
 import cn.cntv.cctv11.android.BaseActivity.OnGallerySelectionListener;
+import cn.cntv.cctv11.android.fragment.network.BaseClient;
+import cn.cntv.cctv11.android.fragment.network.SetSingerRequest;
 import cn.cntv.cctv11.android.utils.AliyunUtils;
 import cn.cntv.cctv11.android.utils.AliyunUtils.UploadListener;
 import cn.cntv.cctv11.android.utils.CropImageUtils;
@@ -26,6 +31,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,15 +55,28 @@ public class FillInfoFragment extends BaseFragment implements OnClickListener,On
 			return code;
 		}
 	}
+	
+	public static class Account implements Serializable{
+		private String wbqqid;
+		private int type;
+		public Account(String wbqqid, int type) {
+			super();
+			this.wbqqid = wbqqid;
+			this.type = type;
+		}
+		
+	}
 
 	public static class Model implements Serializable {
+		private Account account;
 		private Sex sex;
 		private String nickname;
 		private String sid;
 		private String avatar;
 
-		public Model(Sex sex, String nickname, String sid, String avatar) {
+		public Model(Account account, Sex sex, String nickname, String sid, String avatar) {
 			super();
+			this.account = account;
 			this.sex = sex;
 			this.nickname = nickname;
 			this.sid = sid;
@@ -108,13 +127,16 @@ public class FillInfoFragment extends BaseFragment implements OnClickListener,On
 		super.onViewCreated(view, savedInstanceState);
 		avatarImageView = (ImageView) view.findViewById(R.id.avatar);
 		maleRadioButton = (RadioButton) view.findViewById(R.id.male);
+		maleRadioButton.setTag(Sex.Male);
 		femaleRadioButton = (RadioButton) view.findViewById(R.id.female);
+		femaleRadioButton.setTag(Sex.Female);
 		sexRadioGroup = (RadioGroup) view.findViewById(R.id.sexGroup);
 		nicknameEditText = (EditText) view.findViewById(R.id.nickname);
 		cityTextView = (TextView) view.findViewById(R.id.city);
 		view.findViewById(R.id.avatar_setting).setOnClickListener(this);
 		view.findViewById(R.id.cityBtn).setOnClickListener(this);
 		view.findViewById(R.id.cancel).setOnClickListener(this);
+		view.findViewById(R.id.submit).setOnClickListener(this);
 		init();
 
 	}
@@ -149,31 +171,62 @@ public class FillInfoFragment extends BaseFragment implements OnClickListener,On
 		case R.id.cancel:
 			((MemberFragment)getParentFragment()).backFragment();
 			break;
+		case R.id.submit:
+			onsubmit();
+			break;
 		default:
 			break;
 		}
 
 	}
 	
+	private void onsubmit() {
+		if(result == null){
+			Utils.tip(getActivity(), "请选择头像");
+			return;
+		}
+		String nickname = nicknameEditText.getText().toString();
+		if(TextUtils.isEmpty(nickname)){
+			Utils.tip(getActivity(), "请填写昵称");
+			return;
+		}
+		String city = "";
+		if(cityTextView.getTag() != null){
+			city = cityTextView.getTag().toString();
+		}
+		Sex sex = (Sex)sexRadioGroup.findViewById(sexRadioGroup.getCheckedRadioButtonId()).getTag();
+		SetSingerRequest request = new SetSingerRequest(getActivity(), 
+				new SetSingerRequest.Params(model.account.wbqqid, model.account.type, nickname, sex, result.getGuid(), result.getExt(), city));
+		request.request(new BaseClient.SimpleRequestHandler(){
+			@Override
+			public void onSuccess(Object object) {
+				
+			}
+		});
+		
+	}
+
 	@Override
 	public void onGallerySelection(File file) {
 		LoadingPopup.show(getActivity());
 		AliyunUtils.getInstance().upload(CropImageUtils.cropImage(file, 300, 300),this);
-		ImageLoader.getInstance().displayImage(Uri.fromFile(file).toString(), avatarImageView,
-				DisplayOptions.IMG.getOptions());
-
 	}
 
 	@Override
 	public void onCitySelection(String city) {
 		cityTextView.setText(city);
+		cityTextView.setTag(city);
 		
 	}
+	
+	private UploadResult result;
 
 	@Override
 	public void onsuccess(UploadResult result) {
-		
-		
+		this.result = result;
+		LoadingPopup.hide(getActivity());
+		ImageLoader.getInstance().displayImage(result.getUrl(), avatarImageView,
+				DisplayOptions.IMG.getOptions());
 	}
 
 }

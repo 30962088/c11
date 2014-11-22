@@ -85,6 +85,7 @@ public class AliyunUtils {
 		private String guid;
 		private String ext;
 		private String filename;
+		private String url;
 
 		public UploadResult(String guid, String ext) {
 			super();
@@ -99,6 +100,10 @@ public class AliyunUtils {
 
 		public String getGuid() {
 			return guid;
+		}
+		
+		public String getUrl() {
+			return url;
 		}
 
 	}
@@ -133,6 +138,7 @@ public class AliyunUtils {
 
 		@Override
 		protected void onPostExecute(UploadResult result) {
+			result.url = OSS_ENDPOINT+BUCKET_NAME+"/"+result.filename;
 			uploadListener.onsuccess(result);
 		}
 

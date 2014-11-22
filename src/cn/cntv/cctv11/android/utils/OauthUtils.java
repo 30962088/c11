@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import cn.cntv.cctv11.android.APP;
+import cn.cntv.cctv11.android.fragment.FillInfoFragment.Account;
 import cn.cntv.cctv11.android.fragment.FillInfoFragment.Model;
 import cn.cntv.cctv11.android.fragment.FillInfoFragment.Sex;
 import cn.cntv.cctv11.android.fragment.network.IsHaveSingerRequest.Params;
@@ -66,7 +67,11 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 		}
 
 		public Model toModel() {
-			return new Model(sex, nickname, sid,avatar);
+			int type = 1;
+			if(media == SHARE_MEDIA.SINA){
+				type = 1;
+			}
+			return new Model(new Account(sid, type) ,sex, nickname, sid,avatar);
 		}
 
 	}

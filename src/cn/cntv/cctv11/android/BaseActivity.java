@@ -74,6 +74,9 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 	}
 	
 	public static String convertMediaUriToPath(Context context, Uri uri) {
+		if(uri.toString().startsWith("file://")){
+			return uri.getPath();
+		}
 		Cursor cursor = context.getContentResolver().query(uri, null, null,
 				null, null);
 		cursor.moveToFirst();
@@ -107,6 +110,7 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 			if (resultCode == Activity.RESULT_OK) { 
 				if(onGallerySelectionListener != null){
 					File file = new File(convertMediaUriToPath(this, data.getData()));
+					
 					onGallerySelectionListener.onGallerySelection(file);
 				}
 			}
