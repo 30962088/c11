@@ -1,72 +1,40 @@
 package cn.cntv.cctv11.android.fragment.network;
 
-import java.security.Signer;
-
 import org.apache.http.Header;
-
-import cn.cntv.cctv11.android.fragment.UserSettingFragment;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 
 import android.content.Context;
-import android.text.TextUtils;
 
-public class GetSingerInfoRequest extends BaseClient{
+public class UpdateSingeruserInfoRequest extends BaseClient{
 
 	public static class Params{
-		private String sid;
-
-		public Params(String sid) {
-			super();
-			this.sid = sid;
-		}
-		
-	}
-	
-	public static class Model{
 		private String pkey;
 		private String sid;
-		private String singername;
-		private String qqnum;
-		private String sex;
-		private String address;
-		private String weiboid;
-		private String singerimgguid;
-		private String singerimgformat;
-		private String datetime;
-		private String singerimgurl;
-		
-		public String getSingername() {
-			return singername;
+		private String oldpassword;
+		private String newpassword;
+		public Params(String pkey, String sid, String oldpassword,
+				String newpassword) {
+			super();
+			this.pkey = pkey;
+			this.sid = sid;
+			this.oldpassword = oldpassword;
+			this.newpassword = newpassword;
 		}
-		public String getSingerimgurl() {
-			return singerimgurl;
-		}
-		
-		public String getAddress() {
-			return address;
-		}
-		
 		
 	}
 	
 	public static class Result{
-		private Model models;
-		public Model getModels() {
-			return models;
-		}
-		public boolean isPhoneLogin(){
-			if(TextUtils.isEmpty(models.qqnum) && TextUtils.isEmpty(models.weiboid)){
-				return true;
-			}
-			return false;
+		private int result;
+		public int getResult() {
+			return result;
 		}
 	}
 	
 	private Params params;
 
-	public GetSingerInfoRequest(Context context, Params params) {
+	public UpdateSingeruserInfoRequest(Context context, Params params) {
 		super(context);
 		this.params = params;
 	}
@@ -94,25 +62,31 @@ public class GetSingerInfoRequest extends BaseClient{
 	protected RequestParams getParams() {
 		RequestParams params = new RequestParams();
 		params.add("sid", this.params.sid);
+		params.add("pkey", this.params.pkey);
+		if(this.params.oldpassword != null){
+			params.add("oldpassword", ""+this.params.oldpassword);
+		}
+		if(this.params.newpassword != null){
+			params.add("newpassword", ""+this.params.newpassword);
+		}
 		return params;
 	}
 
 	@Override
 	protected String getUrl() {
 		// TODO Auto-generated method stub
-		return "http://cctv11.1du1du.com/get.mvc/getSingerInfo";
+		return "http://cctv11.1du1du.com/get.mvc/updateSingeruserInfo";
 	}
-	
+
 	@Override
 	protected boolean isRelativeUrl() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 	@Override
 	protected Method getMethod() {
 		// TODO Auto-generated method stub
-		return Method.GET;
+		return Method.POST;
 	}
 	
 	

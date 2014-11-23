@@ -2,6 +2,8 @@ package cn.cntv.cctv11.android.fragment.network;
 
 import org.apache.http.Header;
 
+import cn.cntv.cctv11.android.APP;
+
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 
@@ -22,6 +24,9 @@ public class IsHaveSingerRequest extends BaseClient{
 		}
 		public Integer getSid() {
 			return sid;
+		}
+		public void login(Context context){
+			APP.getSession().login(""+sid, pkey);
 		}
 	}
 	
@@ -48,8 +53,9 @@ public class IsHaveSingerRequest extends BaseClient{
 
 	@Override
 	public Object onSuccess(String str) {
-		// TODO Auto-generated method stub
-		return new Gson().fromJson(str, Result.class);
+		Result result = new Gson().fromJson(str, Result.class);
+		result.login(context);
+		return result;
 	}
 
 

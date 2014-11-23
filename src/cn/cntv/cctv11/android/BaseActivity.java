@@ -30,6 +30,10 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 	
 	private static final int ACTION_REQUEST_NICKNAME = 4;
 	
+	private static final int ACTION_REQUEST_MODIFY_PHONE = 5;
+	
+	private static final int ACTION_REQUEST_MODIFY_PWD = 6;
+	
 	public static interface OnNicknameFillListener{
 		public void onNicknameFill(String nickname);
 	}
@@ -42,11 +46,35 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 		public void onCitySelection(String city);
 	}
 	
+	public static interface OnModifyPhoneListener{
+		public void onModifyPhone(String phone);
+	}
+	
+	public static interface OnModifyPasswordListener{
+		public void onModifyPassword(String password);
+	}
+	
 	private OnGallerySelectionListener onGallerySelectionListener;
 	
 	private OnCitySelectionListener onCitySelectionListener;
 	
 	private OnNicknameFillListener onNicknameFillListener;
+	
+	private OnModifyPhoneListener onModifyPhoneListener;
+	
+	private OnModifyPasswordListener onModifyPasswordListener;
+	
+	public void modifyPassowrd(OnModifyPasswordListener onModifyPasswordListener){
+		this.onModifyPasswordListener = onModifyPasswordListener;
+		Intent intent = new Intent(this, ModifyPasswordActivity.class);
+		startActivityForResult(intent, ACTION_REQUEST_MODIFY_PWD);
+	}
+	
+	public void modifyPhone(OnModifyPhoneListener onModifyPhoneListener){
+		this.onModifyPhoneListener = onModifyPhoneListener;
+		Intent intent = new Intent(this, ModifyPhoneActivity.class);
+		startActivityForResult(intent, ACTION_REQUEST_MODIFY_PHONE);
+	}
 	
 	public void getNickname(String nickname,OnNicknameFillListener onNicknameFillListener){
 		this.onNicknameFillListener = onNicknameFillListener;
@@ -142,6 +170,20 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 			if (resultCode == Activity.RESULT_OK) { 
 				if(onNicknameFillListener != null){
 					onNicknameFillListener.onNicknameFill(data.getStringExtra("nickname"));
+				}
+			}
+			break;
+		case ACTION_REQUEST_MODIFY_PHONE:
+			if (resultCode == Activity.RESULT_OK) { 
+				if(onModifyPhoneListener != null){
+					onModifyPhoneListener.onModifyPhone(data.getStringExtra("phone"));
+				}
+			}
+			break;
+		case ACTION_REQUEST_MODIFY_PWD:
+			if (resultCode == Activity.RESULT_OK) { 
+				if(onModifyPasswordListener != null){
+					onModifyPasswordListener.onModifyPassword(data.getStringExtra("password"));
 				}
 			}
 			break;

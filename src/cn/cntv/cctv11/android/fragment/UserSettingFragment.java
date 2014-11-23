@@ -7,6 +7,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.BaseActivity;
 import cn.cntv.cctv11.android.BaseActivity.OnCitySelectionListener;
+import cn.cntv.cctv11.android.BaseActivity.OnModifyPasswordListener;
+import cn.cntv.cctv11.android.BaseActivity.OnModifyPhoneListener;
 import cn.cntv.cctv11.android.BaseActivity.OnNicknameFillListener;
 import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.R;
@@ -29,7 +31,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class UserSettingFragment extends BaseFragment implements
-		OnClickListener,OnGallerySelectionListener,UploadListener,OnCitySelectionListener,OnNicknameFillListener{
+		OnClickListener,OnGallerySelectionListener,UploadListener,OnCitySelectionListener,OnNicknameFillListener
+		,OnModifyPhoneListener,OnModifyPasswordListener{
 
 	
 
@@ -71,6 +74,8 @@ public class UserSettingFragment extends BaseFragment implements
 	private View weiboUnBinding;
 
 	private TextView nickname;
+	
+	private View phoneContainer;
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -83,6 +88,7 @@ public class UserSettingFragment extends BaseFragment implements
 		weiboBinding = view.findViewById(R.id.weibo_binding);
 		weiboUnBinding = view.findViewById(R.id.weibo_unbinding);
 		nickname = (TextView) view.findViewById(R.id.nickname);
+		phoneContainer = view.findViewById(R.id.phone_container);
 		view.findViewById(R.id.account_btn).setOnClickListener(this);
 		view.findViewById(R.id.avatar_btn).setOnClickListener(this);
 		view.findViewById(R.id.city_btn).setOnClickListener(this);
@@ -113,6 +119,11 @@ public class UserSettingFragment extends BaseFragment implements
 					weiboBinding.setVisibility(View.VISIBLE);
 					weiboUnBinding.setVisibility(View.GONE);
 				}
+				if(result.isPhoneLogin()){
+					phoneContainer.setVisibility(View.VISIBLE);
+				}else{
+					phoneContainer.setVisibility(View.GONE);
+				}
 			}
 		});
 	}
@@ -130,10 +141,10 @@ public class UserSettingFragment extends BaseFragment implements
 			((BaseActivity) getActivity()).getCity(this);
 			break;
 		case R.id.phone_btn:
-
+			((BaseActivity) getActivity()).modifyPhone(this);
 			break;
 		case R.id.pwd_btn:
-
+			((BaseActivity) getActivity()).modifyPassowrd(this);
 			break;
 		case R.id.setting_btn:
 
@@ -212,6 +223,18 @@ public class UserSettingFragment extends BaseFragment implements
 				onResume();
 			}
 		});
+	}
+
+	@Override
+	public void onModifyPhone(String phone) {
+		
+		
+	}
+
+	@Override
+	public void onModifyPassword(String password) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

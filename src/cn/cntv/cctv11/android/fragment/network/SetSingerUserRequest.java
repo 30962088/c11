@@ -36,17 +36,15 @@ public class SetSingerUserRequest extends BaseClient{
 	
 	public static class Result{
 		private String pkey;
-		private String result;
+		private int result;
 		private String sid;
-		public Result(String pkey, String result, String sid) {
-			super();
-			this.pkey = pkey;
-			this.result = result;
-			this.sid = sid;
-		}
+		
 		public void login(Context context){
-			Session session = new Session(context);
-			session.login(sid, pkey);
+			if(result == 1000){
+				Session session = new Session(context);
+				session.login(sid, pkey);
+			}
+			
 		}
 	}
 	

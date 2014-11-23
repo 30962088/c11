@@ -104,7 +104,7 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 	}
 
 	public void sinaOauth() {
-		mController.getConfig().setSsoHandler(new SinaSsoHandler());
+//		mController.getConfig().setSsoHandler(new SinaSsoHandler());
 		media = SHARE_MEDIA.SINA;
 		oauth();
 	}

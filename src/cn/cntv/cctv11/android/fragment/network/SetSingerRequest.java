@@ -40,8 +40,11 @@ public class SetSingerRequest extends BaseClient{
 		private int result;
 		private String sid;
 		public void login(Context context){
-			Session session = new Session(context);
-			session.login(sid, pkey);
+			if(result == 1000){
+				Session session = new Session(context);
+				session.login(sid, pkey);
+			}
+			
 		}
 	}
 	

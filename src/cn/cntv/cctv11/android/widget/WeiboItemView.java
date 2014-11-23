@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mengle.lib.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.PhotoViewActivity;
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.APP.DisplayOptions;
@@ -120,6 +122,10 @@ public class WeiboItemView extends FrameLayout{
 			
 			@Override
 			public void onClick(View v) {
+				if(APP.getSession().getWeiboAccessToken() == null){
+					Utils.tip(getContext(), "请绑定新浪微博");
+					return;
+				}
 				if(onWeiboItemClickListener != null){
 					onWeiboItemClickListener.onCommentClick(model);
 				}
