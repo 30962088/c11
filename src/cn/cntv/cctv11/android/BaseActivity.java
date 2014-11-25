@@ -34,8 +34,14 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 	
 	private static final int ACTION_REQUEST_MODIFY_PWD = 6;
 	
+	private static final int ACTION_REQUEST_BINDING_WEIBO = 7;
+	
 	public static interface OnNicknameFillListener{
 		public void onNicknameFill(String nickname);
+	}
+	
+	public static interface OnWeiboBindingListener{
+		public void onWeiboBinding();
 	}
 	
 	public static interface OnGallerySelectionListener{
@@ -64,10 +70,18 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 	
 	private OnModifyPasswordListener onModifyPasswordListener;
 	
+	private OnWeiboBindingListener onWeiboBindingListener;
+	
 	public void modifyPassowrd(OnModifyPasswordListener onModifyPasswordListener){
 		this.onModifyPasswordListener = onModifyPasswordListener;
 		Intent intent = new Intent(this, ModifyPasswordActivity.class);
 		startActivityForResult(intent, ACTION_REQUEST_MODIFY_PWD);
+	}
+	
+	public void bindingWeibo(OnWeiboBindingListener onWeiboBindingListener){
+		this.onWeiboBindingListener = onWeiboBindingListener;
+		Intent intent = new Intent(this, BindingWeiboActivity.class);
+		startActivityForResult(intent, ACTION_REQUEST_BINDING_WEIBO);
 	}
 	
 	public void modifyPhone(OnModifyPhoneListener onModifyPhoneListener){
@@ -184,6 +198,13 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 			if (resultCode == Activity.RESULT_OK) { 
 				if(onModifyPasswordListener != null){
 					onModifyPasswordListener.onModifyPassword(data.getStringExtra("password"));
+				}
+			}
+			break;
+		case ACTION_REQUEST_BINDING_WEIBO:
+			if (resultCode == Activity.RESULT_OK) { 
+				if(onWeiboBindingListener != null){
+					onWeiboBindingListener.onWeiboBinding();
 				}
 			}
 			break;

@@ -142,6 +142,7 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 	@Override
 	public void onComplete(Bundle arg0, SHARE_MEDIA arg1) {
 		if(arg1 == SHARE_MEDIA.SINA){
+			APP.getSession().setWeiboUid(arg0.getString("uid"));
 			APP.getSession().setWeiboAccessToken(arg0.getString("access_key"));
 		}
 		

@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <attr name="switchStyle" format="reference" />
+
+    <declare-styleable name="Switch">
+        <attr name="thumb" format="reference" />
+        <attr name="track" format="reference" />
+        <attr name="textOn" format="string" />
+        <attr name="textOff" format="string" />
+        <attr name="thumbTextPadding" format="dimension" />
+        <attr name="switchTextAppearance" format="reference" />
+        <attr name="switchMinWidth" format="dimension" />
+        <attr name="switchPadding" format="dimension" />
+    </declare-styleable>
+
+    <attr name="textAppearance" format="reference" />
+
+    <declare-styleable name="TextAppearanceSwitch">
+        <attr name="textColor" format="color" />
+        <attr name="textSize" format="dimension" />
+        <attr name="textStyle" format="reference" />
+        <attr name="typeface" format="reference" />
+        <attr name="fontFamily" format="reference" />
+        <attr name="textColorHighlight" format="color" />
+        <attr name="textColorHint" format="color" />
+        <attr name="textColorLink" format="color" />
+        <attr name="textAllCaps" format="boolean" />
+    </declare-styleable>
     <declare-styleable name="PullToRefresh">
 
         <!-- A drawable to use as the background of the Refreshable View -->
@@ -61,13 +87,13 @@
         <!--
         	Whether PullToRefreshListView has it's extras enabled. This allows the user to be 
         	able to scroll while refreshing, and behaves better. It acheives this by adding
-        	Header and/or Footer Views to the ListView.
+        	Header and/or Footer Views to the ListView.
         -->
         <attr name="ptrListViewExtrasEnabled" format="reference|boolean" />
 
         <!--
         	Whether the Drawable should be continually rotated as you pull. This only
-        	takes effect when using the 'Rotate' Animation Style.
+        	takes effect when using the 'Rotate' Animation Style.
         -->
         <attr name="ptrRotateDrawableWhilePulling" format="reference|boolean" />
 

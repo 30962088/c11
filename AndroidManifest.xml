@@ -118,7 +118,20 @@
                 <action android:name="android.intent.action.MAIN" /> />
             </intent-filter>
         </activity>
-        
+        <activity
+            android:name=".BindingWeiboActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" /> />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SettingActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" /> />
+            </intent-filter>
+        </activity>
         
         
         

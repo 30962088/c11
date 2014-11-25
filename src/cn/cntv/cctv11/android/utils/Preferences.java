@@ -22,6 +22,35 @@ public class Preferences {
 		}
 
 		
+		public void clearWeibo(){
+			setWeiboAccessToken(null);
+			setWeiboUid(null);
+		}
+		
+		public void setVoice(boolean voice){
+			preferences.edit().putBoolean("voice", voice).commit();
+		}
+		
+		public boolean getVoice(){
+			return preferences.getBoolean("voice", true);
+		}
+		
+		public void setNewsPush(boolean push){
+			preferences.edit().putBoolean("news_push", push).commit();
+		}
+		
+		public boolean getNewsPush(){
+			return preferences.getBoolean("news_push", true);
+		}
+		
+		public void setWeiboUid(String uid){
+			preferences.edit().putString("weibo_uid", uid).commit();
+		}
+		
+		public String getWeiboUid(){
+			return preferences.getString("weibo_uid",null);
+		}
+		
 		public void setWeiboAccessToken(String access_token){
 			preferences.edit().putString("weibo_access_token", access_token).commit();
 		}

@@ -11,6 +11,7 @@ import cn.cntv.cctv11.android.BaseActivity.OnModifyPasswordListener;
 import cn.cntv.cctv11.android.BaseActivity.OnModifyPhoneListener;
 import cn.cntv.cctv11.android.BaseActivity.OnNicknameFillListener;
 import cn.cntv.cctv11.android.APP;
+import cn.cntv.cctv11.android.BaseActivity.OnWeiboBindingListener;
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.BaseActivity.OnGallerySelectionListener;
@@ -32,7 +33,7 @@ import android.widget.TextView;
 
 public class UserSettingFragment extends BaseFragment implements
 		OnClickListener,OnGallerySelectionListener,UploadListener,OnCitySelectionListener,OnNicknameFillListener
-		,OnModifyPhoneListener,OnModifyPasswordListener{
+		,OnModifyPhoneListener,OnModifyPasswordListener,OnWeiboBindingListener{
 
 	
 
@@ -96,12 +97,21 @@ public class UserSettingFragment extends BaseFragment implements
 		view.findViewById(R.id.pwd_btn).setOnClickListener(this);
 		view.findViewById(R.id.setting_btn).setOnClickListener(this);
 		view.findViewById(R.id.logout).setOnClickListener(this);
+		view.findViewById(R.id.weibo_btn).setOnClickListener(this);
 	}
 	
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		String accessToken = APP.getSession().getWeiboAccessToken();
+		if(accessToken == null){
+			weiboBinding.setVisibility(View.GONE);
+			weiboUnBinding.setVisibility(View.VISIBLE);
+		}else{
+			weiboBinding.setVisibility(View.VISIBLE);
+			weiboUnBinding.setVisibility(View.GONE);
+		}
 		GetSingerInfoRequest request = new GetSingerInfoRequest(getActivity(), 
 				new GetSingerInfoRequest.Params(sid));
 		request.request(new BaseClient.SimpleRequestHandler(){
@@ -111,14 +121,7 @@ public class UserSettingFragment extends BaseFragment implements
 				city.setText(result.getModels().getAddress());
 				ImageLoader.getInstance().displayImage(result.getModels().getSingerimgurl(), avatar,DisplayOptions.IMG.getOptions());
 				nickname.setText(result.getModels().getSingername());
-				String accessToken = APP.getSession().getWeiboAccessToken();
-				if(accessToken == null){
-					weiboBinding.setVisibility(View.GONE);
-					weiboUnBinding.setVisibility(View.VISIBLE);
-				}else{
-					weiboBinding.setVisibility(View.VISIBLE);
-					weiboUnBinding.setVisibility(View.GONE);
-				}
+				
 				if(result.isPhoneLogin()){
 					phoneContainer.setVisibility(View.VISIBLE);
 				}else{
@@ -146,8 +149,8 @@ public class UserSettingFragment extends BaseFragment implements
 		case R.id.pwd_btn:
 			((BaseActivity) getActivity()).modifyPassowrd(this);
 			break;
-		case R.id.setting_btn:
-
+		case R.id.weibo_btn:
+			((BaseActivity) getActivity()).bindingWeibo(this);
 			break;
 		case R.id.logout:
 			onlogout();
@@ -234,6 +237,12 @@ public class UserSettingFragment extends BaseFragment implements
 	@Override
 	public void onModifyPassword(String password) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onWeiboBinding() {
+		onResume();
 		
 	}
 
