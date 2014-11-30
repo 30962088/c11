@@ -51,7 +51,7 @@ public class MainFragment4 extends BaseFragment{
 		list.add(new Pager("微博", WeiboFragment.newInstance()));
 		
 		list.add(new Pager("论坛", BBSFragment.newInstance()));
-		list.add(new Pager("投票", new Fragment()));
+		list.add(new Pager("投票", VoteListFragment.newInstance()));
 		list.add(new Pager("壁纸", WallPagerFragment.newInstance()));
 		
 		pager.setAdapter(new TabsAdapter(getChildFragmentManager(), list));
