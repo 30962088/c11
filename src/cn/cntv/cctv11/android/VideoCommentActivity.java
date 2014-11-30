@@ -22,6 +22,7 @@ import cn.cntv.cctv11.android.widget.BaseListView.Type;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +79,7 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 		model = (Model) getIntent().getSerializableExtra("model");
 		setContentView(R.layout.news_comment_layout);
 		findViewById(R.id.back).setOnClickListener(this);
-		findViewById(R.id.header_container).setBackgroundColor(Color.parseColor("#000000"));
+		findViewById(R.id.header_container).setSelected(true);
 		editText = (EditText) findViewById(R.id.edit);
 		findViewById(R.id.sendBtn).setOnClickListener(this);
 		listView = (BaseListView) findViewById(R.id.listview);
@@ -183,7 +184,9 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 
 
 	private void onplay() {
-		System.out.println(model.url);
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(model.url));
+		intent.setDataAndType(Uri.parse(model.url), "video/*");
+		startActivity(intent);
 		
 	}
 	

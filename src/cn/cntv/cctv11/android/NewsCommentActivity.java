@@ -67,6 +67,7 @@ public class NewsCommentActivity extends BaseActivity implements OnLoadListener,
 		super.onCreate(arg0);
 		model = (Model) getIntent().getSerializableExtra("model");
 		setContentView(R.layout.news_comment_layout);
+		findViewById(R.id.back).setOnClickListener(this);
 		editText = (EditText) findViewById(R.id.edit);
 		findViewById(R.id.sendBtn).setOnClickListener(this);
 		listView = (BaseListView) findViewById(R.id.listview);
@@ -121,6 +122,9 @@ public class NewsCommentActivity extends BaseActivity implements OnLoadListener,
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.back:
+			finish();
+			break;
 		case R.id.sendBtn:
 			String content = editText.getText().toString();
 			new InsertCommentRequest(this, new  InsertCommentRequest.Params(model.id,"0", "0", "134", content)).request(new RequestHandler() {
