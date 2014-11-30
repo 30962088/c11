@@ -6,12 +6,14 @@ import java.util.List;
 import org.apache.http.Header;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import cn.cntv.cctv11.android.adapter.TabsAdapter;
 import cn.cntv.cctv11.android.adapter.TabsAdapter.Pager;
 import cn.cntv.cctv11.android.fragment.NewsFragment;
+import cn.cntv.cctv11.android.fragment.VideoListFragment;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.RequestParams;
 
 public class CategoryRequest extends BaseClient {
@@ -21,8 +23,14 @@ public class CategoryRequest extends BaseClient {
 		private String categoryname;
 
 		public Pager toPager() {
+			Fragment fragment = null;
+			if(TextUtils.equals("视频", categoryname)){
+				fragment = VideoListFragment.newInstance(categoryid);
+			}else{
+				fragment = NewsFragment.newInstance(categoryid);
+			}
 			return new TabsAdapter.Pager(categoryname,
-					NewsFragment.newInstance(categoryid));
+					fragment);
 		}
 
 		public static List<Pager> toPagers(List<Category> results) {

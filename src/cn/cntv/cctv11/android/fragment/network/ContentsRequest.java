@@ -12,6 +12,7 @@ import org.apache.http.Header;
 
 
 import android.content.Context;
+import cn.cntv.cctv11.android.adapter.VideoListAdapter;
 import cn.cntv.cctv11.android.adapter.NewsListAdapter.Model;
 import cn.cntv.cctv11.android.adapter.NewsListAdapter.Model.Category;
 import cn.cntv.cctv11.android.adapter.NewsListAdapter.Model.Category.Background;
@@ -75,6 +76,21 @@ public class ContentsRequest extends BaseClient{
 			}
 			return new Model(contentsid, attachment.attachmentimgurl, contentstitle, commentcount, false,category,poemauthor+" "+format.format(getDate()),categoryid == 3 ? true:false);
 		}
+		
+		public VideoListAdapter.Model toVideoModel(){
+			return new VideoListAdapter.Model(contentsid,commentcount, attachment.attachmentimgurl, contentstitle,videositeurl);
+		}
+		
+		public static List<VideoListAdapter.Model> toVideoList(List<News> list){
+			List<VideoListAdapter.Model> models = new ArrayList<VideoListAdapter.Model>();
+			for(News n : list){
+				
+				models.add(n.toVideoModel());
+				
+			}
+			return models;
+		}
+		
 		public static List<Model> toNewsList(List<News> list){
 			List<Model> models = new ArrayList<Model>();
 			for(News n : list){
