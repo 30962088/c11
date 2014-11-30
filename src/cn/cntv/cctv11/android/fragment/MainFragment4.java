@@ -45,6 +45,7 @@ public class MainFragment4 extends BaseFragment{
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
 		pager = (ViewPager) view.findViewById(R.id.pager);
+		pager.setOffscreenPageLimit(4);
 		indicator = (TabPageIndicator) view.findViewById(R.id.indicator);
 		List<Pager> list = new ArrayList<Pager>();
 		

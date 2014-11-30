@@ -124,7 +124,7 @@ public class NewsFragment extends BaseFragment implements OnLoadListener,OnSlide
 	@Override
 	public void OnSliderItemClick(
 			cn.cntv.cctv11.android.fragment.SliderFragment.Model model) {
-		// TODO Auto-generated method stub
+		SpecialDetailActivity.open(getActivity(), model.toDetailParams());
 		
 	}
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
+import cn.cntv.cctv11.android.SpecialDetailActivity.Params;
 import cn.cntv.cctv11.android.R;
 
 import com.viewpagerindicator.CirclePageIndicator;
@@ -137,14 +138,31 @@ public class SliderFragment extends Fragment {
 		private String title;
 		private String subtitle;
 		private boolean iszhuanlan;
+		private int comment;
 		public Model(String id, String img, String title, String subtitle,
-				boolean iszhuanlan) {
+				boolean iszhuanlan,int comment) {
 			super();
 			this.id = id;
 			this.img = img;
 			this.title = title;
 			this.subtitle = subtitle;
 			this.iszhuanlan = iszhuanlan;
+			this.comment = comment;
+		}
+		
+		public Params toDetailParams(){
+			Params params = null;
+			if(iszhuanlan){
+				params = new Params(id, title, subtitle, img, comment);
+			}else{
+				params = new Params(id, title, subtitle, null, comment);
+			}
+			return params;
+		}
+
+
+		public boolean isZhuanlan() {
+			return iszhuanlan;
 		}
 		
 

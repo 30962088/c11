@@ -9,6 +9,7 @@ import org.apache.http.Header;
 import com.mengle.lib.utils.Utils;
 
 import cn.cntv.cctv11.android.adapter.NewsCommentListAdapter;
+import cn.cntv.cctv11.android.adapter.NewsCommentListAdapter.OnCommentBtnClickListener;
 import cn.cntv.cctv11.android.fragment.network.BaseClient;
 import cn.cntv.cctv11.android.fragment.network.InsertCommentRequest;
 import cn.cntv.cctv11.android.fragment.network.NewsCommentRequest;
@@ -26,7 +27,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class NewsCommentActivity extends BaseActivity implements OnLoadListener,OnClickListener{
+public class NewsCommentActivity extends BaseActivity implements OnLoadListener,OnClickListener,OnCommentBtnClickListener{
 
 	public static class Model implements Serializable{
 		private String id;
@@ -77,7 +78,7 @@ public class NewsCommentActivity extends BaseActivity implements OnLoadListener,
 		titleView.setText(model.title);
 		TextView countView = (TextView) headerView.findViewById(R.id.comment);
 		countView.setText("热门评论("+model.count+")");
-		adapter = new NewsCommentListAdapter(this, list);
+		adapter = new NewsCommentListAdapter(this, list,this);
 		listView.setAdapter(adapter);
 		listView.setOnLoadListener(this);
 		listView.load(true);
@@ -161,6 +162,15 @@ public class NewsCommentActivity extends BaseActivity implements OnLoadListener,
 		default:
 			break;
 		}
+		
+	}
+
+
+
+	@Override
+	public void onCommentBtnClick(
+			cn.cntv.cctv11.android.adapter.NewsCommentListAdapter.Model model) {
+		// TODO Auto-generated method stub
 		
 	}
 	

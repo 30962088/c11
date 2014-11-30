@@ -153,6 +153,14 @@
                 <action android:name="android.intent.action.MAIN" /> />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".BBSListActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" /> />
+            </intent-filter>
+        </activity>
+        
         
         
         

@@ -54,7 +54,7 @@ public class BBSFragment extends BaseFragment implements OnLoadListener,OnItemCl
 		BaseListView listView = (BaseListView) view.findViewById(R.id.listview);
 		listView.setOnItemClickListener(this);
 		listView.getRefreshableView().addHeaderView(headerView);
-		headerView.setModel(new BBSHeaderView.Model(10, 10));
+//		headerView.setModel(new BBSHeaderView.Model(10, 10));
 		adapter = new BBSListAdapter(getActivity(), list);
 		listView.setAdapter(adapter);
 		listView.setOnLoadListener(this);

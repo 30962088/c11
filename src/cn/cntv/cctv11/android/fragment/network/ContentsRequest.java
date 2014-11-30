@@ -101,7 +101,7 @@ public class ContentsRequest extends BaseClient{
 			return models;
 		}
 		public SliderFragment.Model toSliderModel(){
-			return new SliderFragment.Model(contentsid, attachment.attachmentimgurl, contentstitle,poemauthor+" "+format.format(getDate()),categoryid == 3 ? true:false);
+			return new SliderFragment.Model(contentsid, attachment.attachmentimgurl, contentstitle,poemauthor+" "+format.format(getDate()),categoryid == 3 ? true:false,commentcount);
 		}
 		public static ArrayList<SliderFragment.Model> toSliderList(List<News> list){
 			ArrayList<SliderFragment.Model> models = new ArrayList<SliderFragment.Model>();

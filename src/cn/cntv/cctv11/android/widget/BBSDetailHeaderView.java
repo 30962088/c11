@@ -65,8 +65,13 @@ public class BBSDetailHeaderView extends FrameLayout{
 		private String name;
 		private String time;
 		private String content;
+		private String userid;
+		private String commentid;
+		
+		
+
 		public Model(String id, String title, String avatar, String name,
-				String time, String content) {
+				String time, String content, String userid, String commentid) {
 			super();
 			this.id = id;
 			this.title = title;
@@ -74,9 +79,17 @@ public class BBSDetailHeaderView extends FrameLayout{
 			this.name = name;
 			this.time = time;
 			this.content = content;
+			this.userid = userid;
+			this.commentid = commentid;
 		}
 		public String getId() {
 			return id;
+		}
+		public String getUserid() {
+			return userid;
+		}
+		public String getCommentid() {
+			return commentid;
 		}
 	}
 	

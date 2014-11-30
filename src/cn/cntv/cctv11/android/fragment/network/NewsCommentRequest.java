@@ -36,6 +36,8 @@ public class NewsCommentRequest extends BaseClient {
 		
 		private String datetime;
 		
+		private String isusername;
+		
 		
 		private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd HH:mm");
 		
@@ -45,7 +47,7 @@ public class NewsCommentRequest extends BaseClient {
 		}
 		
 		public NewsCommentListAdapter.Model toModel(){
-			return new NewsCommentListAdapter.Model(userimgurl, username, remark, DATE_FORMAT.format(getDateTime()));
+			return new NewsCommentListAdapter.Model(userimgurl, username, remark, DATE_FORMAT.format(getDateTime()),isusername,userid);
 		}
 		
 		

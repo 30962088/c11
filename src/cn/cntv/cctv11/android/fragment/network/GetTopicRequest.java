@@ -31,13 +31,14 @@ public class GetTopicRequest extends BaseClient {
 		private String topictitle;
 		private String topiccontent;
 		private String datetime;
+		private String commentid;
 		private String userimgguid;
 		private String userimgformat;
 		private String userimgurl;
 		private int commentcount;
 		private String colstatus;
 		public BBSListAdapter.Model toModel(){
-			return new BBSListAdapter.Model(topicid,topictitle,topiccontent,userimgurl, username, getDate(), commentcount);
+			return new BBSListAdapter.Model(topicid,topictitle,topiccontent,userimgurl, username, getDate(), commentcount,userid,commentid);
 		}
 		private Date getDate(){
 			long count = Long.parseLong(datetime.replaceAll("\\/Date\\((.*)\\)\\/", "$1"));
@@ -62,12 +63,24 @@ public class GetTopicRequest extends BaseClient {
 	public static class Params {
 		private int pageno;
 		private int pagesize;
+		private String sid;
+		private Integer type;
 
 		public Params(int pageno, int pagesize) {
 			super();
 			this.pageno = pageno;
 			this.pagesize = pagesize;
 		}
+
+		public Params(int pageno, int pagesize, String sid, Integer type) {
+			super();
+			this.pageno = pageno;
+			this.pagesize = pagesize;
+			this.sid = sid;
+			this.type = type;
+		}
+		
+		
 
 	}
 
@@ -105,6 +118,12 @@ public class GetTopicRequest extends BaseClient {
 		params.add("method", "topic");
 		params.add("pageno", "" + this.params.pageno);
 		params.add("pagesize", "" + this.params.pagesize);
+		if(this.params.sid != null){
+			params.add("sid", "" + this.params.sid);
+		}
+		if(this.params.type != null){
+			params.add("type", "" + this.params.type);
+		}
 		return params;
 	}
 

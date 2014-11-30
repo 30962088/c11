@@ -32,10 +32,11 @@ public class GetForumCommentRequest extends BaseClient{
 	
 	public static class Comment{
 		private String username;
-//		private String userid;
+		private String userid;
 		private String datetime;
 		private String userimgurl;
 		private String remark;
+		private String isusername;
 		private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		
 		private Date getDateTime(){
@@ -43,7 +44,7 @@ public class GetForumCommentRequest extends BaseClient{
 			return new Date(count);
 		}
 		public NewsCommentListAdapter.Model toModel(){
-			return new NewsCommentListAdapter.Model(userimgurl, username, remark, DATE_FORMAT.format(getDateTime()));
+			return new NewsCommentListAdapter.Model(userimgurl, username, remark, DATE_FORMAT.format(getDateTime()),isusername,userid);
 		}
 	}
 	

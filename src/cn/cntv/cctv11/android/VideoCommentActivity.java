@@ -11,6 +11,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.adapter.NewsCommentListAdapter;
+import cn.cntv.cctv11.android.adapter.NewsCommentListAdapter.OnCommentBtnClickListener;
 import cn.cntv.cctv11.android.fragment.network.BaseClient;
 import cn.cntv.cctv11.android.fragment.network.InsertCommentRequest;
 import cn.cntv.cctv11.android.fragment.network.NewsCommentRequest;
@@ -31,7 +32,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class VideoCommentActivity extends BaseActivity implements OnLoadListener,OnClickListener{
+public class VideoCommentActivity extends BaseActivity implements OnLoadListener,OnClickListener,OnCommentBtnClickListener{
 
 	public static class Model implements Serializable{
 		private String id;
@@ -91,7 +92,7 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 		ImageLoader.getInstance().displayImage(model.img, (ImageView)headerView.findViewById(R.id.img),DisplayOptions.IMG.getOptions());
 		TextView countView = (TextView) headerView.findViewById(R.id.comment);
 		countView.setText("热门评论("+model.count+")");
-		adapter = new NewsCommentListAdapter(this, list);
+		adapter = new NewsCommentListAdapter(this, list,this);
 		listView.setAdapter(adapter);
 		listView.setOnLoadListener(this);
 		listView.load(true);
@@ -187,6 +188,15 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(model.url));
 		intent.setDataAndType(Uri.parse(model.url), "video/*");
 		startActivity(intent);
+		
+	}
+
+
+
+	@Override
+	public void onCommentBtnClick(
+			cn.cntv.cctv11.android.adapter.NewsCommentListAdapter.Model model) {
+		// TODO Auto-generated method stub
 		
 	}
 	

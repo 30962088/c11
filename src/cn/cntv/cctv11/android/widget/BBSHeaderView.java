@@ -1,6 +1,15 @@
 package cn.cntv.cctv11.android.widget;
 
+import com.mengle.lib.wiget.ConfirmDialog;
+
+import cn.cntv.cctv11.android.APP;
+import cn.cntv.cctv11.android.BBSListActivity;
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.SettingActivity;
+import cn.cntv.cctv11.android.utils.CacheManager;
+import cn.cntv.cctv11.android.utils.LoadingPopup;
+import cn.cntv.cctv11.android.utils.CacheManager.OnClearCacheListner;
+import cn.cntv.cctv11.android.utils.Preferences.Session;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -49,21 +58,54 @@ public class BBSHeaderView extends FrameLayout{
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.publish_btn:
-				
+				if(check()){
+					
+				}
 				break;
 			case R.id.published_btn:
+				if(check()){
+					BBSListActivity.open(getContext(), BBSListActivity.TYPE_PUBLISH);
+					
+				}
+				
 				break;
 			case R.id.ipublish_btn:
+				if(check()){
+					BBSListActivity.open(getContext(), BBSListActivity.TYPE_REPLY);
+				}
 				break;
 			default:
 				break;
 			}
 			
 		}
+		private boolean check() {
+			
+			if(!APP.getSession().isLogin()){
+				ConfirmDialog.open(getContext(), "提示", "您还没有登录，是否立即登录？",
+						new ConfirmDialog.OnClickListener() {
+
+							@Override
+							public void onPositiveClick() {
+								
+							}
+
+							@Override
+							public void onNegativeClick() {
+								// TODO Auto-generated method stub
+
+							}
+
+						});
+				return false;
+			}
+			
+			return true;
+		}
 		
 	}
 	
-	public void setModel(Model model){
+	/*public void setModel(Model model){
 		holder.ipublish.setText("("+model.ipublish+")");
 		holder.published.setText("("+model.published+")");
 	}
@@ -77,7 +119,7 @@ public class BBSHeaderView extends FrameLayout{
 			this.ipublish = ipublish;
 		}
 		
-	}
+	}*/
 	
 	
 

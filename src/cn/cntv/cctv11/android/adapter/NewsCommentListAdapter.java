@@ -12,8 +12,11 @@ import cn.cntv.cctv11.android.adapter.BBSListAdapter.ViewHolder;
 import cn.cntv.cctv11.android.R;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -33,15 +36,27 @@ public class NewsCommentListAdapter extends BaseAdapter implements PinnedSection
 		private String content;
 
 		private String time;
+		
+		private String userid;
 
-		public Model(String avatar, String name, String content,
-				String time) {
+		public Model(String avatar, String name, String content, String time,
+				String replynickname,String userid) {
 			super();
 			this.avatar = avatar;
 			this.name = name;
 			this.content = content;
 			this.time = time;
+			this.userid = userid;
+			if(!TextUtils.isEmpty(replynickname)){
+				this.content = "回复<font color='#0b92c3'>"+replynickname+"</font>"+" "+this.content;
+			}
+			
 		}
+		public String getUserid() {
+			return userid;
+		}
+
+		
 
 		
 
@@ -49,17 +64,22 @@ public class NewsCommentListAdapter extends BaseAdapter implements PinnedSection
 
 	
 
-	
+	public static interface OnCommentBtnClickListener{
+		public void onCommentBtnClick(Model model);
+	}
 
 	private Context context;
 
 	private List<Model> list;
+	
+	private OnCommentBtnClickListener onCommentBtnClickListener;
 
 	
-	public NewsCommentListAdapter(Context context, List<Model> list) {
+	public NewsCommentListAdapter(Context context, List<Model> list,OnCommentBtnClickListener onCommentBtnClickListener) {
 		super();
 		this.context = context;
 		this.list = list;
+		this.onCommentBtnClickListener = onCommentBtnClickListener;
 	}
 
 	@Override
@@ -83,7 +103,7 @@ public class NewsCommentListAdapter extends BaseAdapter implements PinnedSection
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		Model model = list.get(position);
+		final Model model = list.get(position);
 		
 		ViewHolder holder = null;
 		
@@ -97,11 +117,20 @@ public class NewsCommentListAdapter extends BaseAdapter implements PinnedSection
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		holder.content.setText(model.content);
+		holder.content.setText(Html.fromHtml(model.content));
 		
 		holder.name.setText(model.name);
 		
 		holder.time.setText(model.time);
+		
+		holder.commentBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				onCommentBtnClickListener.onCommentBtnClick(model);
+				
+			}
+		});
 		
 		ImageLoader.getInstance().displayImage(model.avatar, holder.avatar,DisplayOptions.IMG.getOptions());
 		
@@ -120,12 +149,15 @@ public class NewsCommentListAdapter extends BaseAdapter implements PinnedSection
 		private TextView content;
 
 		private TextView time;
+		
+		private View commentBtn;
 
 		public ViewHolder(View view) {
 			name = (TextView) view.findViewById(R.id.name);
 			avatar = (ImageView) view.findViewById(R.id.avatar);
 			content = (TextView) view.findViewById(R.id.content);
 			time = (TextView) view.findViewById(R.id.time);
+			commentBtn = view.findViewById(R.id.comment_btn);
 
 		}
 
