@@ -103,9 +103,6 @@ public class RotateLoadingLayout extends LoadingLayout {
 		// NO-OP
 	}
 
-	@Override
-	protected int getDefaultDrawableResId() {
-		return R.drawable.default_ptr_rotate;
-	}
+	
 
 }

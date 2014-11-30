@@ -37,7 +37,6 @@ import android.widget.LinearLayout;
 import com.cheshang8.library.R;
 import com.handmark.pulltorefresh.library.internal.FlipLoadingLayout;
 import com.handmark.pulltorefresh.library.internal.LoadingLayout;
-import com.handmark.pulltorefresh.library.internal.RotateLoadingLayout;
 import com.handmark.pulltorefresh.library.internal.Utils;
 import com.handmark.pulltorefresh.library.internal.ViewCompat;
 
@@ -393,14 +392,6 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 	 * @deprecated You should now call this method on the result of
 	 *             {@link #getLoadingLayoutProxy()}.
 	 */
-	public void setLastUpdatedLabel(CharSequence label) {
-		getLoadingLayoutProxy().setLastUpdatedLabel(label);
-	}
-
-	/**
-	 * @deprecated You should now call this method on the result of
-	 *             {@link #getLoadingLayoutProxy()}.
-	 */
 	public void setLoadingDrawable(Drawable drawable) {
 		getLoadingLayoutProxy().setLoadingDrawable(drawable);
 	}
@@ -446,30 +437,8 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		mOnRefreshListener = null;
 	}
 
-	/**
-	 * @deprecated You should now call this method on the result of
-	 *             {@link #getLoadingLayoutProxy()}.
-	 */
-	public void setPullLabel(CharSequence pullLabel) {
-		getLoadingLayoutProxy().setPullLabel(pullLabel);
-	}
+	
 
-	/**
-	 * @deprecated You should now call this method on the result of
-	 *             {@link #getLoadingLayoutProxy(boolean, boolean)}.
-	 */
-	public void setPullLabel(CharSequence pullLabel, Mode mode) {
-		getLoadingLayoutProxy(mode.showHeaderLoadingLayout(), mode.showFooterLoadingLayout()).setPullLabel(pullLabel);
-	}
-
-	/**
-	 * @param enable Whether Pull-To-Refresh should be used
-	 * @deprecated This simple calls setMode with an appropriate mode based on
-	 *             the passed value.
-	 */
-	public final void setPullToRefreshEnabled(boolean enable) {
-		setMode(enable ? Mode.getDefault() : Mode.DISABLED);
-	}
 
 	@Override
 	public final void setPullToRefreshOverScrollEnabled(boolean enabled) {
@@ -488,39 +457,9 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		}
 	}
 
-	/**
-	 * @deprecated You should now call this method on the result of
-	 *             {@link #getLoadingLayoutProxy()}.
-	 */
-	public void setRefreshingLabel(CharSequence refreshingLabel) {
-		getLoadingLayoutProxy().setRefreshingLabel(refreshingLabel);
-	}
+	
 
-	/**
-	 * @deprecated You should now call this method on the result of
-	 *             {@link #getLoadingLayoutProxy(boolean, boolean)}.
-	 */
-	public void setRefreshingLabel(CharSequence refreshingLabel, Mode mode) {
-		getLoadingLayoutProxy(mode.showHeaderLoadingLayout(), mode.showFooterLoadingLayout()).setRefreshingLabel(
-				refreshingLabel);
-	}
 
-	/**
-	 * @deprecated You should now call this method on the result of
-	 *             {@link #getLoadingLayoutProxy()}.
-	 */
-	public void setReleaseLabel(CharSequence releaseLabel) {
-		setReleaseLabel(releaseLabel, Mode.BOTH);
-	}
-
-	/**
-	 * @deprecated You should now call this method on the result of
-	 *             {@link #getLoadingLayoutProxy(boolean, boolean)}.
-	 */
-	public void setReleaseLabel(CharSequence releaseLabel, Mode mode) {
-		getLoadingLayoutProxy(mode.showHeaderLoadingLayout(), mode.showFooterLoadingLayout()).setReleaseLabel(
-				releaseLabel);
-	}
 
 	public void setScrollAnimationInterpolator(Interpolator interpolator) {
 		mScrollAnimationInterpolator = interpolator;
@@ -628,7 +567,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		mLayoutVisibilityChangesEnabled = false;
 	}
 
-	public final LoadingLayout getFooterLayout() {
+	protected final LoadingLayout getFooterLayout() {
 		return mFooterLayout;
 	}
 
@@ -1288,11 +1227,6 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 	}
 
 	public static enum AnimationStyle {
-		/**
-		 * This is the default for Android-PullToRefresh. Allows you to use any
-		 * drawable, which is automatically rotated and used as a Progress Bar.
-		 */
-		ROTATE,
 
 		/**
 		 * This is the old default, and what is commonly used on iOS. Uses an
@@ -1301,7 +1235,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		FLIP;
 
 		static AnimationStyle getDefault() {
-			return ROTATE;
+			return FLIP;
 		}
 
 		/**
@@ -1313,23 +1247,11 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		 * @return Mode that modeInt maps to, or ROTATE by default.
 		 */
 		static AnimationStyle mapIntToValue(int modeInt) {
-			switch (modeInt) {
-				case 0x0:
-				default:
-					return ROTATE;
-				case 0x1:
-					return FLIP;
-			}
+			return FLIP;
 		}
 
 		LoadingLayout createLoadingLayout(Context context, Mode mode, Orientation scrollDirection, TypedArray attrs) {
-			switch (this) {
-				case ROTATE:
-				default:
-					return new RotateLoadingLayout(context, mode, scrollDirection, attrs);
-				case FLIP:
-					return new FlipLoadingLayout(context, mode, scrollDirection, attrs);
-			}
+			return new FlipLoadingLayout(context, mode, scrollDirection, attrs);
 		}
 	}
 

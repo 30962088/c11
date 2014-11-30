@@ -148,9 +148,6 @@ public class BaseListView extends PullToRefreshPinnedSectionListView {
 									| DateUtils.FORMAT_SHOW_DATE
 									| DateUtils.FORMAT_ABBREV_ALL);
 
-					getLoadingLayoutProxy()
-							.setLastUpdatedLabel("最近更新:" + label);
-
 				}
 
 				@Override

@@ -78,8 +78,6 @@ public class StageFragment extends BaseFragment implements OnRefreshListener<Lis
 								| DateUtils.FORMAT_SHOW_DATE
 								| DateUtils.FORMAT_ABBREV_ALL);
 
-				listView.getLoadingLayoutProxy()
-						.setLastUpdatedLabel("最近更新:" + label);
 			}
 
 			@Override
