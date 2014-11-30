@@ -6,17 +6,22 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ef3d23"
-        android:gravity="center_horizontal">
+        android:layout_height="40dp"
+        android:gravity="center_horizontal" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_header" />
 
         <com.viewpagerindicator.TabPageIndicator
             android:id="@+id/indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
             android:paddingBottom="5dp"
             android:paddingLeft="10dp"
+            android:layout_centerInParent="true"
             android:paddingRight="10dp"
             android:paddingTop="5dp" />
     </RelativeLayout>

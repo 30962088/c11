@@ -31,7 +31,7 @@ public class MainFragment1 extends BaseFragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		return inflater.inflate(R.layout.fragment_tabs, null);
+		return inflater.inflate(R.layout.fragment_tabs_1, null);
 	}
 	
 	private TabPageIndicator indicator;
