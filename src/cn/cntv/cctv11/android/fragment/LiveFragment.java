@@ -60,7 +60,7 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 	
 	private View playView;
 	
-	private String[] playList;
+	private List<String> playList;
 	
 	private int currentPlayUrl;
 	
@@ -79,10 +79,10 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 	}
 	
 	private void playUrl(){
-		String str = playList[0];
+		String str = playList.get(0);
 		videoView.setVideoPath(str, this, this);
 		currentPlayUrl++;
-		if(currentPlayUrl>playList.length-1){
+		if(currentPlayUrl>playList.size()-1){
 			currentPlayUrl = 0;
 		}
 	}
@@ -93,7 +93,7 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 			
 			@Override
 			public void onSuccess(Object object) {
-				playList = ((GetLiveUrlRequest.Result)object).getHls_url().toList();
+				playList = ((GetLiveUrlRequest.Result)object).getUrlList();
 				playUrl();
 				
 				
@@ -127,6 +127,9 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 
 			@Override
 			public void onSuccess(Object object) {
+				if(object == null){
+					return;
+				}
 				list.clear();
 				Result result = (Result) object;
 				list.addAll(result.toLiveList());

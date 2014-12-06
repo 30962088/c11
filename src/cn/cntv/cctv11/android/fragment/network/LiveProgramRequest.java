@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.Header;
 
@@ -60,7 +62,13 @@ public class LiveProgramRequest extends BaseClient {
 
 	@Override
 	public Object onSuccess(String str) {
-		return new Gson().fromJson(str, Result.class);
+		Object object = null;
+		Matcher matcher = Pattern.compile("\\{\"cctv11\".*").matcher(str);
+		if(matcher.find()){
+			str = matcher.group();
+			object = new Gson().fromJson(str, Result.class);
+		}
+		return object;
 
 	}
 

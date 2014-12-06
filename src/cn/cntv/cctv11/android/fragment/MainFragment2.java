@@ -50,7 +50,7 @@ public class MainFragment2 extends BaseFragment{
 		
 		list.add(new Pager("直播间", LiveFragment.newInstance()));
 		
-		list.add(new Pager("节目单", new Fragment()));
+		list.add(new Pager("节目单", ProgramFragment.newInstance()));
 		
 		pager.setAdapter(new TabsAdapter(getChildFragmentManager(), list));
 		indicator.setViewPager(pager);

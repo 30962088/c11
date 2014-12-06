@@ -1,72 +1,85 @@
 package cn.cntv.cctv11.android;
 
-
-
 import org.apache.http.Header;
-
-
 
 import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
 import cn.cntv.cctv11.android.fragment.network.GetLiveUrlRequest;
 
-
+import android.content.Intent;
+import android.content.Context;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.MediaController;
 import android.widget.VideoView;
-
-
 
 public class VideoActivity extends BaseActivity {
 
-	VideoView videoView;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.media_layout);
-		videoView = new VideoView(this);
-		request();
+	public static void open(Context context, String url) {
+		Intent intent = new Intent(context, VideoActivity.class);
+		intent.putExtra("url", url);
+		context.startActivity(intent);
 	}
+
+	private VideoView videoView;
+
+	private View loadingView;
+
+	private MediaController mediaControls;
 	
-	private void request(){
-		GetLiveUrlRequest request = new GetLiveUrlRequest(this);
-		request.request(new RequestHandler() {
-			
-			@Override
-			public void onSuccess(Object object) {
-				String list[] =((GetLiveUrlRequest.Result)object).getHls_url().toList();
-				videoView.setVideoURI(Uri.parse("http://vcbox1.fw.live.cntv.cn:8000/cache/cctv11.f4m?AUTH=ip%3D221.216.138.206%7Est%3D1415443475%7Eexp%3D1415529875%7Eacl%3D%2F*%7Ehmac%3D25dd7f6f8a3c0ab83d36ddc8b8df1301684e0175d98a90157e82bf9f52a4f5df"));
-//				getSupportFragmentManager().beginTransaction().replace(R.id.media_container, VideoFrament.newInstance(list)).commit();
-				
-			}
-			
-			@Override
-			public void onServerError(int arg0, Header[] arg1, byte[] arg2,
-					Throwable arg3) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onError(int error) {
-				// TODO Auto-generated method stub
-				
-			}
+	private String url;
+	
+	private int position = 0;
+
+
+	@Override
+	protected void onCreate(Bundle arg0) {
+		// TODO Auto-generated method stub
+		super.onCreate(arg0);
+		url = getIntent().getStringExtra("url");
+		setContentView(R.layout.activity_video_layout);
+		videoView = (VideoView) findViewById(R.id.video);
+		loadingView = findViewById(R.id.loading);
+		if (mediaControls == null) {
+			mediaControls = new MediaController(this);
+		}
+		videoView.setMediaController(mediaControls);
+		videoView.setVideoURI(Uri.parse(url));
+		videoView.requestFocus();
+		videoView.setOnPreparedListener(new OnPreparedListener() {
 
 			@Override
-			public void onComplete() {
-				// TODO Auto-generated method stub
-				
+			public void onPrepared(MediaPlayer mp) {
+				loadingView.setVisibility(View.GONE);
+				videoView.seekTo(position);
+				if (position == 0) {
+					videoView.start();
+				}else{
+					videoView.pause();
+				}
 			}
+			
 		});
+
 	}
 	
 	@Override
-	protected void onStart() {
+	protected void onSaveInstanceState(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		super.onStart();
-		
+		super.onSaveInstanceState(savedInstanceState);
+		savedInstanceState.putInt("Position", videoView.getCurrentPosition());
+
 	}
 	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onRestoreInstanceState(savedInstanceState);
+		position = savedInstanceState.getInt("Position");
+		videoView.seekTo(position);
+
+	}
+
 }

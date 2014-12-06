@@ -185,9 +185,7 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 
 
 	private void onplay() {
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(model.url));
-		intent.setDataAndType(Uri.parse(model.url), "video/*");
-		startActivity(intent);
+		VideoActivity.open(this, model.url);
 		
 	}
 
