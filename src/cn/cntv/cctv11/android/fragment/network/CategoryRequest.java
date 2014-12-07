@@ -1,5 +1,6 @@
 package cn.cntv.cctv11.android.fragment.network;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +19,26 @@ import com.loopj.android.http.RequestParams;
 
 public class CategoryRequest extends BaseClient {
 
-	public static class Category {
+	public static class Category implements Serializable {
 		private int categoryid;
 		private String categoryname;
+		public Category() {
+			// TODO Auto-generated constructor stub
+		}
+		
+		public Category(int categoryid, String categoryname) {
+			super();
+			this.categoryid = categoryid;
+			this.categoryname = categoryname;
+		}
 
+		public String getCategoryname() {
+			return categoryname;
+		}
+		public int getCategoryid() {
+			return categoryid;
+		}
+		
 		public Pager toPager() {
 			Fragment fragment = null;
 			if(TextUtils.equals("视频", categoryname)){
@@ -43,8 +60,8 @@ public class CategoryRequest extends BaseClient {
 	}
 
 	public static class Result {
-		private List<Category> categorylist;
-		public List<Category> getCategorylist() {
+		private ArrayList<Category> categorylist;
+		public ArrayList<Category> getCategorylist() {
 			return categorylist;
 		}
 	}

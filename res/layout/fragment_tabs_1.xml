@@ -36,6 +36,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/search_btn"
                 android:layout_width="46.5dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/ss_1"

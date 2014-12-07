@@ -2,6 +2,7 @@ package cn.cntv.cctv11.android.fragment;
 import com.viewpagerindicator.TabPageIndicator;
 
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.SearchActivity;
 import cn.cntv.cctv11.android.adapter.TabsAdapter;
 import cn.cntv.cctv11.android.fragment.network.BaseClient;
 import cn.cntv.cctv11.android.fragment.network.CategoryRequest;
@@ -12,9 +13,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.Adapter;
 
-public class MainFragment1 extends BaseFragment{
+public class MainFragment1 extends BaseFragment implements OnClickListener{
 	
 	
 	public static MainFragment1 newInstance(){
@@ -42,23 +44,39 @@ public class MainFragment1 extends BaseFragment{
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
+		view.findViewById(R.id.search_btn).setOnClickListener(this);
 		pager = (ViewPager) view.findViewById(R.id.pager);
 		indicator = (TabPageIndicator) view.findViewById(R.id.indicator);
 		request();
 	}
+	
+	private Result result;
 	
 	private void request(){
 		CategoryRequest request = new CategoryRequest(getActivity());
 		request.request(new BaseClient.SimpleRequestHandler(){
 			@Override
 			public void onSuccess(Object object) {
-				Result result = (Result)object;
+				result = (Result)object;
 				TabsAdapter adapter = new TabsAdapter(getChildFragmentManager(), Category.toPagers(result.getCategorylist()));
 				pager.setAdapter(adapter);
 				indicator.setViewPager(pager);
 				pager.setOffscreenPageLimit(adapter.getCount());
 			}
 		});
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.search_btn:
+			SearchActivity.open(getActivity(), new SearchActivity.Model(result.getCategorylist()));
+			break;
+
+		default:
+			break;
+		}
+		
 	}
 
 }

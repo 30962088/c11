@@ -25,6 +25,7 @@ import com.loopj.android.http.RequestParams;
 public class ContentsRequest extends BaseClient{
 
 	public static class Result implements Serializable{
+		private int result;
 		private ArrayList<News> list;
 		private ArrayList<News> lunbolist;
 		public ArrayList<News> getList() {
@@ -32,6 +33,9 @@ public class ContentsRequest extends BaseClient{
 		}
 		public ArrayList<News> getLunbolist() {
 			return lunbolist;
+		}
+		public int getResult() {
+			return result;
 		}
 	}
 	
