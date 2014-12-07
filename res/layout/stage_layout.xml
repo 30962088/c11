@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_horizontal" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_header" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="天下戏台"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+            <View
+                android:layout_width="11.5dp"
+                android:layout_height="19dp"
+                android:background="@drawable/icon_back_white" />
+        </RelativeLayout>
+        
+    </RelativeLayout>
+    
+    <cn.cntv.cctv11.android.widget.HIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        
+    </android.support.v4.view.ViewPager>
+
+</LinearLayout>

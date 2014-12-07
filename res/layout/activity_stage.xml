@@ -4,23 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="31dp"
-        android:background="#ef3d23"
-        android:gravity="center"
-        android:text="戏台"
-        android:textColor="#fff"
-        android:textSize="16sp" />
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/bg_stage" >
+        android:layout_weight="1" >
 
         <RelativeLayout
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
@@ -28,37 +17,56 @@
                 android:id="@+id/bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
                 android:background="@drawable/bg_stage_inner" >
             </View>
 
-            
-            
-            <com.handmark.pulltorefresh.library.PullToRefreshPinnedSectionListView
-                android:id="@+id/listview" 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:paddingLeft="15dp"
-                android:clipToPadding="false"
-                android:scrollbarStyle="outsideOverlay"
-                android:paddingRight="15dp"
-                android:scrollbars="none"
                 android:layout_marginTop="36dp"
-                android:layout_marginBottom="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></com.handmark.pulltorefresh.library.PullToRefreshPinnedSectionListView>
-            
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#f6f3f1"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="14dp"
+                        android:text="2013/12/12 星期三"
+                        android:textColor="#ef3d23"
+                        android:textSize="21sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="#75cbf3" />
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" >
+                </ListView>
+            </LinearLayout>
+
             <View
-                android:layout_marginTop="-8dp"
+                android:layout_width="26.5dp"
+                android:layout_height="50dp"
                 android:layout_alignRight="@id/bg"
                 android:layout_alignTop="@id/bg"
-                android:layout_width="26.5dp"
                 android:layout_marginRight="15dp"
-                android:layout_height="50dp" 
-                android:background="@drawable/icon_stage"/>
-            
+                android:layout_marginTop="-8dp"
+                android:background="@drawable/icon_stage" />
         </RelativeLayout>
     </FrameLayout>
 

@@ -1,5 +1,6 @@
 package cn.cntv.cctv11.android.adapter;
 
+import java.util.Date;
 import java.util.List;
 
 import cn.cntv.cctv11.android.R;
@@ -13,10 +14,14 @@ import android.widget.TextView;
 
 public class CalendarGridAdapter extends BaseAdapter{
 
+
 	
 	private Context context;
 	
 	private List<CalendarDate> list;
+	
+
+	
 
 	public CalendarGridAdapter(Context context, List<CalendarDate> list) {
 		super();
@@ -45,7 +50,7 @@ public class CalendarGridAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
-		CalendarDate model = list.get(position);
+		final CalendarDate model = list.get(position);
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
 					R.layout.day_item, null);

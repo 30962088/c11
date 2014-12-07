@@ -1,5 +1,6 @@
 package cn.cntv.cctv11.android.fragment.network;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,7 +23,26 @@ import com.mengle.lib.utils.Utils;
 
 public class StageRequest extends BaseClient {
 
-	public static class Stage{
+	public static class DateCount{
+		private Date date;
+		private int count;
+		public DateCount(Date date, int count) {
+			super();
+			this.date = date;
+			this.count = count;
+		}
+		public int getCount() {
+			return count;
+		}
+		public Date getDate() {
+			return date;
+		}
+		
+	}
+	
+	
+	
+	public static class Stage implements Serializable{
 		private String stageid;
 		private String stagetitle;
 		private String stageurl;
@@ -46,32 +66,39 @@ public class StageRequest extends BaseClient {
 		}
 	}
 	
-	public static class StageGroup{
+	public static class StageGroup implements Serializable{
 		private int datecount;
 		private String showdatetime;
-		private List<Stage> stagelist;
+		private ArrayList<Stage> stagelist;
 		private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy年MM月dd日");
-		public StageListAdapter.StageGroup toModel(){
+		
+		public Date getDate(){
+			long count = Long.parseLong(showdatetime.replaceAll("\\/Date\\((.*)\\)\\/", "$1"));
+			return new Date(count);
+		}
+		
+		public List<StageItem> toList(){
 			List<StageItem> list = new ArrayList<StageListAdapter.StageItem>();
 			for(Stage stage : stagelist){
 				list.add(stage.toModel());
 			}
-			return new StageListAdapter.StageGroup(DATE_FORMAT.format(getDate())+" "+Utils.getWeekOfDate(getDate()), list);
+			return list;
 		}
-		private Date getDate(){
-			long count = Long.parseLong(showdatetime.replaceAll("\\/Date\\((.*)\\)\\/", "$1"));
-			return new Date(count);
-		}
+		
 	}
 
-	public static class Result {
-		private List<StageGroup> countlist;
-		public List<StageListAdapter.StageGroup> toStageListModel(){
-			List<StageListAdapter.StageGroup> list = new ArrayList<StageListAdapter.StageGroup>();
+	public static class Result implements Serializable{
+		private ArrayList<StageGroup> countlist;
+		
+		public List<DateCount> getDateCounts(){
+			List<DateCount> list = new ArrayList<StageRequest.DateCount>();
 			for(StageGroup group : countlist){
-				list.add(group.toModel());
+				list.add(new DateCount(group.getDate(), group.datecount));
 			}
 			return list;
+		}
+		public ArrayList<StageGroup> getGrouplist() {
+			return countlist;
 		}
 	}
 	
@@ -121,10 +148,10 @@ public class StageRequest extends BaseClient {
 	protected RequestParams getParams() {
 		RequestParams params = new RequestParams();
 		params.add("method", "stagecount");
-/*		params.add("startdate", DATE_FORMAT.format(this.params.start));
-		params.add("enddate", DATE_FORMAT.format(this.params.end));*/
-		params.add("startdate", "2014/01/01");
-		params.add("enddate", "2015/01/01");
+		params.add("startdate", DATE_FORMAT.format(this.params.start));
+		params.add("enddate", DATE_FORMAT.format(this.params.end));
+	/*	params.add("startdate", "2014/01/01");
+		params.add("enddate", "2015/01/01");*/
 		return params;
 	}
 

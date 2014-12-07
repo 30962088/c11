@@ -7,22 +7,13 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.R;
-import cn.cntv.cctv11.android.SpecialDetailActivity.Params;
-import cn.cntv.cctv11.android.adapter.StageListAdapter.DateItem;
-import cn.cntv.cctv11.android.adapter.StageListAdapter.HeaderViewHolder;
-import cn.cntv.cctv11.android.adapter.StageListAdapter.StageItem;
-import cn.cntv.cctv11.android.adapter.StageListAdapter.StageViewHolder;
-import cn.cntv.cctv11.android.adapter.StageListAdapter.ViewHolder;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-
-import android.widget.TextView;
 
 public class WeiboImgAdapter extends BaseAdapter implements Serializable {
 

@@ -12,12 +12,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
 public class CalendarListAdapter extends BaseAdapter{
-
+	public static interface OnCalendarGridItemClickListener{
+		public void OnCalendarGridItemClick(Date date);
+	}
+	
 	
 	public static class Model{
 		private Date date;
@@ -37,11 +42,17 @@ public class CalendarListAdapter extends BaseAdapter{
 	
 	private List<Model> list;
 	
+	private OnCalendarGridItemClickListener calendarGridItemClickListener;
+	
 
-	public CalendarListAdapter(Context context, List<Model> list) {
+	
+
+	public CalendarListAdapter(Context context, List<Model> list,
+			OnCalendarGridItemClickListener calendarGridItemClickListener) {
 		super();
 		this.context = context;
 		this.list = list;
+		this.calendarGridItemClickListener = calendarGridItemClickListener;
 	}
 
 	@Override
@@ -65,7 +76,7 @@ public class CalendarListAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
-		Model model = list.get(position);
+		final Model model = list.get(position);
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
 					R.layout.calendar_layout, null);
@@ -78,6 +89,18 @@ public class CalendarListAdapter extends BaseAdapter{
 		holder.title.setText(model.getDateString());
 		
 		holder.gridview.setAdapter(new CalendarGridAdapter(context, model.list));
+		
+		holder.gridview.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				CalendarDate calendarDate = model.list.get(position);
+				calendarGridItemClickListener.OnCalendarGridItemClick(calendarDate.getDate());
+				
+			}
+			
+		});
 		
 //		Utils.setGridViewHeightBasedOnChildren(holder.gridview);
 		

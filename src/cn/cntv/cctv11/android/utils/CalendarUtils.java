@@ -5,6 +5,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
+
+import cn.cntv.cctv11.android.fragment.network.StageRequest.DateCount;
+
 public class CalendarUtils {
 
 	public static class CalendarDate {
@@ -13,10 +17,12 @@ public class CalendarUtils {
 		private int total;
 		private boolean selected;
 
-		public CalendarDate(Date date, boolean enable) {
+		
+		public CalendarDate(Date date, boolean enable, int total) {
 			super();
 			this.date = date;
 			this.enable = enable;
+			this.total = total;
 		}
 
 		public Date getDate() {
@@ -25,10 +31,6 @@ public class CalendarUtils {
 
 		public boolean isEnable() {
 			return enable;
-		}
-
-		public void setTotal(int total) {
-			this.total = total;
 		}
 
 		public int getTotal() {
@@ -56,7 +58,7 @@ public class CalendarUtils {
 		return calendar.get(Calendar.MONTH);
 	}
 
-	public static List<CalendarDate> getDay(int year, int month) {
+	public static List<CalendarDate> getDay(int year, int month,List<DateCount> list) {
 
 		Date startDate = getStartWeekOfMonth(year, month);
 
@@ -75,7 +77,18 @@ public class CalendarUtils {
 			if (getMonth(date) + 1 == month) {
 				enable = true;
 			}
-			rows.add(new CalendarDate(date, enable));
+			int total = 0;
+			if(enable){
+				for(DateCount dateCount : list){
+					if(DateUtils.isSameDay(dateCount.getDate(),date)){
+						total = dateCount.getCount();
+						break;
+					}
+				}
+			}
+			
+			
+			rows.add(new CalendarDate(date, enable,total));
 
 		}
 		return rows;
