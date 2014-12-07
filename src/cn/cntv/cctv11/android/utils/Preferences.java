@@ -27,6 +27,14 @@ public class Preferences {
 			setWeiboUid(null);
 		}
 		
+		public void setGuide(boolean guide){
+			preferences.edit().putBoolean("guide", guide).commit();
+		}
+		
+		public boolean isGuide(){
+			return preferences.getBoolean("guide", false);
+		}
+		
 		public void setVoice(boolean voice){
 			preferences.edit().putBoolean("voice", voice).commit();
 		}

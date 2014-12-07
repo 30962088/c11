@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.utils.Dirctionary;
+import cn.cntv.cctv11.android.utils.Preferences.Session;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow.OnItemClickListener;
 
@@ -211,6 +212,15 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 		default:
 			break;
 		}
+	}
+	
+	public void openGuide(){
+	
+		if(!APP.getSession().isGuide()){
+			GuideActivity.open(this);
+			APP.getSession().setGuide(true);
+		}
+		
 	}
 	
 }
