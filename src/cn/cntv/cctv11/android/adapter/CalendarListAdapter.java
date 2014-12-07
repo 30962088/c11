@@ -96,7 +96,10 @@ public class CalendarListAdapter extends BaseAdapter{
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				CalendarDate calendarDate = model.list.get(position);
-				calendarGridItemClickListener.OnCalendarGridItemClick(calendarDate.getDate());
+				if(calendarDate.isEnable()){
+					calendarGridItemClickListener.OnCalendarGridItemClick(calendarDate.getDate());
+				}
+				
 				
 			}
 			

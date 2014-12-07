@@ -38,6 +38,9 @@ public class StageListAdapter extends BaseAdapter implements
 			this.loc = loc;
 			this.time = time;
 		}
+		public String getLink() {
+			return link;
+		}
 
 	}
 

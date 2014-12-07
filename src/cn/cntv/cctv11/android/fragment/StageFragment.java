@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.WebViewActivity;
 import cn.cntv.cctv11.android.adapter.StageListAdapter;
 import cn.cntv.cctv11.android.adapter.StageListAdapter.StageItem;
 import cn.cntv.cctv11.android.utils.DateUtils;
@@ -14,10 +15,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class StageFragment extends BaseFragment{
+public class StageFragment extends BaseFragment implements OnItemClickListener{
 
 	
 	public static class Model implements Serializable{
@@ -75,6 +78,18 @@ public class StageFragment extends BaseFragment{
 		dateView.setText(model.getDateString());
 		
 		listView.setAdapter(new StageListAdapter(getActivity(), model.list));
+		
+		listView.setOnItemClickListener(this);
+		
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		StageItem item = model.list.get(position);
+		WebViewActivity.open(getActivity(), item.getLink());
+		
+		
 	}
 
 	

@@ -20,20 +20,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.View.OnClickListener;
 
-public class StageActivity extends BaseActivity {
+public class StageActivity extends BaseActivity implements OnClickListener{
 
 	public static class Model implements Serializable {
 		private Date start;
 		private Date end;
 		private Result result;
-
-		public Model(Date start, Date end, Result result) {
+		private Date selected;
+		public Model(Date start, Date end, Result result, Date selected) {
 			super();
 			this.start = start;
 			this.end = end;
 			this.result = result;
+			this.selected = selected;
 		}
+
+		
 
 	}
 
@@ -60,6 +65,7 @@ public class StageActivity extends BaseActivity {
 		super.onCreate(arg0);
 		model = (Model) getIntent().getSerializableExtra("model");
 		setContentView(R.layout.stage_layout);
+		findViewById(R.id.back).setOnClickListener(this);
 		pager = (ViewPager) findViewById(R.id.pager);
 		indicator = (HIndicator) findViewById(R.id.indicator);
 		init();
@@ -70,13 +76,16 @@ public class StageActivity extends BaseActivity {
 		Date start = model.start,end = model.end;
 		int length = (int) ((end.getTime() -start.getTime())/(1000*3600*24));
 		List<Pager> pagers = new ArrayList<Pager>();
+		int position = 0;
 		for(int i = 0;i<length;i++){
 			
 			Calendar c = DateUtils.toCalendar(start);
 			c.setTime(start);
 			c.add(Calendar.DATE, i);
 			Date date = c.getTime();
-			
+			if(DateUtils.isSameDay(date, model.selected)){
+				position = i;
+			}
 			ArrayList<StageListAdapter.StageItem> list = new ArrayList<StageListAdapter.StageItem>();
 			for(StageGroup group: model.result.getGrouplist()){
 				if(DateUtils.isSameDay(date, group.getDate())){
@@ -90,5 +99,19 @@ public class StageActivity extends BaseActivity {
 		}
 		pager.setAdapter(new TabsAdapter(getSupportFragmentManager(), pagers));
 		indicator.setViewPager(pager);
+		pager.setCurrentItem(position);
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.back:
+			finish();
+			break;
+
+		default:
+			break;
+		}
+		
 	}
 }

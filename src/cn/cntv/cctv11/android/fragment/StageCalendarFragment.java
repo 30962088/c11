@@ -115,7 +115,7 @@ public class StageCalendarFragment extends BaseFragment implements OnCalendarGri
 
 	@Override
 	public void OnCalendarGridItemClick(Date date) {
-		StageActivity.open(getActivity(), new StageActivity.Model(startDate, endDate, result));
+		StageActivity.open(getActivity(), new StageActivity.Model(startDate, endDate, result,date));
 		
 	}
 
