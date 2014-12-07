@@ -1,35 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
-    
-    <LinearLayout 
+    android:layout_height="wrap_content"
+    android:background="#fff">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        
-        <TextView 
-            android:layout_marginBottom="7dp"
+        android:orientation="vertical" >
+
+        <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="26dp"
+            android:layout_marginBottom="7dp"
+            android:background="#d5d5d5"
             android:gravity="center"
             android:text="2013年12月"
             android:textColor="#fff"
-            android:textSize="15sp"
-            android:background="#d5d5d5"/>
-        
-        <cn.cntv.cctv11.android.widget.MyGridView 
-            android:background="#f0f0f4"
-            android:horizontalSpacing="1px"
-            android:verticalSpacing="1px"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:id="@+id/gridview"
+            android:textSize="15sp" />
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:numColumns="7"></cn.cntv.cctv11.android.widget.MyGridView>
-        
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="#f0f0f4"
+      		android:padding="1px">
+
+            <cn.cntv.cctv11.android.widget.MyGridView
+                android:id="@+id/gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f0f0f4"
+                android:horizontalSpacing="1px"
+                android:numColumns="7"
+                android:verticalSpacing="1px" >
+            </cn.cntv.cctv11.android.widget.MyGridView>
+        </RelativeLayout>
     </LinearLayout>
 
 </FrameLayout>

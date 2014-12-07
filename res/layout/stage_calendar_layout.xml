@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/bg_header" />
+            android:src="@drawable/bg_h5" />
 
        	
         <TextView 
@@ -29,7 +29,7 @@
     <LinearLayout 
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="#000"
+        android:background="@drawable/bg_h6"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
         
@@ -39,6 +39,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="日"
+            android:textStyle="bold"
             android:textColor="#fff"
             android:textSize="15sp"/>
         
@@ -48,6 +49,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="一"
+            android:textStyle="bold"
             android:textColor="#fff"
             android:textSize="15sp"/>
         
@@ -57,6 +59,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="二"
+            android:textStyle="bold"
             android:textColor="#fff"
             android:textSize="15sp"/>
         
@@ -66,6 +69,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="三"
+            android:textStyle="bold"
             android:textColor="#fff"
             android:textSize="15sp"/>
         
@@ -75,6 +79,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="四"
+            android:textStyle="bold"
             android:textColor="#fff"
             android:textSize="15sp"/>
         
@@ -84,6 +89,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="五"
+            android:textStyle="bold"
             android:textColor="#fff"
             android:textSize="15sp"/>
         
@@ -93,6 +99,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="六"
+            android:textStyle="bold"
             android:textColor="#fff"
             android:textSize="15sp"/>
         

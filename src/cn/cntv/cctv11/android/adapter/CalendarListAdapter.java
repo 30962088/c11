@@ -12,6 +12,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -72,6 +73,9 @@ public class CalendarListAdapter extends BaseAdapter{
 		// TODO Auto-generated method stub
 		return position;
 	}
+	
+	
+	private CalendarDate last;
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -87,7 +91,6 @@ public class CalendarListAdapter extends BaseAdapter{
 		}
 		
 		holder.title.setText(model.getDateString());
-		
 		holder.gridview.setAdapter(new CalendarGridAdapter(context, model.list));
 		
 		holder.gridview.setOnItemClickListener(new OnItemClickListener() {
@@ -97,7 +100,14 @@ public class CalendarListAdapter extends BaseAdapter{
 					int position, long id) {
 				CalendarDate calendarDate = model.list.get(position);
 				if(calendarDate.isEnable()){
+					
 					calendarGridItemClickListener.OnCalendarGridItemClick(calendarDate.getDate());
+					if(last != null){
+						last.setSelected(false);
+					}
+					last = calendarDate;
+					calendarDate.setSelected(true);
+					notifyDataSetChanged();
 				}
 				
 				

@@ -1,4 +1,6 @@
 package cn.cntv.cctv11.android.widget;
+import cn.cntv.cctv11.android.R;
+
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
 
@@ -63,7 +65,7 @@ public class HorizontalContainer extends LinearLayout implements OnClickListener
 	public void addView(CharSequence sequence){
 		TextView textView = new TextView(getContext());
 		textView.setLayoutParams(new LayoutParams(width, LayoutParams.MATCH_PARENT));
-		textView.setTextColor(Color.WHITE);
+		textView.setTextColor(Color.parseColor("#8d8d8d"));
 		textView.setGravity(Gravity.CENTER);
 		textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 		textView.setText(sequence);
@@ -73,7 +75,15 @@ public class HorizontalContainer extends LinearLayout implements OnClickListener
 		index++;
 	}
 	
+	private TextView lastView;
+	
 	public void translateTo(int index){
+		if(lastView != null){
+			lastView.setTextColor(Color.parseColor("#8d8d8d"));
+		}
+		TextView view = (TextView) getChildAt(index);
+		view.setTextColor(Color.parseColor("#ffffff"));
+		lastView = view;
 		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) getLayoutParams();
 		ValueAnimator varl = ValueAnimator.ofInt(lp.leftMargin,width*(3-index));
 		varl.setDuration(200);
