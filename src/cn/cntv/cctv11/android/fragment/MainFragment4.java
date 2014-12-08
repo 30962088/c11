@@ -49,7 +49,7 @@ public class MainFragment4 extends BaseFragment{
 		indicator = (TabPageIndicator) view.findViewById(R.id.indicator);
 		List<Pager> list = new ArrayList<Pager>();
 		
-		list.add(new Pager("微博", WeiboFragment.newInstance()));
+		list.add(new Pager("梨园", WeiboFragment.newInstance()));
 		
 		list.add(new Pager("论坛", BBSFragment.newInstance()));
 		list.add(new Pager("投票", VoteListFragment.newInstance()));

@@ -10,16 +10,22 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.PhotoViewActivity;
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.WebViewActivity;
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.adapter.WeiboImgAdapter;
 import cn.cntv.cctv11.android.utils.WeiboUtils;
 import cn.cntv.cctv11.android.utils.WeiboUtils.OnSymbolClickLisenter;
+import cn.cntv.cctv11.android.utils.WeiboUtils.Synbol;
 import cn.cntv.cctv11.android.utils.WeiboUtils.WeiboSymboResult;
 import cn.cntv.cctv11.android.utils.WeiboUtils.WeiboSymbol;
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,6 +119,29 @@ public class WeiboItemView extends FrameLayout{
 		holder = new ViewHolder();
 
 	}
+	
+	private static class MyClickSpan extends ClickableSpan{
+
+		private OnClickListener onClickListener;
+		
+		public MyClickSpan(OnClickListener onClickListener) {
+			super();
+			this.onClickListener = onClickListener;
+		}
+
+		@Override
+		public void onClick(View widget) {
+			onClickListener.onClick(widget);
+		}
+		@Override
+		public void updateDrawState(TextPaint ds) {
+			/*// TODO Auto-generated method stub
+			super.updateDrawState(ds);
+			ds.setColor(Color.BLACK);
+			ds.setUnderlineText(false);*/
+		}
+		
+	}
 
 	public void setModel(final Model model) {
 		
@@ -140,7 +169,6 @@ public class WeiboItemView extends FrameLayout{
 				if(onWeiboItemClickListener != null){
 					onWeiboItemClickListener.onItemClick(model);
 				}
-				
 			}
 		});
 		
@@ -150,9 +178,21 @@ public class WeiboItemView extends FrameLayout{
 
 		ImageLoader.getInstance().displayImage(model.avatar, holder.avatar,
 				DisplayOptions.IMG.getOptions());
-
-		holder.text.setText(model.content.getSpannableString());
-
+		model.content.setContext(getContext());
+		SpannableString spannableString = model.content.getSpannableString();
+		spannableString.setSpan(new MyClickSpan(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(onWeiboItemClickListener != null){
+					onWeiboItemClickListener.onItemClick(model);
+				}
+				
+			}
+		}), 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		holder.text.setText(spannableString);
+		
+		
 		holder.retweetedPhotogrid.setVisibility(View.GONE);
 
 		holder.photogrid.setVisibility(View.GONE);
@@ -160,7 +200,19 @@ public class WeiboItemView extends FrameLayout{
 		if (model.retweetedContent != null) {
 			holder.photogrid.setVisibility(View.GONE);
 			holder.retweeted.setVisibility(View.VISIBLE);
-			holder.retweetedText.setText(model.retweetedContent.getSpannableString());
+			model.retweetedContent.setContext(getContext());
+			SpannableString spannableString1 = model.retweetedContent.getSpannableString();
+			spannableString1.setSpan(new MyClickSpan(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					if(onWeiboItemClickListener != null){
+						onWeiboItemClickListener.onItemClick(model);
+					}
+					
+				}
+			}), 0, spannableString1.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			holder.retweetedText.setText(spannableString1);
 //			holder.retweetedText.setText(model.retweetedContent.text);
 			holder.retweetedCount.setText("转发（"+model.retweetedContent.count.share+"）| 评论（"+model.retweetedContent.count.comment+"）");
 			if (model.retweetedContent.photos != null) {
@@ -278,7 +330,13 @@ public class WeiboItemView extends FrameLayout{
 			this.photos = photos;
 			this.count = count;
 		}
-
+		
+		private transient Context context;
+		
+		public void setContext(Context context) {
+			this.context = context;
+		}
+		
 		public SpannableString getSpannableString() {
 			if (spannableString == null) {
 				ArrayList<WeiboSymboResult> list = WeiboUtils.build(text,
@@ -286,7 +344,9 @@ public class WeiboItemView extends FrameLayout{
 
 							@Override
 							public void OnSymbolClick(WeiboSymbol symbol) {
-								System.out.println(symbol);
+								if(symbol.getSymbol() == Synbol.URL){
+									WebViewActivity.open(context, symbol.getText());
+								}
 
 							}
 						});

@@ -10,10 +10,12 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.WebViewActivity;
 import cn.cntv.cctv11.android.adapter.WeiboCommentListAdapter.HeaderAnimation.Direct;
 import cn.cntv.cctv11.android.adapter.WeiboCommentListAdapter.TitleItem.Current;
 import cn.cntv.cctv11.android.utils.WeiboUtils;
 import cn.cntv.cctv11.android.utils.WeiboUtils.OnSymbolClickLisenter;
+import cn.cntv.cctv11.android.utils.WeiboUtils.Synbol;
 import cn.cntv.cctv11.android.utils.WeiboUtils.WeiboSymboResult;
 import cn.cntv.cctv11.android.utils.WeiboUtils.WeiboSymbol;
 
@@ -63,6 +65,12 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 			this.content = content;
 			this.time = time;
 		}
+		
+		private transient Context context;
+		
+		public void setContext(Context context) {
+			this.context = context;
+		}
 
 		public SpannableString getSpannableString() {
 			if (spannableString == null) {
@@ -71,7 +79,9 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 
 							@Override
 							public void OnSymbolClick(WeiboSymbol symbol) {
-								System.out.println(symbol);
+								if(symbol.getSymbol() == Synbol.URL){
+									WebViewActivity.open(context, symbol.getText());
+								}
 
 							}
 						});
@@ -258,6 +268,8 @@ public class WeiboCommentListAdapter extends BaseAdapter implements
 		} else {
 			CommentItem item = (CommentItem) datas.get(position);
 
+			item.setContext(context);
+			
 			holder.commentItemHolder.name.setText(item.name);
 
 			holder.commentItemHolder.content.setText(item.getSpannableString());
