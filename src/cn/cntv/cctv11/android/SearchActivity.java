@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.cntv.cctv11.android.adapter.NewsListAdapter;
+import cn.cntv.cctv11.android.adapter.VideoListAdapter;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.SimpleRequestHandler;
 import cn.cntv.cctv11.android.fragment.network.CategoryRequest.Category;
 import cn.cntv.cctv11.android.fragment.network.ContentsRequest;
@@ -24,13 +25,16 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class SearchActivity extends BaseActivity implements OnClickListener,
-		TextWatcher, OnScrollListener, OnEditorActionListener {
+		TextWatcher, OnScrollListener, OnEditorActionListener,OnItemClickListener{
 
 	public static <T> ArrayList<T> copyList(List<T> source) {
 		ArrayList<T> dest = new ArrayList<T>();
@@ -84,9 +88,9 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 		category = model.categories.get(0);
 		setContentView(R.layout.search_layout);
 		findViewById(R.id.back).setOnClickListener(this);
-		adapter = new NewsListAdapter(this, list);
+		
 		listView = (ListView) findViewById(R.id.listview);
-		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(this);
 		
 		View footer = LayoutInflater.from(this).inflate(
 				R.layout.footer_loading, null);
@@ -125,9 +129,11 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 
 	private int pagesize = 30;
 
-	private List<NewsListAdapter.Model> list = new ArrayList<NewsListAdapter.Model>();
+	private List<NewsListAdapter.Model> list1;
 
-	private NewsListAdapter adapter;
+	private List<VideoListAdapter.Model> list2;
+	
+	private BaseAdapter adapter;
 
 	private void request() {
 		String content = editText.getText().toString();
@@ -135,7 +141,15 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 			return;
 		}
 		if(pageno == 1){
-			list.clear();
+			if(category.getCategoryname().equals("视频")){
+				list2 = new ArrayList<VideoListAdapter.Model>();
+				adapter = new VideoListAdapter(this, list2);
+			}else{
+				list1 = new ArrayList<NewsListAdapter.Model>();
+				adapter = new NewsListAdapter(this, list1);
+			}
+			
+			listView.setAdapter(adapter);
 			adapter.notifyDataSetChanged();
 		}
 		mFooterLoading.setVisibility(View.GONE);
@@ -150,17 +164,19 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 					mFooterLoading.setVisibility(View.GONE);
 					return;
 				}
-				List<NewsListAdapter.Model> models = News.toNewsList(result
-						.getList());
-				if (pageno == 1) {
-					list.clear();
+				List<?> models = null;
+				if(category.getCategoryname().equals("视频")){
+					models = News.toVideoList(result.getList());
+					list2.addAll((List<VideoListAdapter.Model>)models);
+				}else{
+					models = News.toNewsList(result.getList());
+					list1.addAll((List<NewsListAdapter.Model>)models);
 				}
 				if (models.size() >= pagesize) {
 					mFooterLoading.setVisibility(View.VISIBLE);
 				} else {
 					mFooterLoading.setVisibility(View.GONE);
 				}
-				list.addAll(models);
 				adapter.notifyDataSetChanged();
 
 			}
@@ -243,6 +259,20 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		
+		
+		
+		if(TextUtils.equals(category.getCategoryname(),"视频")){
+			VideoCommentActivity.open(this, list2.get(position).toCommentModel());
+		}else{
+			SpecialDetailActivity.open(this, list1.get(position).toDetailParams());
+		}
+		
 	}
 
 	

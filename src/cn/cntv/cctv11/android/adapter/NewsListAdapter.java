@@ -8,6 +8,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.VideoCommentActivity;
 import cn.cntv.cctv11.android.SpecialDetailActivity.Params;
 
 
@@ -42,6 +43,10 @@ public class NewsListAdapter extends BaseAdapter implements Serializable,PinnedS
 				this.text = text;
 			}
 			
+			public String getText() {
+				return text;
+			}
+			
 			
 		}
 		
@@ -61,8 +66,12 @@ public class NewsListAdapter extends BaseAdapter implements Serializable,PinnedS
 
 		private boolean isZhuanlan;
 		
+		private String url;
 		
 		
+		public VideoCommentActivity.Model toCommentModel(){
+			return new VideoCommentActivity.Model(id, comment, title, img, url);
+		}
 		public Model(String id, String img, String title, int comment,
 				boolean isNew, Category category, String subtitle,
 				boolean isZhuanlan) {
@@ -75,6 +84,10 @@ public class NewsListAdapter extends BaseAdapter implements Serializable,PinnedS
 			this.category = category;
 			this.subtitle = subtitle;
 			this.isZhuanlan = isZhuanlan;
+		}
+		
+		public Category getCategory() {
+			return category;
 		}
 
 		public Params toDetailParams(){
