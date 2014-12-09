@@ -17,6 +17,8 @@ import cn.cntv.cctv11.android.fragment.network.StageRequest;
 import cn.cntv.cctv11.android.fragment.network.StageRequest.DateCount;
 import cn.cntv.cctv11.android.fragment.network.StageRequest.Result;
 import cn.cntv.cctv11.android.utils.CalendarUtils;
+import cn.cntv.cctv11.android.utils.CalendarUtils.CalendarDate;
+import cn.cntv.cctv11.android.utils.CalendarUtils.CurrentCalendarList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +70,8 @@ public class StageCalendarFragment extends BaseFragment implements OnCalendarGri
 	private Date getEndDate() {
 		return getRelativeMonth(4);
 	}
+	
+	private CalendarDate current;
 
 	private List<CalendarListAdapter.Model> getModels(Date start, Date end,List<DateCount> dateCounts) {
 		int sy = DateUtils.toCalendar(start).get(Calendar.YEAR),ey = DateUtils.toCalendar(end).get(Calendar.YEAR),
@@ -80,8 +84,12 @@ public class StageCalendarFragment extends BaseFragment implements OnCalendarGri
 			calendar.add(Calendar.MONTH, i);
 			int year = calendar.get(Calendar.YEAR), month = calendar
 					.get(Calendar.MONTH)+1;
+			CurrentCalendarList model = CalendarUtils.getDay(year, month, dateCounts);
+			if(model.getCurrent() != null){
+				current = model.getCurrent();
+			}
 			
-			list.add(new CalendarListAdapter.Model(calendar.getTime(), CalendarUtils.getDay(year, month, dateCounts)));
+			list.add(new CalendarListAdapter.Model(calendar.getTime(), model.getList()));
 		}
 		
 		return list;
@@ -106,6 +114,7 @@ public class StageCalendarFragment extends BaseFragment implements OnCalendarGri
 			public void onSuccess(Object object) {
 				result = (StageRequest.Result) object;
 				list.addAll(getModels(startDate, endDate, result.getDateCounts()));
+				adapter.setLast(current);
 				adapter.notifyDataSetChanged();
 			}
 		});

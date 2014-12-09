@@ -57,8 +57,29 @@ public class CalendarUtils {
 		calendar.setTime(date);
 		return calendar.get(Calendar.MONTH);
 	}
+	
+	public static class CurrentCalendarList{
+		
+		private List<CalendarDate> list;
+		
+		private CalendarDate current;
 
-	public static List<CalendarDate> getDay(int year, int month,List<DateCount> list) {
+		public CurrentCalendarList(List<CalendarDate> list, CalendarDate current) {
+			super();
+			this.list = list;
+			this.current = current;
+		}
+		
+		public CalendarDate getCurrent() {
+			return current;
+		}
+		public List<CalendarDate> getList() {
+			return list;
+		}
+		
+	}
+
+	public static CurrentCalendarList getDay(int year, int month,List<DateCount> list) {
 
 		Date startDate = getStartWeekOfMonth(year, month);
 
@@ -68,6 +89,8 @@ public class CalendarUtils {
 
 		List<CalendarDate> rows = new ArrayList<CalendarDate>();
 
+		CalendarDate current = null;
+		
 		for (int i = 0; i <= daysApart; i++) {
 
 			Date date = getDistanceDate(startDate, i);
@@ -87,11 +110,14 @@ public class CalendarUtils {
 				}
 			}
 			
-			
-			rows.add(new CalendarDate(date, enable,total));
-
+			CalendarDate calendarDate = new CalendarDate(date, enable,total);
+			if(DateUtils.isSameDay(calendarDate.getDate(),new Date())){
+				calendarDate.setSelected(true);
+				current = calendarDate;
+			}
+			rows.add(calendarDate);
 		}
-		return rows;
+		return new CurrentCalendarList(rows, current);
 
 	}
 

@@ -76,6 +76,10 @@ public class CalendarListAdapter extends BaseAdapter{
 	
 	
 	private CalendarDate last;
+	
+	public void setLast(CalendarDate last) {
+		this.last = last;
+	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
