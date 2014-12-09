@@ -6,6 +6,7 @@ import java.io.File;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.BaseActivity;
+import cn.cntv.cctv11.android.SettingActivity;
 import cn.cntv.cctv11.android.BaseActivity.OnCitySelectionListener;
 import cn.cntv.cctv11.android.BaseActivity.OnModifyPasswordListener;
 import cn.cntv.cctv11.android.BaseActivity.OnModifyPhoneListener;
@@ -64,6 +65,8 @@ public class UserSettingFragment extends BaseFragment implements
 		return inflater.inflate(R.layout.user_setting_layout, null);
 	}
 	
+	private View containerView;
+	
 	private String sid;
 
 	private ImageView avatar;
@@ -82,6 +85,8 @@ public class UserSettingFragment extends BaseFragment implements
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
+		containerView = view.findViewById(R.id.container);
+		containerView.setVisibility(View.GONE);
 		avatar = (ImageView) view.findViewById(R.id.avatar);
 		
 		city = (TextView) view.findViewById(R.id.city);
@@ -127,6 +132,7 @@ public class UserSettingFragment extends BaseFragment implements
 				}else{
 					phoneContainer.setVisibility(View.GONE);
 				}
+				containerView.setVisibility(View.VISIBLE);
 			}
 		});
 	}
@@ -154,6 +160,9 @@ public class UserSettingFragment extends BaseFragment implements
 			break;
 		case R.id.logout:
 			onlogout();
+			break;
+		case R.id.setting_btn:
+			SettingActivity.open(getActivity());
 			break;
 		default:
 			break;

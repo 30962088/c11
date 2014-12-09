@@ -127,7 +127,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 
 	private int pageno = 1;
 
-	private int pagesize = 30;
+	private int pagesize = 10;
 
 	private List<NewsListAdapter.Model> list1;
 

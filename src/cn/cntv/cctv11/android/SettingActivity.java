@@ -107,7 +107,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener,
 	}
 
 	private void onabout() {
-		// TODO Auto-generated method stub
+		AboutActivity.open(this);
 
 	}
 

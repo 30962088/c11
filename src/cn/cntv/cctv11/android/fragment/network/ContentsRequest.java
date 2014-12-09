@@ -75,7 +75,7 @@ public class ContentsRequest extends BaseClient{
 		public Model toNewsModel(){
 			Category category = null;
 			
-			if(istoutiao == 1 && categoryname != null){
+			if(categoryname != null){
 				category = new Category(getBackground(categoryid),categoryname);
 			}
 			return new Model(contentsid, attachment.attachmentimgurl, contentstitle, commentcount, false,category,poemauthor+" "+format.format(getDate()),categoryid == 3 ? true:false);

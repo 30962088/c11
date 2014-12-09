@@ -15,8 +15,8 @@
         android:gravity="center_vertical" >
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_width="36dp"
+            android:layout_height="36dp" >
 
             <com.makeramen.PhotoView
                 android:id="@+id/avatar"
