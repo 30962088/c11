@@ -24,10 +24,10 @@
 
         <RelativeLayout
             android:id="@+id/share"
-            android:layout_alignParentRight="true"
             android:layout_width="48dp"
             android:layout_height="match_parent"
-            android:gravity="center" >
+            android:gravity="center" 
+            android:visibility="gone">
 
             <View
                 android:layout_width="17dp"

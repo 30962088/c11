@@ -9,14 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <View 
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_width="88.5dp"
-        android:layout_height="33.5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="44dp"
-        android:background="@drawable/icon_focus"/>
     
     
     
@@ -43,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:gravity="center"
+        android:gravity="left"
         android:ellipsize="end"
         android:textColor="#fff"
 		android:textSize="16sp"

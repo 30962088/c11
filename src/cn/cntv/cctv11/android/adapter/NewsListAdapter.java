@@ -155,7 +155,7 @@ public class NewsListAdapter extends BaseAdapter implements Serializable,PinnedS
 
 		holder.title.setText(model.title);
 
-		holder.comment.setText("" + model.comment);
+		holder.comment.setText("" + model.comment+"评论");
 
 		holder.isNew.setVisibility(model.isNew ? View.VISIBLE : View.GONE);
 		

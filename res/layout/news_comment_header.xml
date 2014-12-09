@@ -17,10 +17,11 @@
             android:text="京剧《翠屏山》上海戏剧学院演出"
             android:paddingLeft="13dp"
             android:paddingRight="13dp"
-            android:paddingTop="9dp"
-            android:paddingBottom="9dp"/>
+            android:paddingTop="23dp"
+            android:paddingBottom="23dp"/>
         
         <LinearLayout 
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="43dp"
             android:background="#eaeaea"
