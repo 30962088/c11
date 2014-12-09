@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.http.Header;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import cn.cntv.cctv11.android.adapter.BBSListAdapter;
 import cn.cntv.cctv11.android.adapter.WeiboListAdapter;
@@ -34,12 +35,22 @@ public class GetTopicRequest extends BaseClient {
 		private String commentid;
 		private String userimgguid;
 		private String userimgformat;
+		private String uploadimgguid;
+		private String uploadimgformat;
 		private String userimgurl;
 		private int commentcount;
 		private String colstatus;
 		public BBSListAdapter.Model toModel(){
-			return new BBSListAdapter.Model(topicid,topictitle,topiccontent,userimgurl, username, getDate(), commentcount,userid,commentid);
+			return new BBSListAdapter.Model(topicid,topictitle,topiccontent,userimgurl, username, getDate(), commentcount,userid,commentid,getUploadImg());
 		}
+		
+		private String getUploadImg(){
+			if(!TextUtils.isEmpty(uploadimgguid)){
+				return BaseClient.getImage(uploadimgguid, uploadimgformat);
+			}
+			return null;
+		}
+		
 		private Date getDate(){
 			long count = Long.parseLong(datetime.replaceAll("\\/Date\\((.*)\\)\\/", "$1"));
 			return new Date(count);

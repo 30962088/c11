@@ -41,7 +41,7 @@ public class GetSingerInfoRequest extends BaseClient{
 			return singername;
 		}
 		public String getSingerimgurl() {
-			return singerimgurl;
+			return BaseClient.getImage(singerimgguid, singerimgformat);
 		}
 		
 		public String getAddress() {

@@ -4,6 +4,7 @@ import com.mengle.lib.wiget.ConfirmDialog;
 
 import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.BBSListActivity;
+import cn.cntv.cctv11.android.BBSPublishActivity;
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.SettingActivity;
 import cn.cntv.cctv11.android.utils.CacheManager;
@@ -59,7 +60,7 @@ public class BBSHeaderView extends FrameLayout{
 			switch (v.getId()) {
 			case R.id.publish_btn:
 				if(check()){
-					
+					BBSPublishActivity.open(getContext());
 				}
 				break;
 			case R.id.published_btn:

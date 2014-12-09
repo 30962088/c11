@@ -40,12 +40,15 @@ public class BBSDetailHeaderView extends FrameLayout{
 	private TextView timeView;
 	
 	private TextView contentView;
+	
+	private ImageView imgView;
 
 	private void init() {
 		LayoutInflater.from(getContext()).inflate(R.layout.bbs_detail_header, this);
 		titleView = (TextView) findViewById(R.id.title);
 		avatarView = (ImageView) findViewById(R.id.avatar);
 		nameView = (TextView) findViewById(R.id.name);
+		imgView = (ImageView) findViewById(R.id.img);
 		timeView = (TextView) findViewById(R.id.time);
 		contentView = (TextView) findViewById(R.id.content);
 	}
@@ -56,6 +59,9 @@ public class BBSDetailHeaderView extends FrameLayout{
 		nameView.setText(model.name);
 		timeView.setText(model.time);
 		contentView.setText(model.content);
+		if(model.img != null){
+			ImageLoader.getInstance().displayImage(model.img, imgView,DisplayOptions.IMG.getOptions());
+		}
 	}
 	
 	public static class Model implements Serializable{
@@ -67,11 +73,14 @@ public class BBSDetailHeaderView extends FrameLayout{
 		private String content;
 		private String userid;
 		private String commentid;
+		private String img;
 		
 		
 
+		
 		public Model(String id, String title, String avatar, String name,
-				String time, String content, String userid, String commentid) {
+				String time, String content, String userid, String commentid,
+				String img) {
 			super();
 			this.id = id;
 			this.title = title;
@@ -81,6 +90,7 @@ public class BBSDetailHeaderView extends FrameLayout{
 			this.content = content;
 			this.userid = userid;
 			this.commentid = commentid;
+			this.img = img;
 		}
 		public String getId() {
 			return id;

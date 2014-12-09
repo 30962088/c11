@@ -8,8 +8,67 @@ import cn.cntv.cctv11.android.APP;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
+import android.media.ThumbnailUtils;
 
 public class CropImageUtils {
+	
+	public static Bitmap thumbnail(String source,int width){
+		
+		Options opts = new Options();
+        opts.inJustDecodeBounds = true; //设置为true, 加载器不会返回图片, 而是设置Options对象中以out开头的字段.即仅仅解码边缘区域
+        BitmapFactory.decodeFile(source, opts);
+        
+        // 得到图片的宽和高
+        int imageWidth = opts.outWidth;
+        int imageHeight = opts.outHeight;
+
+        int screenWidth = width;
+        int screenHeight = imageWidth*opts.outHeight/imageHeight;
+        
+        // 计算缩放比例
+        int widthScale = imageWidth / screenWidth;
+        int heightScale = imageHeight / screenHeight;
+        
+        int scale = widthScale > heightScale ? widthScale:heightScale;        
+         // 指定加载可以加载出图片.
+        opts.inJustDecodeBounds = false;
+        // 使用计算出来的比例进行缩放
+        opts.inSampleSize = scale;
+        Bitmap bm = BitmapFactory.decodeFile(source, opts);
+        return bm;
+		
+	}
+	
+	public static File thumnailFile(String source,int width){
+		FileOutputStream out = null;
+		File outputDir = APP.getInstance().getCacheDir();
+		File outputFile = null;
+		Bitmap bitmap = null;
+		try {
+			outputFile = File.createTempFile("prefix", ".jpg", outputDir);
+			bitmap = thumbnail(source, width);
+			out = new FileOutputStream(outputFile);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if (out != null) {
+					out.close();
+				}
+				if (bitmap != null && !bitmap.isRecycled()) {
+					bitmap.recycle();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return outputFile;
+	}
+	
 	private static Bitmap resizeBitmap(String photoPath, int targetW,
 			int targetH) {
 		Bitmap bitmap = getBitmapFromFile(new File(photoPath), targetW, targetH);

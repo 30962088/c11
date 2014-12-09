@@ -35,8 +35,9 @@ public class BBSListAdapter extends BaseAdapter implements Serializable,PinnedSe
 		private int comment;
 		private String userid;
 		private String commentid;
+		private String img;
 		public Model(String id, String title, String content,String avatar, String nickname,
-				Date time, int comment,String userid,String commentid) {
+				Date time, int comment,String userid,String commentid,String img) {
 			super();
 			this.id = id;
 			this.title = title;
@@ -47,9 +48,10 @@ public class BBSListAdapter extends BaseAdapter implements Serializable,PinnedSe
 			this.comment = comment;
 			this.userid= userid;
 			this.commentid = commentid;
+			this.img = img;
 		}
 		public BBSDetailHeaderView.Model toModel(){
-			return new BBSDetailHeaderView.Model(id, title, avatar, nickname, time, content,userid,commentid);
+			return new BBSDetailHeaderView.Model(id, title, avatar, nickname, time, content,userid,commentid,img);
 		}
 		
 

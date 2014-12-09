@@ -183,7 +183,15 @@
                 <action android:name="android.intent.action.MAIN" /> />
             </intent-filter>
         </activity>
-        
+        <activity
+            android:name=".BBSPublishActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboard|keyboardHidden"
+            android:windowSoftInputMode="adjustResize" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" /> />
+            </intent-filter>
+        </activity>
         
         
         <activity
