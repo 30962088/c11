@@ -2,6 +2,7 @@ package cn.cntv.cctv11.android.fragment;
 
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
@@ -49,11 +50,13 @@ public class ProgramFragment extends BaseFragment{
 		request.request(new BaseClient.SimpleRequestHandler(){
 			@Override
 			public void onSuccess(Object object) {
-				GetProgramRequest.Result result = (GetProgramRequest.Result)object;
+				final GetProgramRequest.Result result = (GetProgramRequest.Result)object;
 				if(result.getResult() == 1000){
 					String html;
 					try {
-						html = HtmlUtils.getHtml(getActivity(), "template.html", result.getContent());
+						html = HtmlUtils.getHtml(getActivity(), "template.html", new HashMap<String, String>(){{
+							put("content", result.getContent());
+						}});
 						webView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
 						
 					} catch (IOException e) {

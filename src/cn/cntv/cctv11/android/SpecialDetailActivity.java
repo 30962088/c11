@@ -1,7 +1,10 @@
 package cn.cntv.cctv11.android;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashMap;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.Header;
 
 import com.mengle.lib.utils.Utils;
@@ -12,6 +15,7 @@ import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
 import cn.cntv.cctv11.android.fragment.network.DescripitionRequest;
 import cn.cntv.cctv11.android.fragment.network.DescripitionRequest.Result;
 import cn.cntv.cctv11.android.fragment.network.InsertCommentRequest;
+import cn.cntv.cctv11.android.utils.HtmlUtils;
 import cn.cntv.cctv11.android.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -110,15 +114,11 @@ public class SpecialDetailActivity extends BaseActivity implements
 
 		private WebSettings settings;
 
-		private ScrollView scrollView;
+		private int fontSize = APP.getSession().getFontSize();
 
-		private final TextSize[] TEXTSIZE1 = new TextSize[] {
-				TextSize.SMALLEST, TextSize.SMALLER, TextSize.NORMAL,
-				TextSize.LARGER, TextSize.LARGEST };
+		private int fonts[] = new int[] { 10, 14, 18, 22, 26 };
 
-		private final int[] TEXTSIZE2 = new int[] { 50, 75, 100, 150, 200 };
-
-		private int scale = 3;
+		private int fontIndex = ArrayUtils.indexOf(fonts, fontSize);
 
 		public ViewHolder(int template) {
 			((ViewStub) findViewById(template)).inflate();
@@ -150,22 +150,10 @@ public class SpecialDetailActivity extends BaseActivity implements
 
 						}
 					});
-			scrollView = (ScrollView) findViewById(R.id.scrollview);
 			webView = (WebView) findViewById(R.id.webView);
 			webView.setBackgroundColor(Color.TRANSPARENT);
 			settings = webView.getSettings();
 			settings.setJavaScriptEnabled(true);
-			settings.setJavaScriptCanOpenWindowsAutomatically(true);
-			webView.setWebChromeClient(new WebChromeClient() {
-				@Override
-				public boolean onConsoleMessage(ConsoleMessage cm) {
-					Log.d("MyApplication",
-							cm.message() + " -- From line " + cm.lineNumber()
-									+ " of " + cm.sourceId());
-					return true;
-				}
-			});
-			
 
 			coverView = (ImageView) findViewById(R.id.cover);
 			title = (TextView) findViewById(R.id.title);
@@ -176,7 +164,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 
 		private String html;
 
-		private void setModel(Model model) {
+		private void setModel(final Model model) {
 			if (model.title != null) {
 				title.setText(model.title);
 			}
@@ -193,47 +181,43 @@ public class SpecialDetailActivity extends BaseActivity implements
 				ImageLoader.getInstance().displayImage(model.cover, coverView,
 						DisplayOptions.IMG.getOptions());
 			}
-			StringBuilder sb = new StringBuilder();
-			sb.append("<!doctype html><html><head><meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'><style>body{background:rgba(255,255,255,0)}</style></head><body>");
-			sb.append(model.html);
-			sb.append("</body></html>");
-			html = sb.toString();
-			loadHtml();
+			if (model.html != null) {
+
+				try {
+					html = HtmlUtils.getHtml(SpecialDetailActivity.this,
+							"desc_template.html",
+							new HashMap<String, String>() {
+								{
+									put("content", model.html);
+									put("font-size", "" + fontSize);
+								}
+							});
+					webView.loadDataWithBaseURL(null, html, "text/html",
+							"utf-8", null);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 
-		private void loadHtml() {
-			webView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
+		private void setFontSize(int fontSize) {
+			APP.getSession().setFontSize(fontSize);
+			webView.loadUrl("javascript:setFontSize(" + fontSize + ")");
 		}
 
 		private void scaleUp() {
-			if (scale <= TEXTSIZE1.length - 2) {
-				scale++;
-				reloadWebview();
+			if (fontIndex < fonts.length - 1) {
+				fontIndex++;
 			}
-		}
-
-		@SuppressLint("NewApi")
-		private void reloadWebview() {
-			if (Build.VERSION.SDK_INT >= 14) {
-				settings.setTextZoom(TEXTSIZE2[scale]);
-			} else {
-				settings.setTextSize(TEXTSIZE1[scale]);
-			}
-			webView.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					webView.clearView();
-					loadHtml();
-					webView.requestLayout();
-				}
-			}, 10);
+			setFontSize(fonts[fontIndex]);
 		}
 
 		private void scaleDown() {
-			if (scale >= 1) {
-				scale--;
-				reloadWebview();
+			if (fontIndex > 0) {
+				fontIndex--;
 			}
+			setFontSize(fonts[fontIndex]);
 		}
 
 	}
@@ -287,7 +271,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 			@Override
 			public void onComplete() {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
@@ -297,38 +281,41 @@ public class SpecialDetailActivity extends BaseActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.comment_btn:
-			NewsCommentActivity.open(this, new NewsCommentActivity.Model(params.contentId, params.comment, params.title));
+			NewsCommentActivity.open(this, new NewsCommentActivity.Model(
+					params.contentId, params.comment, params.title));
 			break;
 		case R.id.sendBtn:
 			String content = holder.editText.getText().toString();
-			new InsertCommentRequest(this, new  InsertCommentRequest.Params(params.contentId,"0", "0", "134", content)).request(new RequestHandler() {
-				
-				@Override
-				public void onSuccess(Object object) {
-					Utils.tip(SpecialDetailActivity.this, "评论成功");
-					holder.editText.setText("");
-					
-				}
-				
-				@Override
-				public void onServerError(int arg0, Header[] arg1, byte[] arg2,
-						Throwable arg3) {
-					Utils.tip(SpecialDetailActivity.this, "评论失败");
-					
-				}
-				
-				@Override
-				public void onError(int error) {
-					Utils.tip(SpecialDetailActivity.this, "评论失败");
-					
-				}
+			new InsertCommentRequest(this, new InsertCommentRequest.Params(
+					params.contentId, "0", "0", "134", content))
+					.request(new RequestHandler() {
 
-				@Override
-				public void onComplete() {
-					// TODO Auto-generated method stub
-					
-				}
-			});
+						@Override
+						public void onSuccess(Object object) {
+							Utils.tip(SpecialDetailActivity.this, "评论成功");
+							holder.editText.setText("");
+
+						}
+
+						@Override
+						public void onServerError(int arg0, Header[] arg1,
+								byte[] arg2, Throwable arg3) {
+							Utils.tip(SpecialDetailActivity.this, "评论失败");
+
+						}
+
+						@Override
+						public void onError(int error) {
+							Utils.tip(SpecialDetailActivity.this, "评论失败");
+
+						}
+
+						@Override
+						public void onComplete() {
+							// TODO Auto-generated method stub
+
+						}
+					});
 			break;
 		default:
 			break;

@@ -21,6 +21,13 @@ public class Preferences {
 			this.context = context;
 		}
 
+		public void setFontSize(int fontSize){
+			preferences.edit().putInt("fontSize", fontSize).commit();
+		}
+		
+		public int getFontSize(){
+			return preferences.getInt("fontSize", 14);
+		}
 		
 		public void clearWeibo(){
 			setWeiboAccessToken(null);
