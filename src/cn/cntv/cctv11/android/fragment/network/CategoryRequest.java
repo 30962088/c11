@@ -44,7 +44,7 @@ public class CategoryRequest extends BaseClient {
 			if(TextUtils.equals("视频", categoryname)){
 				fragment = VideoListFragment.newInstance(categoryid);
 			}else{
-				fragment = NewsFragment.newInstance(categoryid);
+				fragment = NewsFragment.newInstance(categoryid,categoryname);
 			}
 			return new TabsAdapter.Pager(categoryname,
 					fragment);

@@ -11,6 +11,7 @@ import cn.cntv.cctv11.android.fragment.network.CategoryRequest.Category;
 import cn.cntv.cctv11.android.fragment.network.ContentsRequest;
 import cn.cntv.cctv11.android.fragment.network.ContentsRequest.News;
 import cn.cntv.cctv11.android.fragment.network.SearchRequest;
+import cn.cntv.cctv11.android.utils.LoadingPopup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -146,7 +147,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 				adapter = new VideoListAdapter(this, list2);
 			}else{
 				list1 = new ArrayList<NewsListAdapter.Model>();
-				adapter = new NewsListAdapter(this, list1);
+				adapter = new NewsListAdapter(this, list1,true);
 			}
 			
 			listView.setAdapter(adapter);
@@ -156,6 +157,9 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 		SearchRequest request = new SearchRequest(this,
 				new SearchRequest.Params(content,
 						"" + category.getCategoryid(), pageno, pagesize));
+		if(pageno == 1){
+			LoadingPopup.show(this);
+		}
 		request.request(new SimpleRequestHandler() {
 			@Override
 			public void onSuccess(Object object) {
@@ -179,6 +183,10 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 				}
 				adapter.notifyDataSetChanged();
 
+			}
+			@Override
+			public void onComplete() {
+				LoadingPopup.hide(SearchActivity.this);
 			}
 		});
 

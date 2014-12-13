@@ -112,11 +112,14 @@ public class NewsListAdapter extends BaseAdapter implements Serializable,PinnedS
 	private Context context;
 
 	private List<Model> list;
+	
+	private boolean showCategory;
 
-	public NewsListAdapter(Context context, List<Model> list) {
+	public NewsListAdapter(Context context, List<Model> list,boolean showCategory) {
 		super();
 		this.context = context;
 		this.list = list;
+		this.showCategory = showCategory;
 	}
 
 	@Override
@@ -159,7 +162,7 @@ public class NewsListAdapter extends BaseAdapter implements Serializable,PinnedS
 
 		holder.isNew.setVisibility(model.isNew ? View.VISIBLE : View.GONE);
 		
-		if(model.category != null){
+		if(showCategory && model.category != null){
 			holder.category.setVisibility(View.VISIBLE);
 			holder.category.setText(model.category.text);
 			holder.category.setBackgroundResource(model.category.background.background);

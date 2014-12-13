@@ -19,6 +19,7 @@ import cn.cntv.cctv11.android.widget.BaseListView.OnLoadListener;
 import cn.cntv.cctv11.android.widget.BaseListView.RequestResult;
 import cn.cntv.cctv11.android.widget.BaseListView.Type;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,15 +28,18 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class NewsFragment extends BaseFragment implements OnLoadListener,OnSliderItemClickListener,OnItemClickListener{
 	
-	public static NewsFragment newInstance(int categoryId){
+	public static NewsFragment newInstance(int categoryId,String categoryName){
 		NewsFragment fragment = new NewsFragment();
 		Bundle args = new Bundle();
 		args.putInt("categoryId", categoryId);
+		args.putString("categoryName", categoryName);
 		fragment.setArguments(args);
 		return fragment;
 	}
 	
 	private int categoryId;
+	
+	private String categoryName;
 	
 	public NewsFragment() {
 		// TODO Auto-generated constructor stub
@@ -45,6 +49,7 @@ public class NewsFragment extends BaseFragment implements OnLoadListener,OnSlide
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		categoryName = getArguments().getString("categoryName");
 		categoryId = getArguments().getInt("categoryId");
 	}
 	
@@ -72,7 +77,11 @@ public class NewsFragment extends BaseFragment implements OnLoadListener,OnSlide
 		listView.getRefreshableView().addHeaderView(listHeader);
 		listView.setOnItemClickListener(this);
 		listHeaderInner = listHeader.findViewById(R.id.list_header);
-		adapter = new NewsListAdapter(getActivity(), list);
+		boolean showCategory = false;
+		if(TextUtils.equals(categoryName, "头条")){
+			showCategory = true;
+		}
+		adapter = new NewsListAdapter(getActivity(), list,showCategory);
 		listView.setAdapter(adapter);
 		listView.load(true);
 	}

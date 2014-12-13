@@ -109,12 +109,21 @@ public class BaseListView extends PullToRefreshPinnedSectionListView {
 			}
 		});
 	}
+	
+	public void load2(){
+		_load(true);
+	}
 
-	public void load(boolean refresh) {
+	public void load(boolean refresh){
+		setRefreshing(true);
+		_load(true);
+	}
+	
+	private void _load(boolean refresh) {
 		final Type type = onLoadListener.getRequestType();
 		hasMode = false;
 		if (refresh) {
-			setRefreshing(true);
+			
 			if (type == Type.PAGE) {
 				offset = 1;
 			} else {

@@ -154,7 +154,7 @@ public class NewsCommentActivity extends BaseActivity implements OnLoadListener,
 				public void onSuccess(Object object) {
 					Utils.tip(NewsCommentActivity.this, "评论成功");
 					editText.setText("");
-					listView.load(true);
+//					listView.load(true);
 					
 				}
 				
