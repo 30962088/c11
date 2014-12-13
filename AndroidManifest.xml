@@ -200,6 +200,15 @@
                 <action android:name="android.intent.action.MAIN" /> />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".FeedBackActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboard|keyboardHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" /> />
+            </intent-filter>
+        </activity>
+        
         
         <activity
             android:name="com.tencent.tauth.AuthActivity"

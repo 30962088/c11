@@ -15,8 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Adapter;
+import com.viewpagerindicator.TabPageIndicator.OnTabScrollListener;
 
-public class MainFragment1 extends BaseFragment implements OnClickListener{
+public class MainFragment1 extends BaseFragment implements OnClickListener,OnTabScrollListener{
 	
 	
 	public static MainFragment1 newInstance(){
@@ -40,13 +41,17 @@ public class MainFragment1 extends BaseFragment implements OnClickListener{
 	
 	private ViewPager pager;
 	
+	private View arrowView;
+	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
+		arrowView = view.findViewById(R.id.arrow);
 		view.findViewById(R.id.search_btn).setOnClickListener(this);
 		pager = (ViewPager) view.findViewById(R.id.pager);
 		indicator = (TabPageIndicator) view.findViewById(R.id.indicator);
+		indicator.setOnTabScrollListener(this);
 		request();
 	}
 	
@@ -76,6 +81,12 @@ public class MainFragment1 extends BaseFragment implements OnClickListener{
 		default:
 			break;
 		}
+		
+	}
+
+	@Override
+	public void isLastVisible(boolean visible) {
+		arrowView.setVisibility(visible?View.GONE:View.VISIBLE);
 		
 	}
 

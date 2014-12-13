@@ -38,6 +38,9 @@ public class LiveListAdapter extends BaseAdapter implements Serializable,PinnedS
 			this.name = name;
 			this.state = state;
 		}
+		public State getState() {
+			return state;
+		}
 
 	}
 

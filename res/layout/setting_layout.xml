@@ -217,6 +217,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
+                    android:visibility="gone"
                     android:paddingLeft="15dp"
                     android:paddingRight="7dp" >
 
@@ -235,6 +236,7 @@
                 </LinearLayout>
 
                 <View
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#e3e3e3" />

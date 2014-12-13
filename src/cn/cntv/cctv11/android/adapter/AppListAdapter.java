@@ -1,7 +1,6 @@
 package cn.cntv.cctv11.android.adapter;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import com.hb.views.PinnedSectionListView.PinnedSectionListAdapter;
@@ -9,15 +8,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.R;
-import cn.cntv.cctv11.android.SpecialDetailActivity.Params;
-import cn.cntv.cctv11.android.utils.RelativeDateFormat;
-import cn.cntv.cctv11.android.widget.BBSDetailHeaderView;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -27,8 +22,29 @@ import android.widget.TextView;
 public class AppListAdapter extends BaseAdapter implements Serializable,PinnedSectionListAdapter {
 
 	public enum Status{
-		DOWNLOAD,OPEN
+		DOWNLOAD(R.drawable.border_red,"下载",Color.parseColor("#4b5187")),
+		INSTALLOPEN(R.drawable.border_pink,"打开",Color.parseColor("#ef3d23")),
+		OPEN(R.drawable.border_pink,"打开",Color.parseColor("#ef3d23"));
+		
+		private int background;
+		private String text;
+		private int textColor;
+		private Status(int background, String text, int textColor) {
+			this.background = background;
+			this.text = text;
+			this.textColor = textColor;
+		}
+		public int getBackground() {
+			return background;
+		}
+		public String getText() {
+			return text;
+		}
+		public int getTextColor() {
+			return textColor;
+		}
 	}
+	
 	public static class Model implements Serializable {
 		private String img;
 		private String title;
@@ -93,16 +109,9 @@ public class AppListAdapter extends BaseAdapter implements Serializable,PinnedSe
 		holder.title.setText(model.title);
 		holder.desc.setText(model.desc);
 		ImageLoader.getInstance().displayImage(model.img, holder.img,DisplayOptions.IMG.getOptions());
-		switch (model.status) {
-		case DOWNLOAD:
-			holder.openBtn.setVisibility(View.GONE);
-			holder.downloadBtn.setVisibility(View.VISIBLE);
-			break;
-		case OPEN:
-			holder.openBtn.setVisibility(View.VISIBLE);
-			holder.downloadBtn.setVisibility(View.GONE);
-			break;
-		}
+		holder.btn.setBackgroundResource(model.status.getBackground());
+		holder.btn.setText(model.status.getText());
+		holder.btn.setTextColor(model.status.getTextColor());
 		
 		return convertView;
 	}
@@ -115,16 +124,13 @@ public class AppListAdapter extends BaseAdapter implements Serializable,PinnedSe
 		
 		private TextView desc;
 		
-		private View downloadBtn;
-		
-		private View openBtn;
+		private TextView btn;
 
 		public ViewHolder(View view) {
 			img = (ImageView) view.findViewById(R.id.img);
 			title = (TextView) view.findViewById(R.id.title);
 			desc = (TextView) view.findViewById(R.id.desc);
-			downloadBtn = view.findViewById(R.id.download_btn);
-			openBtn = view.findViewById(R.id.open_btn);
+			btn = (TextView) view.findViewById(R.id.btn);
 		}
 
 	}

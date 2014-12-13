@@ -7,6 +7,7 @@ import org.apache.http.Header;
 
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.adapter.LiveListAdapter;
+import cn.cntv.cctv11.android.adapter.LiveListAdapter.Model.State;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
 import cn.cntv.cctv11.android.fragment.network.GetLiveUrlRequest;
 import cn.cntv.cctv11.android.fragment.network.LiveProgramRequest;
@@ -64,6 +65,8 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 	
 	private int currentPlayUrl;
 	
+	private ListView listView;
+	
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -72,7 +75,7 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 		playView = view.findViewById(R.id.play);
 		playView.setOnClickListener(this);
 		videoView = (VideoView) view.findViewById(R.id.video);
-		ListView listView = (ListView) view.findViewById(R.id.listview);
+		listView = (ListView) view.findViewById(R.id.listview);
 		adapter = new LiveListAdapter(getActivity(), list);
 		listView.setAdapter(adapter);
 		request();
@@ -132,8 +135,17 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 				}
 				list.clear();
 				Result result = (Result) object;
-				list.addAll(result.toLiveList());
+				List<LiveListAdapter.Model> models = result.toLiveList();
+				int index = 0;
+				for(int i = 0 ;i<models.size();i++){
+					if(models.get(i).getState() == State.CURRENT){
+						index = i;
+						break;
+					}
+				}
+				list.addAll(models);
 				adapter.notifyDataSetChanged();
+				listView.setSelection(index);
 
 			}
 

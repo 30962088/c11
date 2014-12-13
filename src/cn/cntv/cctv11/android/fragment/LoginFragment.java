@@ -6,6 +6,7 @@ import com.mengle.lib.utils.Utils;
 
 import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.SettingActivity;
 import cn.cntv.cctv11.android.fragment.FillInfoFragment.Model;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.SimpleRequestHandler;
@@ -66,11 +67,15 @@ public class LoginFragment extends BaseFragment implements OnClickListener,
 		view.findViewById(R.id.weibo_btn).setOnClickListener(this);
 		view.findViewById(R.id.qq_btn).setOnClickListener(this);
 		view.findViewById(R.id.login_btn).setOnClickListener(this);
+		view.findViewById(R.id.setting_btn).setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.setting_btn:
+			SettingActivity.open(getActivity());
+			break;
 		case R.id.signin:
 			getParentFragment()
 					.getChildFragmentManager()

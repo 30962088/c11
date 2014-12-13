@@ -117,7 +117,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener,
 	}
 
 	private void onfeedback() {
-		// TODO Auto-generated method stub
+		FeedBackActivity.open(this);
 
 	}
 

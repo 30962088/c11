@@ -31,7 +31,7 @@ public class VideoHeadRelativeLayout extends RelativeLayout {
 		int originalWidth = MeasureSpec.getSize(widthMeasureSpec);
 
 
-		int calculatedHeight = originalWidth /16*9;
+		int calculatedHeight = originalWidth /4*3;
 
 		
 

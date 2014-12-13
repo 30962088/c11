@@ -12,6 +12,8 @@ import cn.cntv.cctv11.android.fragment.network.ContentsRequest;
 import cn.cntv.cctv11.android.fragment.network.ContentsRequest.News;
 import cn.cntv.cctv11.android.fragment.network.SearchRequest;
 import cn.cntv.cctv11.android.utils.LoadingPopup;
+import cn.cntv.cctv11.android.widget.MyHorizontalScrollView;
+import cn.cntv.cctv11.android.widget.MyHorizontalScrollView.OnTabScrollListener;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,7 +37,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class SearchActivity extends BaseActivity implements OnClickListener,
-		TextWatcher, OnScrollListener, OnEditorActionListener,OnItemClickListener{
+		TextWatcher, OnScrollListener, OnEditorActionListener,OnItemClickListener,OnTabScrollListener{
 
 	public static <T> ArrayList<T> copyList(List<T> source) {
 		ArrayList<T> dest = new ArrayList<T>();
@@ -80,6 +82,10 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 	private View mFooterLoading;
 
 	private View lastView;
+	
+	private View arrowView;
+	
+	private MyHorizontalScrollView scrollView;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -88,6 +94,9 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 		model = (Model) getIntent().getSerializableExtra("model");
 		category = model.categories.get(0);
 		setContentView(R.layout.search_layout);
+		arrowView = findViewById(R.id.arrow);
+		scrollView = (MyHorizontalScrollView) findViewById(R.id.scrollView);
+		scrollView.setOnTabScrollListener(this);
 		findViewById(R.id.back).setOnClickListener(this);
 		
 		listView = (ListView) findViewById(R.id.listview);
@@ -280,6 +289,12 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 		}else{
 			SpecialDetailActivity.open(this, list1.get(position).toDetailParams());
 		}
+		
+	}
+
+	@Override
+	public void isLastVisible(boolean visible) {
+		arrowView.setVisibility(visible?View.GONE:View.VISIBLE);
 		
 	}
 
