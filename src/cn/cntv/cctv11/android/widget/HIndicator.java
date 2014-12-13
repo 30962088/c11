@@ -1,5 +1,7 @@
 package cn.cntv.cctv11.android.widget;
 
+import com.mengle.lib.utils.Utils;
+
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.widget.HorizontalContainer.OnItemClickListener2;
 import android.content.Context;
@@ -10,6 +12,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 public class HIndicator extends FrameLayout implements OnPageChangeListener,OnItemClickListener2{
 
@@ -30,11 +33,19 @@ public class HIndicator extends FrameLayout implements OnPageChangeListener,OnIt
 
 	private HorizontalContainer container;
 	
+	private View pop;
+	
 	private void init() {
 		LayoutInflater.from(getContext()).inflate(R.layout.hindicator, this);
+		pop = findViewById(R.id.pop);
 		container = (HorizontalContainer) findViewById(R.id.container);
 		container.setOnItemClickListener2(this);
 		container.init();
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int) (container.getSWidth()*1.5), LayoutParams.MATCH_PARENT);
+		params.topMargin = Utils.dpToPx(getContext(), 5);
+		params.bottomMargin = Utils.dpToPx(getContext(), 5);
+		params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		pop.setLayoutParams(params);
 	}
 	
 	private ViewPager viewPager;

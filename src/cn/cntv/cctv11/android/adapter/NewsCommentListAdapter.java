@@ -29,6 +29,8 @@ public class NewsCommentListAdapter extends BaseAdapter implements PinnedSection
 
 	public static class Model implements Serializable {
 
+		private String id;
+		
 		private String avatar;
 
 		private String name;
@@ -39,9 +41,10 @@ public class NewsCommentListAdapter extends BaseAdapter implements PinnedSection
 		
 		private String userid;
 
-		public Model(String avatar, String name, String content, String time,
+		public Model(String id,String avatar, String name, String content, String time,
 				String replynickname,String userid) {
 			super();
+			this.id = id;
 			this.avatar = avatar;
 			this.name = name;
 			this.content = content;
@@ -52,6 +55,10 @@ public class NewsCommentListAdapter extends BaseAdapter implements PinnedSection
 			}
 			
 		}
+		public String getId() {
+			return id;
+		}
+		
 		public String getUserid() {
 			return userid;
 		}

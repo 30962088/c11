@@ -2,7 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:focusable="true"
+    android:id="@+id/container"
+    android:focusableInTouchMode="true" >
 
     <RelativeLayout
         android:id="@+id/header_container"
@@ -26,8 +29,8 @@
             android:id="@+id/share"
             android:layout_width="48dp"
             android:layout_height="match_parent"
-            android:gravity="center" 
-            android:visibility="gone">
+            android:gravity="center"
+            android:visibility="gone" >
 
             <View
                 android:layout_width="17dp"
@@ -37,55 +40,64 @@
     </RelativeLayout>
 
     <cn.cntv.cctv11.android.widget.BaseListView
-        android:background="#faf8f7"
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"></cn.cntv.cctv11.android.widget.BaseListView>
-    
-    <LinearLayout
+        android:layout_weight="1"
+        android:background="#faf8f7" >
+    </cn.cntv.cctv11.android.widget.BaseListView>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bg_bottom_shadow"
         android:gravity="center" >
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="12dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_border1"
-            android:gravity="center"
-            android:paddingLeft="4dp"
-            android:paddingRight="7dp" >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
-            <View
-                android:layout_width="11dp"
-                android:layout_height="16dp"
-                android:background="@drawable/icon_pen" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/bg_border1"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:paddingLeft="4dp"
+                android:paddingRight="7dp" >
 
-            <EditText
-                android:id="@+id/edit"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#00000000"
-                android:hint="写跟帖"
-                android:paddingLeft="3dp"
-                android:paddingRight="3dp"
-                android:textColorHint="#6a6a6a"
-                android:textSize="15sp" />
+                <View
+                    android:layout_width="11dp"
+                    android:layout_height="16dp"
+                    android:background="@drawable/icon_pen" />
 
-            <View
-                android:id="@+id/sendBtn"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:background="@drawable/icon_send" />
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/edit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#00000000"
+                    android:hint="写跟帖"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:textColorHint="#6a6a6a"
+                    android:textSize="15sp" />
 
-        
-    </LinearLayout>
-    
+                <View
+                    android:id="@+id/sendBtn"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:background="@drawable/icon_send" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <View
+            android:id="@+id/not_login_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
 </LinearLayout>

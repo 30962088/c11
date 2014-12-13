@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +30,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		context.startActivity(intent);
 	}
+	
+	private View tab5;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		findViewById(R.id.tab2).setOnClickListener(this);
 		findViewById(R.id.tab3).setOnClickListener(this);
 		findViewById(R.id.tab4).setOnClickListener(this);
-		findViewById(R.id.tab5).setOnClickListener(this);
+		tab5 = findViewById(R.id.tab5);
+		tab5.setOnClickListener(this);
 		findViewById(R.id.tab1).performClick();
 	}
 
@@ -112,6 +116,17 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	public static final String ACTION_TOLOGIN = "action_tologin";
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		// TODO Auto-generated method stub
+		super.onNewIntent(intent);
+		if(TextUtils.equals(ACTION_TOLOGIN, intent.getAction())){
+			tab5.performClick();
+		}
 	}
 
 }

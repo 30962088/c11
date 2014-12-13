@@ -44,7 +44,7 @@ public class GetForumCommentRequest extends BaseClient{
 			return new Date(count);
 		}
 		public NewsCommentListAdapter.Model toModel(){
-			return new NewsCommentListAdapter.Model(userimgurl, username, remark, DATE_FORMAT.format(getDateTime()),isusername,userid);
+			return new NewsCommentListAdapter.Model(null,userimgurl, username, remark, DATE_FORMAT.format(getDateTime()),isusername,userid);
 		}
 	}
 	

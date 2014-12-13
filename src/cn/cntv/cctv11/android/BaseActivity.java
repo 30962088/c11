@@ -9,6 +9,7 @@ import cn.cntv.cctv11.android.utils.Preferences.Session;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow.OnItemClickListener;
 
+import com.mengle.lib.wiget.ConfirmDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.app.Activity;
@@ -212,6 +213,28 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 		default:
 			break;
 		}
+	}
+	
+	public void toLogin(){
+		ConfirmDialog.open(this, "提醒", "您需要登录才能评论", new ConfirmDialog.OnClickListener() {
+			
+			@Override
+			public void onPositiveClick() {
+				Intent intent = new Intent(BaseActivity.this, MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP
+						| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent.setAction(MainActivity.ACTION_TOLOGIN);
+				startActivity(intent);
+				
+			}
+			
+			@Override
+			public void onNegativeClick() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 	}
 	
 	public void openGuide(){

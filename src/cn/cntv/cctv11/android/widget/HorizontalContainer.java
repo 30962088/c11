@@ -43,6 +43,10 @@ public class HorizontalContainer extends LinearLayout implements OnClickListener
 	
 	private int index;
 	
+	public int getSWidth() {
+		return width;
+	}
+	
 	private OnItemClickListener2 onItemClickListener2;
 	
 	public void setOnItemClickListener2(

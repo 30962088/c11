@@ -8,6 +8,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.Header;
 
 import com.mengle.lib.utils.Utils;
+import com.mengle.lib.wiget.ConfirmDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
@@ -16,6 +17,7 @@ import cn.cntv.cctv11.android.fragment.network.DescripitionRequest;
 import cn.cntv.cctv11.android.fragment.network.DescripitionRequest.Result;
 import cn.cntv.cctv11.android.fragment.network.InsertCommentRequest;
 import cn.cntv.cctv11.android.utils.HtmlUtils;
+import cn.cntv.cctv11.android.utils.LoadingPopup;
 import cn.cntv.cctv11.android.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -113,6 +115,8 @@ public class SpecialDetailActivity extends BaseActivity implements
 		private EditText editText;
 
 		private WebSettings settings;
+		
+		
 
 		private int fontSize = APP.getSession().getFontSize();
 
@@ -174,7 +178,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 			}
 
 			if (model.comment != null) {
-				comment.setText("" + model.comment);
+				comment.setText("" + model.comment+" 跟帖");
 			}
 
 			if (model.cover != null) {
@@ -223,6 +227,8 @@ public class SpecialDetailActivity extends BaseActivity implements
 	}
 
 	private ViewHolder holder;
+	
+	private View notLoginView;
 
 	private Params params;
 
@@ -231,6 +237,13 @@ public class SpecialDetailActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.specical_detail_layout);
+		notLoginView = findViewById(R.id.not_login_view);
+		notLoginView.setOnClickListener(this);
+		if(APP.getSession().isLogin()){
+			notLoginView.setVisibility(View.GONE);
+		}else{
+			notLoginView.setVisibility(View.VISIBLE);
+		}
 		findViewById(R.id.sendBtn).setOnClickListener(this);
 		findViewById(R.id.comment_btn).setOnClickListener(this);
 		params = (Params) getIntent().getSerializableExtra("params");
@@ -280,14 +293,18 @@ public class SpecialDetailActivity extends BaseActivity implements
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.not_login_view:
+			toLogin();
+			break;
 		case R.id.comment_btn:
 			NewsCommentActivity.open(this, new NewsCommentActivity.Model(
 					params.contentId, params.comment, params.title));
 			break;
 		case R.id.sendBtn:
+			LoadingPopup.show(this);
 			String content = holder.editText.getText().toString();
 			new InsertCommentRequest(this, new InsertCommentRequest.Params(
-					params.contentId, "0", "0", "134", content))
+					params.contentId, "0", "0", APP.getSession().getSid(), content))
 					.request(new RequestHandler() {
 
 						@Override
@@ -312,7 +329,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 
 						@Override
 						public void onComplete() {
-							// TODO Auto-generated method stub
+							LoadingPopup.show(SpecialDetailActivity.this);
 
 						}
 					});

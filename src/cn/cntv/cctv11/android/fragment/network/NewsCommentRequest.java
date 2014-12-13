@@ -47,7 +47,7 @@ public class NewsCommentRequest extends BaseClient {
 		}
 		
 		public NewsCommentListAdapter.Model toModel(){
-			return new NewsCommentListAdapter.Model(userimgurl, username, remark, DATE_FORMAT.format(getDateTime()),isusername,userid);
+			return new NewsCommentListAdapter.Model(commentid,userimgurl, username, remark, DATE_FORMAT.format(getDateTime()),isusername,userid);
 		}
 		
 		
