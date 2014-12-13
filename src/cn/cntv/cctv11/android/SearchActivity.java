@@ -85,6 +85,8 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 	
 	private View arrowView;
 	
+	private View bgView;
+	
 	private MyHorizontalScrollView scrollView;
 
 	@Override
@@ -94,6 +96,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 		model = (Model) getIntent().getSerializableExtra("model");
 		category = model.categories.get(0);
 		setContentView(R.layout.search_layout);
+		bgView = findViewById(R.id.bg);
 		arrowView = findViewById(R.id.arrow);
 		scrollView = (MyHorizontalScrollView) findViewById(R.id.scrollView);
 		scrollView.setOnTabScrollListener(this);
@@ -184,6 +187,11 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 				}else{
 					models = News.toNewsList(result.getList());
 					list1.addAll((List<NewsListAdapter.Model>)models);
+				}
+				if((list2 !=null && list2.size()>0) || (list1!=null && list1.size() > 0)){
+					bgView.setVisibility(View.GONE);
+				}else{
+					bgView.setVisibility(View.VISIBLE);
 				}
 				if (models.size() >= pagesize) {
 					mFooterLoading.setVisibility(View.VISIBLE);

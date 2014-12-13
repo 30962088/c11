@@ -78,9 +78,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" 
+                android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingRight="10dp" >
 
                 <cn.cntv.cctv11.android.widget.MyHorizontalScrollView
                     android:id="@+id/scrollView"
@@ -109,11 +109,27 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/listview"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
-    </ListView>
+        android:layout_weight="1"
+        android:background="#f3ebe9" >
+
+        <View
+            android:id="@+id/bg"
+            android:layout_width="180.5dp"
+            android:layout_height="240dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/icon_face_big" >
+        </View>
+
+        <ListView
+            android:id="@+id/listview"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
+    </RelativeLayout>
 
 </LinearLayout>
