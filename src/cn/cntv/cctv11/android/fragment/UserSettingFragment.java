@@ -6,6 +6,7 @@ import java.io.File;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.BaseActivity;
+import cn.cntv.cctv11.android.InfoListActivity;
 import cn.cntv.cctv11.android.SettingActivity;
 import cn.cntv.cctv11.android.BaseActivity.OnCitySelectionListener;
 import cn.cntv.cctv11.android.BaseActivity.OnModifyPasswordListener;
@@ -17,8 +18,10 @@ import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.BaseActivity.OnGallerySelectionListener;
 import cn.cntv.cctv11.android.fragment.network.BaseClient;
+import cn.cntv.cctv11.android.fragment.network.GetPushInfoRequest;
 import cn.cntv.cctv11.android.fragment.network.GetSingerInfoRequest;
 import cn.cntv.cctv11.android.fragment.network.UpdateSingerInfoRequest;
+import cn.cntv.cctv11.android.fragment.network.BaseClient.SimpleRequestHandler;
 import cn.cntv.cctv11.android.utils.AliyunUtils;
 import cn.cntv.cctv11.android.utils.AliyunUtils.UploadListener;
 import cn.cntv.cctv11.android.utils.AliyunUtils.UploadResult;
@@ -81,6 +84,12 @@ public class UserSettingFragment extends BaseFragment implements
 	
 	private View phoneContainer;
 
+	private View nofityGoneView;
+	
+	private View nofityVisibleView;
+	
+	private TextView notifyCountView;
+	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -103,12 +112,17 @@ public class UserSettingFragment extends BaseFragment implements
 		view.findViewById(R.id.setting_btn).setOnClickListener(this);
 		view.findViewById(R.id.logout).setOnClickListener(this);
 		view.findViewById(R.id.weibo_btn).setOnClickListener(this);
+		view.findViewById(R.id.info_btn).setOnClickListener(this);
+		nofityGoneView = view.findViewById(R.id.nofity_gone);
+		nofityVisibleView = view.findViewById(R.id.notify_visible);
+		notifyCountView = (TextView) view.findViewById(R.id.notify_count);
 	}
 	
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		getPushCount();
 		String accessToken = APP.getSession().getWeiboAccessToken();
 		if(accessToken == null){
 			weiboBinding.setVisibility(View.GONE);
@@ -135,11 +149,15 @@ public class UserSettingFragment extends BaseFragment implements
 				containerView.setVisibility(View.VISIBLE);
 			}
 		});
+		
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.info_btn:
+			InfoListActivity.open(getActivity());
+			break;
 		case R.id.account_btn:
 			((BaseActivity) getActivity()).getNickname(nickname.getText().toString(), this);
 			break;
@@ -199,6 +217,27 @@ public class UserSettingFragment extends BaseFragment implements
 			}
 		});
 		
+	}
+	
+	private void getPushCount(){
+		GetPushInfoRequest request = new GetPushInfoRequest(getActivity());
+		request.request(new SimpleRequestHandler(){
+			@Override
+			public void onSuccess(Object object) {
+				GetPushInfoRequest.Result result = (GetPushInfoRequest.Result) object;
+				if(result.getResult() == 1000){
+					int count = result.getPushinfolist().size();
+					if(count == 0){
+						nofityVisibleView.setVisibility(View.GONE);
+						nofityGoneView.setVisibility(View.VISIBLE);
+					}else{
+						nofityVisibleView.setVisibility(View.VISIBLE);
+						nofityGoneView.setVisibility(View.GONE);
+						notifyCountView.setText(""+count);
+					}
+				}
+			}
+		});
 	}
 
 	@Override

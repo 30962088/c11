@@ -5,11 +5,13 @@ import org.apache.http.Header;
 import com.mengle.lib.utils.Utils;
 
 import cn.cntv.cctv11.android.APP;
+import cn.cntv.cctv11.android.InfoListActivity;
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.SettingActivity;
 import cn.cntv.cctv11.android.fragment.FillInfoFragment.Model;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.SimpleRequestHandler;
+import cn.cntv.cctv11.android.fragment.network.GetPushInfoRequest;
 import cn.cntv.cctv11.android.fragment.network.IsHaveSingerRequest;
 import cn.cntv.cctv11.android.fragment.network.UserloginVerifyRequest;
 import cn.cntv.cctv11.android.utils.LoadingPopup;
@@ -26,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class LoginFragment extends BaseFragment implements OnClickListener,
 		OauthCallback {
@@ -56,6 +59,11 @@ public class LoginFragment extends BaseFragment implements OnClickListener,
 	
 	private EditText passwordText;
 	
+	private View nofityGoneView;
+	
+	private View nofityVisibleView;
+	
+	private TextView notifyCountView;
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -68,11 +76,18 @@ public class LoginFragment extends BaseFragment implements OnClickListener,
 		view.findViewById(R.id.qq_btn).setOnClickListener(this);
 		view.findViewById(R.id.login_btn).setOnClickListener(this);
 		view.findViewById(R.id.setting_btn).setOnClickListener(this);
+		view.findViewById(R.id.info_btn).setOnClickListener(this);
+		nofityGoneView = view.findViewById(R.id.nofity_gone);
+		nofityVisibleView = view.findViewById(R.id.notify_visible);
+		notifyCountView = (TextView) view.findViewById(R.id.notify_count);
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.info_btn:
+			InfoListActivity.open(getActivity());
+			break;
 		case R.id.setting_btn:
 			SettingActivity.open(getActivity());
 			break;
@@ -97,6 +112,34 @@ public class LoginFragment extends BaseFragment implements OnClickListener,
 			break;
 		}
 
+	}
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		getPushCount();
+	}
+	
+	private void getPushCount(){
+		GetPushInfoRequest request = new GetPushInfoRequest(getActivity());
+		request.request(new SimpleRequestHandler(){
+			@Override
+			public void onSuccess(Object object) {
+				GetPushInfoRequest.Result result = (GetPushInfoRequest.Result) object;
+				if(result.getResult() == 1000){
+					int count = result.getPushinfolist().size();
+					if(count == 0){
+						nofityVisibleView.setVisibility(View.GONE);
+						nofityGoneView.setVisibility(View.VISIBLE);
+					}else{
+						nofityVisibleView.setVisibility(View.VISIBLE);
+						nofityGoneView.setVisibility(View.GONE);
+						notifyCountView.setText(""+count);
+					}
+				}
+			}
+		});
 	}
 
 	private void onlogin() {
