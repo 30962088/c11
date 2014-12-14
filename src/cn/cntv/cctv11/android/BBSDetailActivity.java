@@ -147,23 +147,16 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 							listView.load(true);
 
 						}
-
+						
 						@Override
-						public void onError(int error) {
+						public void onError(int error, String msg) {
 							Utils.tip(BBSDetailActivity.this, "评论失败");
-
+							
 						}
 
 						@Override
 						public void onComplete() {
 							LoadingPopup.hide(BBSDetailActivity.this);
-
-						}
-
-						@Override
-						public void onServerError(int arg0, Header[] arg1,
-								byte[] arg2, Throwable arg3) {
-							Utils.tip(BBSDetailActivity.this, "评论失败");
 
 						}
 

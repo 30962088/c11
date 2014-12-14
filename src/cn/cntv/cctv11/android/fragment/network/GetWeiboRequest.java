@@ -119,19 +119,6 @@ public class GetWeiboRequest extends BaseClient {
 	}
 
 	@Override
-	public void onError(int error) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onServerError(int arg0, Header[] arg1, byte[] arg2,
-			Throwable arg3) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	protected RequestParams getParams() {
 		RequestParams params = new RequestParams();
 		params.add("method", "getweiboinfo");
@@ -151,5 +138,11 @@ public class GetWeiboRequest extends BaseClient {
 	protected Method getMethod() {
 		// TODO Auto-generated method stub
 		return Method.GET;
+	}
+
+	@Override
+	public void onError(int error, String msg) {
+		// TODO Auto-generated method stub
+		
 	}
 }

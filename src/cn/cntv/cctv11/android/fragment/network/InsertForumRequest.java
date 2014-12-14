@@ -53,18 +53,6 @@ public class InsertForumRequest extends BaseClient {
 	}
 
 	@Override
-	public void onError(int error) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onServerError(int arg0, Header[] arg1, byte[] arg2,
-			Throwable arg3) {
-
-	}
-
-	@Override
 	protected RequestParams getParams() {
 		RequestParams params = new RequestParams();
 		params.add("method", "insertforumcomment");
@@ -86,5 +74,11 @@ public class InsertForumRequest extends BaseClient {
 	protected Method getMethod() {
 
 		return Method.POST;
+	}
+
+	@Override
+	public void onError(int error, String msg) {
+		// TODO Auto-generated method stub
+		
 	}
 }

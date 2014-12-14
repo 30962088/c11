@@ -156,14 +156,7 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 				}
 				
 				@Override
-				public void onServerError(int arg0, Header[] arg1, byte[] arg2,
-						Throwable arg3) {
-					Utils.tip(VideoCommentActivity.this, "评论失败");
-					
-				}
-				
-				@Override
-				public void onError(int error) {
+				public void onError(int error, String msg) {
 					Utils.tip(VideoCommentActivity.this, "评论失败");
 					
 				}

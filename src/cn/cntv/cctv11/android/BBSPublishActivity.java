@@ -157,7 +157,7 @@ public class BBSPublishActivity extends BaseActivity implements OnClickListener,
 			}
 			
 			@Override
-			public void onError(int error) {
+			public void onError(int error, String msg) {
 				Utils.tip(BBSPublishActivity.this, "发帖失败");
 			}
 			

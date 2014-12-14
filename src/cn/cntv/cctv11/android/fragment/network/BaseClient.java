@@ -4,6 +4,8 @@ package cn.cntv.cctv11.android.fragment.network;
 import org.apache.http.Header;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.loopj.android.http.*;
 
@@ -27,7 +29,7 @@ public abstract class BaseClient implements HttpResponseHandler {
 	
 	static {
 		client.setMaxConnections(10);
-		client.setTimeout(30 * 1000);
+		client.setTimeout(10 * 1000);
 
 	}
 
@@ -45,8 +47,8 @@ public abstract class BaseClient implements HttpResponseHandler {
 		public void onFailure(int arg0, Header[] arg1, byte[] arg2,
 				Throwable arg3) {
 			
-			handler.onServerError(arg0, arg1, arg2, arg3);
-			requestHandler.onServerError(arg0, arg1, arg2, arg3);
+			handler.onError(500, "请求失败");
+			requestHandler.onError(500, "请求失败");
 			requestHandler.onComplete();
 		}
 
@@ -100,10 +102,7 @@ public abstract class BaseClient implements HttpResponseHandler {
 		
 		public void onSuccess(Object object);
 
-		public void onError(int error);
-
-		public void onServerError(int arg0, Header[] arg1, byte[] arg2,
-				Throwable arg3);
+		public void onError(int error,String msg);
 
 	}
 	
@@ -117,21 +116,22 @@ public abstract class BaseClient implements HttpResponseHandler {
 
 		}
 
-		@Override
-		public void onError(int error) {
-			// TODO Auto-generated method stub
+		
 
-		}
 
-		@Override
-		public void onServerError(int arg0, Header[] arg1, byte[] arg2,
-				Throwable arg3) {
-			// TODO Auto-generated method stub
-
-		}
 
 		@Override
 		public void onComplete() {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+
+
+
+		@Override
+		public void onError(int error, String msg) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -141,17 +141,15 @@ public abstract class BaseClient implements HttpResponseHandler {
 	private RequestHandler requestHandler;
 
 	public void request(RequestHandler requestHandler) {
-		/*if (useOffline()) {
-
-			OfflineDataField dataField = OfflineDataField
-					.getOffline(getOfflineHash());
-			if (dataField != null) {
-				requestHandler.onSuccess(onSuccess(dataField.getData()));
-				return;
-			}
-
-		}*/
+		
 		this.requestHandler = requestHandler;
+		
+		if(!isOnline(context)){
+			onError(501, "未发现网络");
+			requestHandler.onError(501, "未发现网络");
+			return;
+		}
+		
 		Method method = getMethod();
 		if (method == Method.GET) {
 			get(getUrl(), getParams(), this);
@@ -159,14 +157,12 @@ public abstract class BaseClient implements HttpResponseHandler {
 			post(getUrl(), getParams(), this);
 		}
 	}
-
-	private String getOfflineHash() {
-		String hash = getUrl();
-		RequestParams params = getParams();
-		if (params != null) {
-			hash += params.toString();
-		}
-		return "" + hash.hashCode();
+	
+	public static boolean isOnline(Context context) {
+	    ConnectivityManager cm =
+	        (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    return netInfo != null && netInfo.isConnectedOrConnecting();
 	}
 
 	private RequestHandle handle;

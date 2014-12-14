@@ -53,20 +53,6 @@ public class GetProvinceCityRequest extends BaseClient{
 	}
 
 
-	@Override
-	public void onError(int error) {
-		
-		
-	}
-
-
-	@Override
-	public void onServerError(int arg0, Header[] arg1, byte[] arg2,
-			Throwable arg3) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	@Override
 	protected RequestParams getParams() {
@@ -94,6 +80,13 @@ public class GetProvinceCityRequest extends BaseClient{
 	protected Method getMethod() {
 		// TODO Auto-generated method stub
 		return Method.GET;
+	}
+
+
+	@Override
+	public void onError(int error, String msg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

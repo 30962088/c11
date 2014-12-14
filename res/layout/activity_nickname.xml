@@ -47,9 +47,11 @@
             android:hint="请输入新的昵称"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
+            android:singleLine="true"
             android:textColor="#333"
             android:textColorHint="#a5a5a5"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:maxLength="16" />
 
         <TextView
             android:layout_width="match_parent"

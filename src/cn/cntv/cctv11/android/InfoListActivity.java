@@ -1,7 +1,5 @@
 package cn.cntv.cctv11.android;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import cn.cntv.cctv11.android.adapter.InfoListAdapter;
 import cn.cntv.cctv11.android.adapter.InfoListAdapter.InfoItem;
@@ -11,7 +9,6 @@ import cn.cntv.cctv11.android.fragment.network.BaseClient.SimpleRequestHandler;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshPinnedSectionListView;
-import com.j256.ormlite.stmt.query.In;
 
 import android.content.Context;
 import android.content.Intent;

@@ -138,21 +138,15 @@ public class WeiboDetailActivity extends BaseActivity implements
 
 		}
 
-		@Override
-		public void onError(int error) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void onServerError(int arg0, Header[] arg1, byte[] arg2,
-				Throwable arg3) {
-			// TODO Auto-generated method stub
-
-		}
 
 		@Override
 		public void onComplete() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onError(int error, String msg) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -254,21 +248,18 @@ public class WeiboDetailActivity extends BaseActivity implements
 
 				}
 
-				@Override
-				public void onServerError(int arg0, Header[] arg1, byte[] arg2,
-						Throwable arg3) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void onError(int error) {
-					// TODO Auto-generated method stub
-
-				}
+				
 
 				@Override
 				public void onComplete() {
+					// TODO Auto-generated method stub
+					
+				}
+
+
+
+				@Override
+				public void onError(int error, String msg) {
 					// TODO Auto-generated method stub
 					
 				}

@@ -94,13 +94,7 @@ public class WeiboPublishActivity extends BaseActivity implements
 			}
 			
 			@Override
-			public void onError(int error) {
-				Utils.tip(WeiboPublishActivity.this, "评论失败");
-			}
-			
-			@Override
-			public void onServerError(int arg0, Header[] arg1, byte[] arg2,
-					Throwable arg3) {
+			public void onError(int error, String msg) {
 				Utils.tip(WeiboPublishActivity.this, "评论失败");
 			}
 			
