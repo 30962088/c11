@@ -8,6 +8,8 @@ import java.util.List;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.http.Header;
 
+import com.mengle.lib.utils.Utils;
+
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.StageActivity;
 import cn.cntv.cctv11.android.adapter.CalendarListAdapter;
@@ -19,13 +21,15 @@ import cn.cntv.cctv11.android.fragment.network.StageRequest.Result;
 import cn.cntv.cctv11.android.utils.CalendarUtils;
 import cn.cntv.cctv11.android.utils.CalendarUtils.CalendarDate;
 import cn.cntv.cctv11.android.utils.CalendarUtils.CurrentCalendarList;
+import cn.cntv.cctv11.android.widget.NoResultView;
+import cn.cntv.cctv11.android.widget.NoResultView.OnRefreshClickListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class StageCalendarFragment extends BaseFragment implements OnCalendarGridItemClickListener{
+public class StageCalendarFragment extends BaseFragment implements OnCalendarGridItemClickListener,OnRefreshClickListener{
 
 	public static StageCalendarFragment newInstance() {
 		StageCalendarFragment fragment = new StageCalendarFragment();
@@ -42,6 +46,8 @@ public class StageCalendarFragment extends BaseFragment implements OnCalendarGri
 	private ListView listView;
 
 	private CalendarListAdapter adapter;
+	
+	private NoResultView noResultView;
 
 	private List<CalendarListAdapter.Model> list = new ArrayList<CalendarListAdapter.Model>();
 
@@ -52,6 +58,8 @@ public class StageCalendarFragment extends BaseFragment implements OnCalendarGri
 		listView = (ListView) view.findViewById(R.id.listview);
 		adapter = new CalendarListAdapter(getActivity(), list,this);
 		listView.setAdapter(adapter);
+		noResultView = (NoResultView) view.findViewById(R.id.no_result);
+		noResultView.setOnRefreshClickListener(this);
 		request();
 	}
 
@@ -112,11 +120,27 @@ public class StageCalendarFragment extends BaseFragment implements OnCalendarGri
 		request.request(new BaseClient.SimpleRequestHandler() {
 			@Override
 			public void onSuccess(Object object) {
+				
 				result = (StageRequest.Result) object;
-				list.addAll(getModels(startDate, endDate, result.getDateCounts()));
-				adapter.setLast(current);
-				adapter.notifyDataSetChanged();
+				if(result.getResult() == 1000){
+					list.addAll(getModels(startDate, endDate, result.getDateCounts()));
+					adapter.setLast(current);
+					adapter.notifyDataSetChanged();
+					listView.setVisibility(View.VISIBLE);
+					noResultView.setVisibility(View.GONE);
+				}else{
+					onError(result.getResult(), "请求失败");
+				}
+				
 			}
+			
+			@Override
+			public void onError(int error, String msg) {
+				Utils.tip(getActivity(), msg);
+				listView.setVisibility(View.GONE);
+				noResultView.setVisibility(View.VISIBLE);
+			}
+			
 		});
 
 		
@@ -125,6 +149,12 @@ public class StageCalendarFragment extends BaseFragment implements OnCalendarGri
 	@Override
 	public void OnCalendarGridItemClick(Date date) {
 		StageActivity.open(getActivity(), new StageActivity.Model(startDate, endDate, result,date));
+		
+	}
+
+	@Override
+	public void onrefreshclick() {
+		request();
 		
 	}
 

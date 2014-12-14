@@ -11,7 +11,6 @@ import org.apache.http.message.BasicHeader;
 
 import android.content.Context;
 
-import cn.cntv.cctv11.android.APP.Meta;
 import cn.cntv.cctv11.android.WeiboDetailActivity.DataSource;
 import cn.cntv.cctv11.android.WeiboDetailActivity.WeiboDataSource;
 import cn.cntv.cctv11.android.WeiboDetailActivity.WeiboRequest;

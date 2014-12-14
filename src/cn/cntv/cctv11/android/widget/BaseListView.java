@@ -94,7 +94,7 @@ public class BaseListView extends PullToRefreshPinnedSectionListView {
 
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 
-				load(true);
+				_load(true);
 
 			}
 		});
@@ -103,7 +103,7 @@ public class BaseListView extends PullToRefreshPinnedSectionListView {
 
 			public void onLastItemVisible() {
 				if (hasMode) {
-					load(false);
+					_load(false);
 				}
 
 			}

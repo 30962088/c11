@@ -4,18 +4,22 @@
     android:layout_height="match_parent"
     android:background="#000" >
 
-    
-    
-    <uk.co.senab.photoview.PhotoView
-        android:id="@+id/img"
+    <cn.cntv.cctv11.android.widget.OnLongTapFrameLayout
+        android:id="@+id/longtap"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter" />
-    
-    <ImageView 
+        android:layout_height="match_parent" >
+
+        <uk.co.senab.photoview.PhotoView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter" />
+    </cn.cntv.cctv11.android.widget.OnLongTapFrameLayout>
+
+    <ImageView
         android:id="@+id/thumbnail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -66,6 +70,6 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

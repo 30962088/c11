@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -15,104 +15,113 @@
             android:scaleType="centerCrop"
             android:src="@drawable/bg_h5" />
 
-       	
-        <TextView 
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="天下戏台"
             android:textColor="#fff"
-            android:textSize="18sp"/>
-        
+            android:textSize="18sp" />
     </RelativeLayout>
-    
-    <LinearLayout 
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/bg_h6"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp">
-        
-        <TextView 
+        android:paddingRight="15dp" >
+
+        <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="日"
-            android:textStyle="bold"
             android:textColor="#fff"
-            android:textSize="15sp"/>
-        
-        <TextView 
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="一"
-            android:textStyle="bold"
             android:textColor="#fff"
-            android:textSize="15sp"/>
-        
-        <TextView 
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="二"
-            android:textStyle="bold"
             android:textColor="#fff"
-            android:textSize="15sp"/>
-        
-        <TextView 
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="三"
-            android:textStyle="bold"
             android:textColor="#fff"
-            android:textSize="15sp"/>
-        
-        <TextView 
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="四"
-            android:textStyle="bold"
             android:textColor="#fff"
-            android:textSize="15sp"/>
-        
-        <TextView 
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="五"
-            android:textStyle="bold"
             android:textColor="#fff"
-            android:textSize="15sp"/>
-        
-        <TextView 
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="六"
-            android:textStyle="bold"
             android:textColor="#fff"
-            android:textSize="15sp"/>
-        
+            android:textSize="15sp"
+            android:textStyle="bold" />
     </LinearLayout>
-    
-    <ListView
-        android:background="#fff"
-        android:id="@+id/listview"
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:divider="@null"
-        android:dividerHeight="10dp"
-        android:listSelector="#00000000"></ListView>
+        android:background="#fff">
+
+        <cn.cntv.cctv11.android.widget.NoResultView
+            android:id="@+id/no_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="10dp"
+            android:listSelector="#00000000" >
+        </ListView>
+    </FrameLayout>
 
 </LinearLayout>

@@ -13,11 +13,13 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
+import cn.cntv.cctv11.android.fragment.network.BaseClient;
 import cn.cntv.cctv11.android.fragment.network.DescripitionRequest;
 import cn.cntv.cctv11.android.fragment.network.DescripitionRequest.Result;
 import cn.cntv.cctv11.android.fragment.network.InsertCommentRequest;
 import cn.cntv.cctv11.android.utils.HtmlUtils;
 import cn.cntv.cctv11.android.utils.LoadingPopup;
+import cn.cntv.cctv11.android.utils.ShareUtils;
 import cn.cntv.cctv11.android.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -134,8 +136,6 @@ public class SpecialDetailActivity extends BaseActivity implements
 
 				}
 			});
-			findViewById(R.id.share).setOnClickListener(
-					SpecialDetailActivity.this);
 			findViewById(R.id.scaleDown).setOnClickListener(
 					new OnClickListener() {
 
@@ -237,6 +237,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.specical_detail_layout);
+		findViewById(R.id.share).setOnClickListener(this);
 		notLoginView = findViewById(R.id.not_login_view);
 		notLoginView.setOnClickListener(this);
 		if(APP.getSession().isLogin()){
@@ -286,6 +287,9 @@ public class SpecialDetailActivity extends BaseActivity implements
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.share:
+			onshare();
+			break;
 		case R.id.not_login_view:
 			toLogin();
 			break;
@@ -324,6 +328,11 @@ public class SpecialDetailActivity extends BaseActivity implements
 			break;
 		}
 
+	}
+
+	private void onshare() {
+		ShareUtils.shareText(this, params.title,BaseClient.getSharecontent(params.contentId));
+		
 	}
 
 }

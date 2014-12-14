@@ -3,26 +3,58 @@ package cn.cntv.cctv11.android;
 import java.io.File;
 import java.io.Serializable;
 
-import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.utils.Dirctionary;
-import cn.cntv.cctv11.android.utils.Preferences.Session;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow.OnItemClickListener;
 
 import com.mengle.lib.wiget.ConfirmDialog;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.socialize.sso.QZoneSsoHandler;
+import com.umeng.socialize.sso.UMQQSsoHandler;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 
 public class BaseActivity extends FragmentActivity implements Serializable{
 
 	private Uri cameraPic;
+	
+	@Override
+	protected void onCreate(Bundle arg0) {
+		// TODO Auto-generated method stub
+		super.onCreate(arg0);
+		try {
+			initUmeng();
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void initUmeng() throws NameNotFoundException {
+		ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+		Bundle bundle = ai.metaData;
+		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this,
+				bundle.getString("QQ_APPID"), bundle.getString("QQ_APPKEY"));
+		qqSsoHandler.addToSocialSDK();
+		QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this, bundle.getString("QQ_APPID"),
+				bundle.getString("QQ_APPKEY"));
+		qZoneSsoHandler.addToSocialSDK();
+		UMWXHandler wxHandler = new UMWXHandler(this,bundle.getString("WX_APPID"));
+		wxHandler.addToSocialSDK();
+		UMWXHandler wxCircleHandler = new UMWXHandler(this,bundle.getString("WX_APPID"));
+		wxCircleHandler.setToCircle(true);
+		wxCircleHandler.addToSocialSDK();
+	}
 
 	private static final int ACTION_REQUEST_GALLERY = 1;
 	

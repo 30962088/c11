@@ -89,7 +89,10 @@ public class StageRequest extends BaseClient {
 
 	public static class Result implements Serializable{
 		private ArrayList<StageGroup> countlist;
-		
+		private int result;
+		public int getResult() {
+			return result;
+		}
 		public List<DateCount> getDateCounts(){
 			List<DateCount> list = new ArrayList<StageRequest.DateCount>();
 			for(StageGroup group : countlist){

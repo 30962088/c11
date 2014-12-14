@@ -11,6 +11,8 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.PhotoViewActivity.Photo;
+import cn.cntv.cctv11.android.utils.ShareUtils;
+import cn.cntv.cctv11.android.widget.OnLongTapFrameLayout;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
@@ -21,11 +23,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
-public class WallPagerActivity extends BaseActivity implements OnClickListener{
+public class WallPagerActivity extends BaseActivity implements OnClickListener,OnLongClickListener{
 
 	public static void open(Context context, Model model) {
 		Intent intent = new Intent(context, WallPagerActivity.class);
@@ -67,6 +70,8 @@ public class WallPagerActivity extends BaseActivity implements OnClickListener{
 		super.onCreate(arg0);
 		model = (Model) getIntent().getSerializableExtra("model");
 		setContentView(R.layout.activity_wallpager);
+		findViewById(R.id.share).setOnClickListener(this);
+		((OnLongTapFrameLayout)findViewById(R.id.longtap)).setOnLongClickListener1(this);
 		((TextView)findViewById(R.id.title)).setText(model.name);
 		final View loading = findViewById(R.id.loading);
 		final ImageView imageView = (ImageView) findViewById(R.id.img);
@@ -106,11 +111,24 @@ public class WallPagerActivity extends BaseActivity implements OnClickListener{
 			finish();
 			break;
 		case R.id.share:
+			onshare();
 			break;
 		default:
 			break;
 		}
 		
+	}
+	
+
+	private void onshare() {
+		ShareUtils.shareImage(this, model.origin);
+		
+	}
+
+	@Override
+	public boolean onLongClick(View v) {
+		onshare();
+		return false;
 	}
 	
 }

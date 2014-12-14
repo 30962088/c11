@@ -117,13 +117,6 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 
 	public void qqOauth() {
 		media = SHARE_MEDIA.QQ;
-		/*
-		 * mController.getConfig().supportAPlatform((Activity) context,
-		 * "100424468", "http://www.umeng.com/social", "social");
-		 */
-		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler((Activity) context,
-				"100424468", "c7394704798a158208a74ab60104f0ba");
-		qqSsoHandler.addToSocialSDK();
 		oauth();
 	}
 

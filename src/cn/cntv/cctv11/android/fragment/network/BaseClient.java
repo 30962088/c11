@@ -11,12 +11,16 @@ import com.loopj.android.http.*;
 
 public abstract class BaseClient implements HttpResponseHandler {
 	
-	public static final String BASE_URL = "http://cctv11news.1du1du.com:8081/";
+	public static final String BASE_URL = "http://cctv11news.1du1du.com/";
 
 	public static String getImage(String filename,String format){
 		
 		return BASE_URL+"cctv11/getTheImage?fileName="+filename+format;
 		
+	}
+	
+	public static String getSharecontent(String id){
+		return BASE_URL+"ContentsShares/ContentsShare?contentid="+id;
 	}
 	
 	private static AsyncHttpClient client = new AsyncHttpClient();
