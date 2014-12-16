@@ -1,6 +1,5 @@
 package cn.cntv.cctv11.android.fragment.network;
 
-import org.apache.http.Header;
 
 import android.content.Context;
 
@@ -19,22 +18,25 @@ public class InsertForumRequest extends BaseClient {
 		private String issid = "0";
 		private String sid;
 		private String remark;
+		private String pkey;
 
 		public Params(String topicid, String iscommentid, String issid,
-				String sid, String remark) {
+				String sid, String remark,String pkey) {
 			super();
 			this.topicid = topicid;
 			this.iscommentid = iscommentid;
 			this.issid = issid;
 			this.sid = sid;
 			this.remark = remark;
+			this.pkey = pkey;
 		}
 
-		public Params(String topicid, String sid, String remark) {
+		public Params(String topicid, String sid, String remark,String pkey) {
 			super();
 			this.topicid = topicid;
 			this.sid = sid;
 			this.remark = remark;
+			this.pkey = pkey;
 		}
 
 	}
@@ -61,6 +63,7 @@ public class InsertForumRequest extends BaseClient {
 		params.add("issid", this.params.issid);
 		params.add("sid", this.params.sid);
 		params.add("remark", this.params.remark);
+		params.add("pkey", this.params.pkey);
 		return params;
 	}
 

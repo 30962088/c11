@@ -117,7 +117,7 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 		List<NewsCommentListAdapter.Model> list = result.toCommentList();
 		this.list.addAll(list);
 		adapter.notifyDataSetChanged();
-		return list.size()>limit?true:false;
+		return list.size()>=limit?true:false;
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 			break;
 		case R.id.sendBtn:
 			String content = editText.getText().toString();
-			new InsertCommentRequest(this, new  InsertCommentRequest.Params(model.id,"0", "0", "134", content)).request(new RequestHandler() {
+			new InsertCommentRequest(this, new  InsertCommentRequest.Params(model.id,"0", "0", "134", content,APP.getSession().getPkey())).request(new RequestHandler() {
 				
 				@Override
 				public void onSuccess(Object object) {

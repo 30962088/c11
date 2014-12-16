@@ -21,14 +21,16 @@ public class InsertCommentRequest extends BaseClient {
 		private String issid;
 		private String sid;
 		private String remark;
+		private String pkey;
 		public Params(String contentsid, String iscommentid, String issid,
-				String sid, String remark) {
+				String sid, String remark,String pkey) {
 			super();
 			this.contentsid = contentsid;
 			this.iscommentid = iscommentid;
 			this.issid = issid;
 			this.sid = sid;
 			this.remark = remark;
+			this.pkey = pkey;
 		}
 
 	}
@@ -58,6 +60,7 @@ public class InsertCommentRequest extends BaseClient {
 		params.add("issid", this.params.issid);
 		params.add("sid", this.params.sid);
 		params.add("remark", this.params.remark);
+		params.add("pkey", this.params.pkey);
 		return params;
 	}
 

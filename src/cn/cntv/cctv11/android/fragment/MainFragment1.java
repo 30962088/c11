@@ -61,7 +61,7 @@ public class MainFragment1 extends BaseFragment implements OnClickListener,OnTab
 		view.findViewById(R.id.search_btn).setOnClickListener(this);
 		pager = (ViewPager) view.findViewById(R.id.pager);
 		indicator = (TabPageIndicator) view.findViewById(R.id.indicator);
-		indicator.setOnTabScrollListener(this);
+//		indicator.setOnTabScrollListener(this);
 		request();
 	}
 	

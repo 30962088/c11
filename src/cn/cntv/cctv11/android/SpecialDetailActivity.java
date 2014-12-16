@@ -5,10 +5,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.http.Header;
 
 import com.mengle.lib.utils.Utils;
-import com.mengle.lib.wiget.ConfirmDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
@@ -21,24 +19,17 @@ import cn.cntv.cctv11.android.utils.HtmlUtils;
 import cn.cntv.cctv11.android.utils.LoadingPopup;
 import cn.cntv.cctv11.android.utils.ShareUtils;
 import cn.cntv.cctv11.android.R;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.View.OnClickListener;
-import android.webkit.ConsoleMessage;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebSettings.TextSize;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class SpecialDetailActivity extends BaseActivity implements
@@ -156,6 +147,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 					});
 			webView = (WebView) findViewById(R.id.webView);
 			webView.setBackgroundColor(Color.TRANSPARENT);
+			webView.getSettings().setAppCacheEnabled(true);
 			settings = webView.getSettings();
 			settings.setJavaScriptEnabled(true);
 
@@ -301,7 +293,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 			LoadingPopup.show(this);
 			String content = holder.editText.getText().toString();
 			new InsertCommentRequest(this, new InsertCommentRequest.Params(
-					params.contentId, "0", "0", APP.getSession().getSid(), content))
+					params.contentId, "0", "0", APP.getSession().getSid(), content,APP.getSession().getPkey()))
 					.request(new RequestHandler() {
 
 						@Override

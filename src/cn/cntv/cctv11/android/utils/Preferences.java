@@ -26,7 +26,7 @@ public class Preferences {
 		}
 		
 		public int getFontSize(){
-			return preferences.getInt("fontSize", 14);
+			return preferences.getInt("fontSize", 18);
 		}
 		
 		public void clearWeibo(){

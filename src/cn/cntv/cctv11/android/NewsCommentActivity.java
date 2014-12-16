@@ -119,7 +119,7 @@ public class NewsCommentActivity extends BaseActivity implements OnLoadListener,
 		List<NewsCommentListAdapter.Model> list = result.toCommentList();
 		this.list.addAll(list);
 		adapter.notifyDataSetChanged();
-		return list.size()>limit?true:false;
+		return list.size()>=limit?true:false;
 	}
 
 	@Override
@@ -148,7 +148,7 @@ public class NewsCommentActivity extends BaseActivity implements OnLoadListener,
 		case R.id.sendBtn:
 			String content = editText.getText().toString();
 			LoadingPopup.show(this);
-			new InsertCommentRequest(this, new InsertCommentRequest.Params(model.id,iscommentid, isuserid, APP.getSession().getSid(), content)).request(new RequestHandler() {
+			new InsertCommentRequest(this, new InsertCommentRequest.Params(model.id,iscommentid, isuserid, APP.getSession().getSid(), content,APP.getSession().getPkey())).request(new RequestHandler() {
 				
 				@Override
 				public void onSuccess(Object object) {

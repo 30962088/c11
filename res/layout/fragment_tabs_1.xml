@@ -37,6 +37,7 @@
 
                 <View
                     android:id="@+id/arrow"
+                    android:visibility="gone"
                     android:layout_width="7.5dp"
                     android:layout_height="13.5dp"
                     android:layout_alignParentRight="true"

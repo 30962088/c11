@@ -30,17 +30,14 @@
             android:textColor="#333"
             android:textSize="17sp" />
 
-        <RelativeLayout
+        <TextView 
             android:id="@+id/publish_btn"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:gravity="center" >
-
-            <View
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:background="@drawable/icon_publish" />
-        </RelativeLayout>
+            android:gravity="center" 
+            android:textSize="14sp"
+            android:text="发送"
+            android:textColor="#ef3d23"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -115,6 +112,7 @@
             android:layout_alignParentRight="true"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:gravity="center"
             android:text="删除照片"
             android:textColor="#41c1ef"
             android:textSize="16sp" />

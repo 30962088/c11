@@ -13,12 +13,14 @@ public class FeedbackRequest extends BaseClient{
 		private String sid;
 		private String feedbackhelptitle;
 		private String feedbackhelpcontent;
+		private String pkey;
 		public Params(String sid, String feedbackhelptitle,
-				String feedbackhelpcontent) {
+				String feedbackhelpcontent,String pkey) {
 			super();
 			this.sid = sid;
 			this.feedbackhelptitle = feedbackhelptitle;
 			this.feedbackhelpcontent = feedbackhelpcontent;
+			this.pkey = pkey;
 		}
 	}
 	
@@ -49,6 +51,10 @@ public class FeedbackRequest extends BaseClient{
 		if(this.params.sid != null){
 			params.add("sid", this.params.sid);
 		}
+		if(this.params.pkey != null){
+			params.add("pkey", this.params.pkey);
+		}
+		params.add("method", "InsertFeedbackhelp");
 		params.add("feedbackhelptitle", this.params.feedbackhelptitle);
 		params.add("feedbackhelpcontent", this.params.feedbackhelpcontent);
 		return params;

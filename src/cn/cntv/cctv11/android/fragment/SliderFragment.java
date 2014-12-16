@@ -78,25 +78,7 @@ public class SliderFragment extends Fragment {
 		MyAdapter adapter = new MyAdapter();
 
 		viewPager.setAdapter(adapter);
-		viewPager.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				PointF downP = new PointF();
-				PointF curP = new PointF();
-				int act = event.getAction();
-				if (act == MotionEvent.ACTION_DOWN
-						|| act == MotionEvent.ACTION_MOVE
-						|| act == MotionEvent.ACTION_UP) {
-					((ViewGroup) v).requestDisallowInterceptTouchEvent(true);
-					if (downP.x == curP.x && downP.y == curP.y) {
-						return false;
-					}
-				}
-				return false;
-			}
-
-		});
+		
 
 		indicator.setViewPager(viewPager);
 		indicator.setOnPageChangeListener(new OnPageChangeListener() {

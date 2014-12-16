@@ -99,7 +99,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 		bgView = findViewById(R.id.bg);
 		arrowView = findViewById(R.id.arrow);
 		scrollView = (MyHorizontalScrollView) findViewById(R.id.scrollView);
-		scrollView.setOnTabScrollListener(this);
+//		scrollView.setOnTabScrollListener(this);
 		findViewById(R.id.back).setOnClickListener(this);
 		
 		listView = (ListView) findViewById(R.id.listview);

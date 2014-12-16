@@ -114,7 +114,7 @@ public class NewsFragment extends BaseFragment implements OnLoadListener,OnSlide
 		if(offset == 1){
 			this.list.clear();
 			ArrayList<SliderFragment.Model> sliderList =  News.toSliderList(result.getLunbolist());
-			if(sliderList.size()>0){
+			if(sliderList.size()>0 && !TextUtils.equals("专栏", categoryName)){
 				listHeaderInner.setVisibility(View.VISIBLE);
 				getChildFragmentManager().beginTransaction().replace(R.id.list_header,SliderFragment.newInstance(this,sliderList)).commit();
 			}else{
@@ -127,7 +127,7 @@ public class NewsFragment extends BaseFragment implements OnLoadListener,OnSlide
 		this.list.addAll( News.toNewsList(list));
 		adapter.notifyDataSetChanged();
 		
-		return list.size()>limit?true:false;
+		return list.size()>=limit?true:false;
 	}
 
 	@Override

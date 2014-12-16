@@ -36,8 +36,9 @@ public class BBSListAdapter extends BaseAdapter implements Serializable,PinnedSe
 		private String userid;
 		private String commentid;
 		private String img;
+		private boolean top;
 		public Model(String id, String title, String content,String avatar, String nickname,
-				Date time, int comment,String userid,String commentid,String img) {
+				Date time, int comment,String userid,String commentid,String img,boolean top) {
 			super();
 			this.id = id;
 			this.title = title;
@@ -49,6 +50,7 @@ public class BBSListAdapter extends BaseAdapter implements Serializable,PinnedSe
 			this.userid= userid;
 			this.commentid = commentid;
 			this.img = img;
+			this.top = top;
 		}
 		public BBSDetailHeaderView.Model toModel(){
 			return new BBSDetailHeaderView.Model(id, title, avatar, nickname, time, content,userid,commentid,img);
@@ -98,7 +100,8 @@ public class BBSListAdapter extends BaseAdapter implements Serializable,PinnedSe
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-
+		
+		holder.top.setVisibility(model.top?View.VISIBLE:View.GONE);
 
 
 		holder.time.setText(model.time);
@@ -121,12 +124,15 @@ public class BBSListAdapter extends BaseAdapter implements Serializable,PinnedSe
 		private TextView time;
 		
 		private TextView comment;
+		
+		private View top;
 
 		public ViewHolder(View view) {
 			time = (TextView) view.findViewById(R.id.time);
 			title = (TextView) view.findViewById(R.id.title);
 			comment =  (TextView) view.findViewById(R.id.comment);
 			nickname =  (TextView) view.findViewById(R.id.nickname);
+			top = view.findViewById(R.id.top);
 		}
 
 	}

@@ -68,7 +68,7 @@ public class FeedBackActivity extends BaseActivity implements OnClickListener{
 		
 		String sid = APP.getSession().getSid();
 		
-		FeedbackRequest request = new FeedbackRequest(this, new FeedbackRequest.Params(sid, title, content));
+		FeedbackRequest request = new FeedbackRequest(this, new FeedbackRequest.Params(sid, title, content,APP.getSession().getPkey()));
 		LoadingPopup.show(this);
 		request.request(new SimpleRequestHandler(){
 			@Override

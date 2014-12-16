@@ -95,7 +95,7 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 		List<NewsCommentListAdapter.Model> list = result.toCommentList();
 		this.list.addAll(list);
 		adapter.notifyDataSetChanged();
-		return list.size() > limit ? true : false;
+		return list.size() >= limit ? true : false;
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 			}
 			new InsertForumRequest(this, new InsertForumRequest.Params(
 					model.getId(), commentId, userid,
-					APP.getSession().getSid(), content))
+					APP.getSession().getSid(), content,APP.getSession().getPkey()))
 					.request(new RequestHandler() {
 
 						@Override

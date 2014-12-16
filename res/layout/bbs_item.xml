@@ -47,7 +47,20 @@
                     android:textColor="#869ba3"
                     android:textSize="12sp" />
             </LinearLayout>
-
+			<TextView 
+			    android:id="@+id/top"
+			    android:visibility="gone"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:background="@drawable/solid_corner_pink"
+			    android:text="置顶"
+			    android:paddingTop="2dp"
+			    android:paddingBottom="2dp"
+			    android:layout_marginRight="5dp"
+			    android:paddingLeft="5dp"
+			    android:paddingRight="5dp"
+			    android:textColor="#fff"
+			    android:textSize="12sp"/>
             <TextView
                 android:id="@+id/comment"
                 android:drawableLeft="@drawable/icon_comment"

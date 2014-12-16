@@ -38,10 +38,11 @@ public class GetTopicRequest extends BaseClient {
 		private String uploadimgguid;
 		private String uploadimgformat;
 		private String userimgurl;
+		private int totopstatus;
 		private int commentcount;
 		private String colstatus;
 		public BBSListAdapter.Model toModel(){
-			return new BBSListAdapter.Model(topicid,topictitle,topiccontent,userimgurl, username, getDate(), commentcount,userid,commentid,getUploadImg());
+			return new BBSListAdapter.Model(topicid,topictitle,topiccontent,userimgurl, username, getDate(), commentcount,userid,commentid,getUploadImg(),totopstatus==1?true:false);
 		}
 		
 		private String getUploadImg(){
