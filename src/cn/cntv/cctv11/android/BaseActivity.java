@@ -3,6 +3,7 @@ package cn.cntv.cctv11.android;
 import java.io.File;
 import java.io.Serializable;
 
+import cn.cntv.cctv11.android.APP.AppConfig;
 import cn.cntv.cctv11.android.utils.Dirctionary;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow.OnItemClickListener;
@@ -56,17 +57,15 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 	}
 	
 	private void initUmeng() throws NameNotFoundException {
-		ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
-		Bundle bundle = ai.metaData;
+		AppConfig config = APP.getAppConfig();
 		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this,
-				bundle.getString("QQ_APPID"), bundle.getString("QQ_APPKEY"));
+				config.getQQ_APPID(), config.getQQ_APPKEY());
 		qqSsoHandler.addToSocialSDK();
-		QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this, bundle.getString("QQ_APPID"),
-				bundle.getString("QQ_APPKEY"));
+		QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this, config.getQQ_APPID(),config.getQQ_APPKEY());
 		qZoneSsoHandler.addToSocialSDK();
-		UMWXHandler wxHandler = new UMWXHandler(this,bundle.getString("WX_APPID"));
+		UMWXHandler wxHandler = new UMWXHandler(this,config.getWX_APPID());
 		wxHandler.addToSocialSDK();
-		UMWXHandler wxCircleHandler = new UMWXHandler(this,bundle.getString("WX_APPID"));
+		UMWXHandler wxCircleHandler = new UMWXHandler(this,config.getWX_AppSecret());
 		wxCircleHandler.setToCircle(true);
 		wxCircleHandler.addToSocialSDK();
 	}

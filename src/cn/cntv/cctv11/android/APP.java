@@ -18,6 +18,7 @@ import com.umeng.socialize.sso.UMQQSsoHandler;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -61,13 +62,11 @@ public class APP extends Application {
 	}
 
 	private static APP instance = null;
-
-	
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+		appConfig = new AppConfig(this);
 		instance = this;
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
 				getApplicationContext()).denyCacheImageMultipleSizesInMemory()
@@ -85,9 +84,59 @@ public class APP extends Application {
 		
 	}
 	
-	
+	public static AppConfig getAppConfig() {
+		return appConfig;
+	}
+	private static AppConfig appConfig;
 
 	private static Session session;
+	
+	public static class AppConfig{
+		private String WX_APPID;
+		private String WX_AppSecret;
+		private String QQ_APPID;
+		private String QQ_APPKEY;
+		private String UMENG_APPKEY;
+		private String UMENG_CHANNEL;
+		private AppConfig(Context context) {
+			
+			try {
+				ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+				Bundle bundle = ai.metaData;
+				WX_APPID = bundle.getString("WX_APPID");
+				WX_AppSecret = bundle.getString("WX_AppSecret");
+				QQ_APPID = bundle.getString("QQ_APPID");
+				QQ_APPKEY = bundle.getString("QQ_APPKEY");
+				UMENG_APPKEY = bundle.getString("UMENG_APPKEY");
+				UMENG_CHANNEL = bundle.getString("UMENG_CHANNEL");
+			} catch (NameNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		public String getQQ_APPID() {
+			return QQ_APPID;
+		}
+		public String getQQ_APPKEY() {
+			return QQ_APPKEY;
+		}
+		public String getUMENG_APPKEY() {
+			return UMENG_APPKEY;
+		}
+		public String getUMENG_CHANNEL() {
+			return UMENG_CHANNEL;
+		}
+		public String getWX_APPID() {
+			return WX_APPID;
+		}
+		public String getWX_AppSecret() {
+			return WX_AppSecret;
+		}
+		
+		
+		
+	}
 	
 	public static Session getSession() {
 		return session;
