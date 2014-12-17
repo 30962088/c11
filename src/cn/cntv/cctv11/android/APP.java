@@ -13,6 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.DisplayImageOptions.Builder;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.sso.UMQQSsoHandler;
 
 import android.app.Activity;
@@ -66,6 +67,7 @@ public class APP extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
 		instance = this;
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
 				getApplicationContext()).denyCacheImageMultipleSizesInMemory()

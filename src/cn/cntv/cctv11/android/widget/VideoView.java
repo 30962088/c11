@@ -79,10 +79,20 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 
 	public void setVideoPath(String url,
 			OnCompletionListener onCompletionListener,
-			OnErrorListener onErrorListener) {
+			final OnErrorListener onErrorListener) {
 
 		try {
 			loadingView.setVisibility(View.VISIBLE);
+			player.setOnErrorListener(new OnErrorListener() {
+				
+				@Override
+				public boolean onError(MediaPlayer mp, int what, int extra) {
+					loadingView.setVisibility(View.GONE);
+					onErrorListener.onError(mp, what, extra);
+					return false;
+				}
+			});
+			player.setOnCompletionListener(onCompletionListener);
 			player.setDataSource(getContext(), Uri.parse(url));
 			player.prepareAsync();
 		} catch (IllegalArgumentException e) {

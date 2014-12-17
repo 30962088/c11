@@ -61,10 +61,6 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 	
 	private View playView;
 	
-	private List<String> playList;
-	
-	private int currentPlayUrl;
-	
 	private ListView listView;
 	
 	
@@ -81,41 +77,9 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 		request();
 	}
 	
-	private void playUrl(){
-		String str = playList.get(0);
-		videoView.setVideoPath(str, this, this);
-		currentPlayUrl++;
-		if(currentPlayUrl>playList.size()-1){
-			currentPlayUrl = 0;
-		}
-	}
+	
 
-	private void requestLiveStream() {
-		GetLiveUrlRequest request = new GetLiveUrlRequest(getActivity());
-		request.request(new RequestHandler() {
-			
-			@Override
-			public void onSuccess(Object object) {
-				playList = ((GetLiveUrlRequest.Result)object).getUrlList();
-				playUrl();
-				
-				
-			}
-
-			@Override
-			public void onComplete() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onError(int error, String msg) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-	}
+	
 
 	private void request() {
 		LiveProgramRequest request = new LiveProgramRequest(getActivity());
@@ -188,18 +152,26 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 	}
 	
 
+	
+	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.play:
-			playView.setVisibility(View.GONE);
-			requestLiveStream();
+			onplay();
+			
+			
 			break;
 
 		default:
 			break;
 		}
 		
+	}
+
+	private void onplay() {
+		playView.setVisibility(View.GONE);
+		videoView.setVideoPath("http://m3u8.1du1du.com:1019/index.m3u8", this, this);
 	}
 
 	@Override
@@ -210,7 +182,7 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 
 	@Override
 	public boolean onError(MediaPlayer mp, int what, int extra) {
-		playUrl();
+		playView.setVisibility(View.VISIBLE);
 		return true;
 	}
 

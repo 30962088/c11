@@ -18,10 +18,10 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme"
         android:vmSafeMode="true" >
-        <activity 
-            android:name=".LaunchActivity">
+        <activity android:name=".LaunchActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -38,7 +38,7 @@
             android:name=".CityActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
@@ -241,22 +241,26 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
+
         <meta-data
             android:name="WX_APPID"
-            android:value="wx1897ea1cb217a00e" />
+            android:value="wx6e122120a18ff49c" />
         <meta-data
             android:name="WX_AppSecret"
-            android:value="e500e769dfcdb50160c66fe0ca374e7c" />
+            android:value="36655f294c4246c7f44a22da46bb94c5" />
         <meta-data
             android:name="QQ_APPID"
-            android:value="\ 100424468" />
+            android:value="\ 1102097926" />
         <meta-data
             android:name="QQ_APPKEY"
-            android:value="c7394704798a158208a74ab60104f0ba" />
+            android:value="3EUkAIBsBTMgrNsH" />
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5370639556240ba9b80219cf" >
+            android:value="5491a448fd98c519a9000c53" >
         </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="development" />
         <meta-data
             android:name="api_key"
             android:value="GVIZyTa7jv4Us2H035LEZCxx" />

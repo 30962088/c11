@@ -29,10 +29,15 @@ public class LaunchActivity extends BaseActivity{
 			
 			@Override
 			public void onCompletion(MediaPlayer mp) {
-				MainActivity.open(LaunchActivity.this);
 				finish();
 			}
 		});
+	}
+	
+	@Override
+	public void finish() {
+		MainActivity.open(LaunchActivity.this);
+		super.finish();
 	}
 	
 }
