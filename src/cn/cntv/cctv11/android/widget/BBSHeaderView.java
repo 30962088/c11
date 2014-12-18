@@ -5,6 +5,7 @@ import com.mengle.lib.wiget.ConfirmDialog;
 import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.BBSListActivity;
 import cn.cntv.cctv11.android.BBSPublishActivity;
+import cn.cntv.cctv11.android.BaseActivity;
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.SettingActivity;
 import cn.cntv.cctv11.android.utils.CacheManager;
@@ -83,21 +84,7 @@ public class BBSHeaderView extends FrameLayout{
 		private boolean check() {
 			
 			if(!APP.getSession().isLogin()){
-				ConfirmDialog.open(getContext(), "提示", "您还没有登录，是否立即登录？",
-						new ConfirmDialog.OnClickListener() {
-
-							@Override
-							public void onPositiveClick() {
-								
-							}
-
-							@Override
-							public void onNegativeClick() {
-								// TODO Auto-generated method stub
-
-							}
-
-						});
+				((BaseActivity)getContext()).toLogin();
 				return false;
 			}
 			

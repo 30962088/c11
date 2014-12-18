@@ -14,6 +14,8 @@ import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
+import com.umeng.socialize.media.QQShareContent;
+import com.umeng.socialize.media.QZoneShareContent;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
@@ -143,6 +145,57 @@ public class ShareUtils {
 				}));
 	}
 
+	public static void shareWebsite(final Context context, SHARE_MEDIA media,
+			final String title, final String url) {
+		if (media == SHARE_MEDIA.WEIXIN || media == SHARE_MEDIA.WEIXIN_CIRCLE) {
+			shareWeixinWeb(context, title, url, media);
+		} else {
+
+			final UMSocialService mController = UMServiceFactory
+					.getUMSocialService("com.umeng.share");
+			mController.getConfig().closeToast();
+			switch (media) {
+			case QZONE: {
+				QZoneShareContent content = new QZoneShareContent();
+				content.setTitle(title);
+				content.setAppWebSite(url);
+				content.setShareContent(url);
+				content.setTargetUrl(url);
+				mController.setShareMedia(content);
+			}
+				break;
+			case QQ: {
+				QQShareContent content = new QQShareContent();
+				content.setTitle(title);
+				content.setAppWebSite(url);
+				content.setShareContent(title + " " + url);
+				content.setTargetUrl(url);
+				mController.setShareMedia(content);
+			}
+				break;
+			default:
+				mController.setAppWebSite(url);
+				mController.setShareContent(title + " " + url);
+				break;
+			}
+			mController.directShare(context, media, new SnsPostListener() {
+
+				@Override
+				public void onStart() {
+
+				}
+
+				@Override
+				public void onComplete(SHARE_MEDIA media, int arg1,
+						SocializeEntity arg2) {
+					if (media == SHARE_MEDIA.SINA) {
+						Utils.tip(context, "分享成功");
+					}
+				}
+			});
+		}
+	}
+
 	public static void shareText(final Context context, final String title,
 			final String url) {
 		new IOSPopupWindow(context, new IOSPopupWindow.Params(
@@ -164,17 +217,29 @@ public class ShareUtils {
 									.getUMSocialService("com.umeng.share");
 							mController.getConfig().closeToast();
 							switch (media) {
-							case QZONE:
-							case QQ:
-
+							case QZONE: {
+								QZoneShareContent content = new QZoneShareContent();
+								content.setTitle(title);
+								content.setAppWebSite(url);
+								content.setShareContent(url);
+								content.setTargetUrl(url);
+								mController.setShareMedia(content);
+							}
 								break;
-							case SINA:
-								mController.setShareContent(url);
+							case QQ: {
+								QQShareContent content = new QQShareContent();
+								content.setTitle(title);
+								content.setAppWebSite(url);
+								content.setShareContent(title + " " + url);
+								content.setTargetUrl(url);
+								mController.setShareMedia(content);
+							}
 								break;
 							default:
+								mController.setAppWebSite(url);
+								mController.setShareContent(title + " " + url);
 								break;
 							}
-
 							mController.directShare(context, media,
 									new SnsPostListener() {
 
@@ -185,9 +250,11 @@ public class ShareUtils {
 
 										@Override
 										public void onComplete(
-												SHARE_MEDIA arg0, int arg1,
+												SHARE_MEDIA media, int arg1,
 												SocializeEntity arg2) {
-
+											if (media == SHARE_MEDIA.SINA) {
+												Utils.tip(context, "分享成功");
+											}
 										}
 									});
 						}

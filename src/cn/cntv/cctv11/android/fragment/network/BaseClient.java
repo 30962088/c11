@@ -2,16 +2,26 @@ package cn.cntv.cctv11.android.fragment.network;
 
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import cn.cntv.cctv11.android.APP;
+import cn.cntv.cctv11.android.BaseActivity;
+import cn.cntv.cctv11.android.MainActivity;
+
 import com.loopj.android.http.*;
+import com.mengle.lib.utils.Utils;
 
 public abstract class BaseClient implements HttpResponseHandler {
 	
 	public static final String BASE_URL = "http://cctv11news.1du1du.com/";
+	
+	private static final String BASE_HOST = "1dudu.com";
 
 	public static String getImage(String filename,String format){
 		
@@ -58,7 +68,32 @@ public abstract class BaseClient implements HttpResponseHandler {
 
 		@Override
 		public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-			
+			if(getUrl().indexOf(BASE_HOST)!=-1){
+				try {
+					JSONObject object = new JSONObject(new String(arg2));
+					int result = object.getInt("result");
+					if(result != 1000){
+						if(result == 1010){
+							
+							Utils.tip(context, "登录过期，请重新登录");
+							Intent intent = new Intent(context, MainActivity.class);
+							intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP
+									| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							intent.setAction(MainActivity.ACTION_TOLOGIN);
+							context.startActivity(intent);
+							APP.getSession().logout();
+							
+						}else{
+							handler.onError(result, "请求失败");
+						}
+						
+						return;
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			requestHandler.onSuccess(handler.onSuccess(new String(arg2)));
 			requestHandler.onComplete();
 			/*String json = new String(arg2);

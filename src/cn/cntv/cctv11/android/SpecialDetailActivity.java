@@ -2,12 +2,14 @@ package cn.cntv.cctv11.android;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.mengle.lib.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
@@ -18,6 +20,8 @@ import cn.cntv.cctv11.android.fragment.network.InsertCommentRequest;
 import cn.cntv.cctv11.android.utils.HtmlUtils;
 import cn.cntv.cctv11.android.utils.LoadingPopup;
 import cn.cntv.cctv11.android.utils.ShareUtils;
+import cn.cntv.cctv11.android.widget.IOSPopupWindow;
+import cn.cntv.cctv11.android.widget.IOSPopupWindow.OnIOSItemClickListener;
 import cn.cntv.cctv11.android.R;
 import android.content.Context;
 import android.content.Intent;
@@ -108,8 +112,6 @@ public class SpecialDetailActivity extends BaseActivity implements
 		private EditText editText;
 
 		private WebSettings settings;
-		
-		
 
 		private int fontSize = APP.getSession().getFontSize();
 
@@ -170,7 +172,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 			}
 
 			if (model.comment != null) {
-				comment.setText("" + model.comment+" 跟帖");
+				comment.setText("" + model.comment + " 跟帖");
 			}
 
 			if (model.cover != null) {
@@ -219,7 +221,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 	}
 
 	private ViewHolder holder;
-	
+
 	private View notLoginView;
 
 	private Params params;
@@ -232,9 +234,9 @@ public class SpecialDetailActivity extends BaseActivity implements
 		findViewById(R.id.share).setOnClickListener(this);
 		notLoginView = findViewById(R.id.not_login_view);
 		notLoginView.setOnClickListener(this);
-		if(APP.getSession().isLogin()){
+		if (APP.getSession().isLogin()) {
 			notLoginView.setVisibility(View.GONE);
-		}else{
+		} else {
 			notLoginView.setVisibility(View.VISIBLE);
 		}
 		findViewById(R.id.sendBtn).setOnClickListener(this);
@@ -270,7 +272,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 			@Override
 			public void onError(int error, String msg) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
@@ -293,7 +295,8 @@ public class SpecialDetailActivity extends BaseActivity implements
 			LoadingPopup.show(this);
 			String content = holder.editText.getText().toString();
 			new InsertCommentRequest(this, new InsertCommentRequest.Params(
-					params.contentId, "0", "0", APP.getSession().getSid(), content,APP.getSession().getPkey()))
+					params.contentId, "0", "0", APP.getSession().getSid(),
+					content, APP.getSession().getPkey()))
 					.request(new RequestHandler() {
 
 						@Override
@@ -306,7 +309,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 						@Override
 						public void onError(int error, String msg) {
 							Utils.tip(SpecialDetailActivity.this, "评论失败");
-							
+
 						}
 
 						@Override
@@ -323,8 +326,32 @@ public class SpecialDetailActivity extends BaseActivity implements
 	}
 
 	private void onshare() {
-		ShareUtils.shareText(this, params.title,BaseClient.getSharecontent(params.contentId));
-		
+		new IOSPopupWindow(this, new IOSPopupWindow.Params(
+				Arrays.asList(new String[] { "分享给QQ好友", "分享到QQ空间", "分享给微信好友",
+						"分享到朋友圈", "分享到新浪微博", "举报" }),
+				new OnIOSItemClickListener() {
+
+					@Override
+					public void oniositemclick(int pos, String text) {
+						if (pos == 5) {
+							
+						} else {
+
+							SHARE_MEDIA media = new SHARE_MEDIA[] {
+									SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
+									SHARE_MEDIA.WEIXIN,
+									SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
+
+							ShareUtils.shareWebsite(SpecialDetailActivity.this,
+									media, params.title, BaseClient
+											.getSharecontent(params.contentId));
+
+						}
+
+					}
+
+				}));
+
 	}
 
 }
