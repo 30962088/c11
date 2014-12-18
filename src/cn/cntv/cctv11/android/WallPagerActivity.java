@@ -1,13 +1,20 @@
 package cn.cntv.cctv11.android;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
+
+import com.mengle.lib.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.DisplayImageOptions.Builder;
 import com.nostra13.universalimageloader.core.assist.DiscCacheUtil;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
@@ -18,6 +25,8 @@ import com.umeng.socialize.media.UMImage;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.PhotoViewActivity.Photo;
+import cn.cntv.cctv11.android.utils.Dirctionary;
+import cn.cntv.cctv11.android.utils.ImageUtils;
 import cn.cntv.cctv11.android.utils.ShareUtils;
 import cn.cntv.cctv11.android.widget.IOSPopupWindow;
 import cn.cntv.cctv11.android.widget.OnLongTapFrameLayout;
@@ -30,6 +39,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -137,13 +147,61 @@ public class WallPagerActivity extends BaseActivity implements OnClickListener,O
 				new OnIOSItemClickListener() {
 
 					@Override
-					public void oniositemclick(int pos, String text) {
+					public void oniositemclick(final int pos, String text) {
+						if(pos == 0 || pos ==6){
+							ImageLoader.getInstance().loadImage(model.origin,APP.DisplayOptions.IMG.getOptions(),new ImageLoadingListener() {
+								
+								@Override
+								public void onLoadingStarted(String imageUri, View view) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								@Override
+								public void onLoadingFailed(String imageUri, View view,
+										FailReason failReason) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								@Override
+								public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+									File file = ImageLoader.getInstance().getDiscCache().get(imageUri);
+									if(pos == 0){
+										File dest = new File(Dirctionary.getPictureDir(),new Date().getTime()+".jpg");
+										try {
+											FileUtils.copyFile(file, dest);
+											ImageUtils.addImageToGallery(dest.toString(), WallPagerActivity.this);
+											Utils.tip(WallPagerActivity.this, "保存成功");
+										} catch (IOException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									}else{
+										Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE); 
+										emailIntent.setType("application/image");
+//										emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{strEmail}); 
+										emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"央视戏曲官方壁纸下载链接"); 
+//										emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "From My App"); 
+										emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+										startActivity(Intent.createChooser(emailIntent, "发送邮件"));
+									}
+								}
+								
+								@Override
+								public void onLoadingCancelled(String imageUri, View view) {
+									// TODO Auto-generated method stub
+									
+								}
+							});
+							
+						}
 						if (pos >= 1 && pos <= 5) {
-							pos--;
+							int index = pos-1;
 							SHARE_MEDIA media = new SHARE_MEDIA[] {
 									SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
 									SHARE_MEDIA.WEIXIN,
-									SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
+									SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[index];
 							File file = ImageLoader.getInstance().getDiscCache().get(model.thunbnail);
 							Bitmap bitmap = null;
 							if(file.exists()){

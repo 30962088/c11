@@ -9,6 +9,7 @@ import java.util.Locale;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import android.content.Context;
+import android.os.Environment;
 
 public class Dirctionary {
 
@@ -111,7 +112,7 @@ public class Dirctionary {
 	}
 	
 	private static void initPicture(Context context){
-		 File cameraFolder = new File(StorageUtils.getCacheDirectory(context),"/cctv11_picture");
+		 File cameraFolder = new File(Environment.getExternalStorageDirectory() ,"cctv11_picture");
 
          if(!cameraFolder.exists()){
         	 cameraFolder.mkdirs();

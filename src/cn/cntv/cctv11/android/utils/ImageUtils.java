@@ -5,6 +5,11 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.provider.MediaStore;
+import android.provider.MediaStore.Images;
+
 import cn.cntv.cctv11.android.fragment.network.BaseClient;
 
 public class ImageUtils {
@@ -25,6 +30,17 @@ public class ImageUtils {
 		}
 		
 		
+	}
+	
+	public static void addImageToGallery(final String filePath, final Context context) {
+
+	    ContentValues values = new ContentValues();
+
+	    values.put(Images.Media.DATE_TAKEN, System.currentTimeMillis());
+	    values.put(Images.Media.MIME_TYPE, "image/jpeg");
+	    values.put(MediaStore.MediaColumns.DATA, filePath);
+
+	    context.getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values);
 	}
 	
 	public static String getTheImage(String filename,Size size){
