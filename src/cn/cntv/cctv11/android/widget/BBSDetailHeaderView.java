@@ -101,6 +101,9 @@ public class BBSDetailHeaderView extends FrameLayout{
 		public String getCommentid() {
 			return commentid;
 		}
+		public String getTitle() {
+			return title;
+		}
 	}
 	
 

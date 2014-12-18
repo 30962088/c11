@@ -33,6 +33,10 @@ public abstract class BaseClient implements HttpResponseHandler {
 		return BASE_URL+"ContentsShares/ContentsShare?contentid="+id;
 	}
 	
+	public static String getShareForumcontent(String id){
+		return BASE_URL+"ForumtopicShares/ForumtopicShare?topicid="+id;
+	}
+	
 	private static AsyncHttpClient client = new AsyncHttpClient();
 
 	protected Context context;

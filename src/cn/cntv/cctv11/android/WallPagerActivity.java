@@ -3,22 +3,32 @@ package cn.cntv.cctv11.android;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.DisplayImageOptions.Builder;
 import com.nostra13.universalimageloader.core.assist.DiscCacheUtil;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeEntity;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
+import com.umeng.socialize.media.UMImage;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.PhotoViewActivity.Photo;
 import cn.cntv.cctv11.android.utils.ShareUtils;
+import cn.cntv.cctv11.android.widget.IOSPopupWindow;
 import cn.cntv.cctv11.android.widget.OnLongTapFrameLayout;
+import cn.cntv.cctv11.android.widget.IOSPopupWindow.OnIOSItemClickListener;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -121,7 +131,29 @@ public class WallPagerActivity extends BaseActivity implements OnClickListener,O
 	
 
 	private void onshare() {
-		ShareUtils.shareImage(this, model.origin);
+		new IOSPopupWindow(this, new IOSPopupWindow.Params(
+				Arrays.asList(new String[] { "保存到相册", "分享给QQ好友", "分享到QQ空间",
+						"分享给微信好友", "分享到朋友圈", "分享到新浪微博", "用邮件发送" }),
+				new OnIOSItemClickListener() {
+
+					@Override
+					public void oniositemclick(int pos, String text) {
+						if (pos >= 1 && pos <= 5) {
+							pos--;
+							SHARE_MEDIA media = new SHARE_MEDIA[] {
+									SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
+									SHARE_MEDIA.WEIXIN,
+									SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
+							File file = ImageLoader.getInstance().getDiscCache().get(model.thunbnail);
+							Bitmap bitmap = null;
+							if(file.exists()){
+								bitmap = BitmapFactory.decodeFile(file.toString());
+							}
+							ShareUtils.shareImage(WallPagerActivity.this, media, "央视戏曲官方壁纸下载链接",bitmap, model.origin);
+						}
+					}
+
+				}));
 		
 	}
 

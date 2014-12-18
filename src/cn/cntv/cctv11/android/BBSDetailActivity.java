@@ -1,11 +1,13 @@
 package cn.cntv.cctv11.android;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.http.Header;
 
 import com.mengle.lib.utils.Utils;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import cn.cntv.cctv11.android.adapter.NewsCommentListAdapter;
 import cn.cntv.cctv11.android.adapter.NewsCommentListAdapter.OnCommentBtnClickListener;
@@ -16,11 +18,14 @@ import cn.cntv.cctv11.android.fragment.network.InsertCommentRequest;
 import cn.cntv.cctv11.android.fragment.network.InsertForumRequest;
 import cn.cntv.cctv11.android.fragment.network.NewsCommentRequest;
 import cn.cntv.cctv11.android.utils.LoadingPopup;
+import cn.cntv.cctv11.android.utils.ShareUtils;
 import cn.cntv.cctv11.android.widget.BBSDetailHeaderView.Model;
 import cn.cntv.cctv11.android.widget.BBSDetailHeaderView;
 import cn.cntv.cctv11.android.widget.BaseListView;
+import cn.cntv.cctv11.android.widget.IOSPopupWindow;
 import cn.cntv.cctv11.android.widget.BaseListView.OnLoadListener;
 import cn.cntv.cctv11.android.widget.BaseListView.Type;
+import cn.cntv.cctv11.android.widget.IOSPopupWindow.OnIOSItemClickListener;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -66,6 +71,7 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 		editText = (EditText) findViewById(R.id.edit);
 		findViewById(R.id.back).setOnClickListener(this);
 		findViewById(R.id.sendBtn).setOnClickListener(this);
+		findViewById(R.id.share).setOnClickListener(this);
 		listView = (BaseListView) findViewById(R.id.listview);
 		BBSDetailHeaderView headerView = new BBSDetailHeaderView(this);
 		headerView.setModel(model);
@@ -118,6 +124,9 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.share:
+			onshare();
+			break;
 		case R.id.back:
 			finish();
 			break;
@@ -167,6 +176,35 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 			break;
 		}
 
+	}
+
+	private void onshare() {
+		new IOSPopupWindow(this, new IOSPopupWindow.Params(
+				Arrays.asList(new String[] { "分享给QQ好友", "分享到QQ空间", "分享给微信好友",
+						"分享到朋友圈", "分享到新浪微博", "举报" }),
+				new OnIOSItemClickListener() {
+
+					@Override
+					public void oniositemclick(int pos, String text) {
+						if (pos == 5) {
+							ReportActivity.open(BBSDetailActivity.this, new ReportActivity.Model(model.getId()));
+						} else {
+
+							SHARE_MEDIA media = new SHARE_MEDIA[] {
+									SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
+									SHARE_MEDIA.WEIXIN,
+									SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
+
+							ShareUtils.shareWebsite(BBSDetailActivity.this,
+									media, model.getTitle(), BaseClient
+											.getShareForumcontent(model.getId()));
+
+						}
+
+					}
+
+				}));
+		
 	}
 
 	@Override

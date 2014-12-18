@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import com.mengle.lib.utils.Utils;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXImageObject;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -47,6 +48,28 @@ public class ShareUtils {
 		localWXMediaMessage.description = title;
 		localWXMediaMessage.thumbData = getBitmapBytes(drawableToBitmap(context
 				.getResources().getDrawable(R.drawable.ic_launcher)), false);
+		SendMessageToWX.Req localReq = new SendMessageToWX.Req();
+		localReq.scene = scene;
+		localReq.transaction = System.currentTimeMillis() + "";
+		localReq.message = localWXMediaMessage;
+		IWXAPI api = WXAPIFactory.createWXAPI(context, APP.getAppConfig()
+				.getWX_APPID(), true);
+		api.sendReq(localReq);
+	}
+	
+	public static void shareWeixinImage(Context context, String title,
+			Bitmap bitmap, SHARE_MEDIA media) {
+		if(bitmap == null){
+			Utils.tip(context, "图片未下载");
+			return;
+		}
+		int scene = SendMessageToWX.Req.WXSceneSession;
+		if (media == SHARE_MEDIA.WEIXIN_CIRCLE) {
+			scene = SendMessageToWX.Req.WXSceneTimeline;
+		}
+		WXImageObject imgObj = new WXImageObject();  
+		imgObj.imageData = getBitmapBytes(bitmap, false);
+		WXMediaMessage localWXMediaMessage = new WXMediaMessage(imgObj);
 		SendMessageToWX.Req localReq = new SendMessageToWX.Req();
 		localReq.scene = scene;
 		localReq.transaction = System.currentTimeMillis() + "";
@@ -103,47 +126,61 @@ public class ShareUtils {
 			j = bitmap.getHeight();
 		}
 	}
+	
+	public static void shareImage(final Context context, SHARE_MEDIA media,
+			final String title,Bitmap bitmap, final String url) {
+		if (media == SHARE_MEDIA.WEIXIN || media == SHARE_MEDIA.WEIXIN_CIRCLE) {
+			shareWeixinImage(context, title, bitmap, media);
+		} else {
 
-	public static void shareImage(final Context context, final String image) {
-		new IOSPopupWindow(context, new IOSPopupWindow.Params(
-				Arrays.asList(new String[] { "保存到相册", "分享给QQ好友", "分享到QQ空间",
-						"分享给微信好友", "分享到朋友圈", "分享到新浪微博", "用邮件发送" }),
-				new OnIOSItemClickListener() {
+			final UMSocialService mController = UMServiceFactory
+					.getUMSocialService("com.umeng.share");
+			mController.getConfig().closeToast();
+			switch (media) {
+			case QZONE: {
+				QZoneShareContent content = new QZoneShareContent();
+				content.setTitle(title);
+				content.setAppWebSite(url);
+				content.setShareContent(url);
+				content.setTargetUrl(url);
+				mController.setShareMedia(content);
+			}
+				break;
+			case QQ: {
+				QQShareContent content = new QQShareContent();
+				content.setTitle(title);
+				content.setAppWebSite(url);
+				content.setShareContent(title + " " + url);
+				content.setTargetUrl(url);
+				mController.setShareMedia(content);
+			}
+				break;
+			default:
+				mController.setAppWebSite(url);
+				mController.setShareContent(title + " " + url);
+				break;
+			}
+			mController.directShare(context, media, new SnsPostListener() {
 
-					@Override
-					public void oniositemclick(int pos, String text) {
-						if (pos >= 1 && pos <= 5) {
-							pos--;
-							SHARE_MEDIA media = new SHARE_MEDIA[] {
-									SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
-									SHARE_MEDIA.WEIXIN,
-									SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
-							final UMSocialService mController = UMServiceFactory
-									.getUMSocialService("com.umeng.share");
-							mController.getConfig().closeToast();
-							mController.setShareImage(new UMImage(context,
-									image));
+				@Override
+				public void onStart() {
 
-							mController.directShare(context, media,
-									new SnsPostListener() {
+				}
 
-										@Override
-										public void onStart() {
-
-										}
-
-										@Override
-										public void onComplete(
-												SHARE_MEDIA arg0, int arg1,
-												SocializeEntity arg2) {
-
-										}
-									});
-						}
+				@Override
+				public void onComplete(SHARE_MEDIA media, int arg1,
+						SocializeEntity arg2) {
+					if (media == SHARE_MEDIA.SINA) {
+						Utils.tip(context, "分享成功");
 					}
-
-				}));
+				}
+			});
+		}
 	}
+
+	
+	
+	
 
 	public static void shareWebsite(final Context context, SHARE_MEDIA media,
 			final String title, final String url) {
@@ -196,71 +233,6 @@ public class ShareUtils {
 		}
 	}
 
-	public static void shareText(final Context context, final String title,
-			final String url) {
-		new IOSPopupWindow(context, new IOSPopupWindow.Params(
-				Arrays.asList(new String[] { "分享给QQ好友", "分享到QQ空间", "分享给微信好友",
-						"分享到朋友圈", "分享到新浪微博" }), new OnIOSItemClickListener() {
-
-					@Override
-					public void oniositemclick(int pos, String text) {
-
-						SHARE_MEDIA media = new SHARE_MEDIA[] { SHARE_MEDIA.QQ,
-								SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN,
-								SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
-						if (media == SHARE_MEDIA.WEIXIN
-								|| media == SHARE_MEDIA.WEIXIN_CIRCLE) {
-							shareWeixinWeb(context, title, url, media);
-						} else {
-
-							final UMSocialService mController = UMServiceFactory
-									.getUMSocialService("com.umeng.share");
-							mController.getConfig().closeToast();
-							switch (media) {
-							case QZONE: {
-								QZoneShareContent content = new QZoneShareContent();
-								content.setTitle(title);
-								content.setAppWebSite(url);
-								content.setShareContent(url);
-								content.setTargetUrl(url);
-								mController.setShareMedia(content);
-							}
-								break;
-							case QQ: {
-								QQShareContent content = new QQShareContent();
-								content.setTitle(title);
-								content.setAppWebSite(url);
-								content.setShareContent(title + " " + url);
-								content.setTargetUrl(url);
-								mController.setShareMedia(content);
-							}
-								break;
-							default:
-								mController.setAppWebSite(url);
-								mController.setShareContent(title + " " + url);
-								break;
-							}
-							mController.directShare(context, media,
-									new SnsPostListener() {
-
-										@Override
-										public void onStart() {
-
-										}
-
-										@Override
-										public void onComplete(
-												SHARE_MEDIA media, int arg1,
-												SocializeEntity arg2) {
-											if (media == SHARE_MEDIA.SINA) {
-												Utils.tip(context, "分享成功");
-											}
-										}
-									});
-						}
-					}
-
-				}));
-	}
+	
 
 }

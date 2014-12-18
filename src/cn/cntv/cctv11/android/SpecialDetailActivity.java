@@ -328,25 +328,18 @@ public class SpecialDetailActivity extends BaseActivity implements
 	private void onshare() {
 		new IOSPopupWindow(this, new IOSPopupWindow.Params(
 				Arrays.asList(new String[] { "分享给QQ好友", "分享到QQ空间", "分享给微信好友",
-						"分享到朋友圈", "分享到新浪微博", "举报" }),
-				new OnIOSItemClickListener() {
+						"分享到朋友圈", "分享到新浪微博" }), new OnIOSItemClickListener() {
 
 					@Override
 					public void oniositemclick(int pos, String text) {
-						if (pos == 5) {
-							
-						} else {
 
-							SHARE_MEDIA media = new SHARE_MEDIA[] {
-									SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
-									SHARE_MEDIA.WEIXIN,
-									SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
+						SHARE_MEDIA media = new SHARE_MEDIA[] { SHARE_MEDIA.QQ,
+								SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN,
+								SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
 
-							ShareUtils.shareWebsite(SpecialDetailActivity.this,
-									media, params.title, BaseClient
-											.getSharecontent(params.contentId));
-
-						}
+						ShareUtils.shareWebsite(SpecialDetailActivity.this,
+								media, params.title,
+								BaseClient.getSharecontent(params.contentId));
 
 					}
 
