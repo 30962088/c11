@@ -1,6 +1,5 @@
 package cn.cntv.cctv11.android.fragment.network;
 
-import org.apache.http.Header;
 
 import cn.cntv.cctv11.android.APP;
 
@@ -11,13 +10,13 @@ import android.content.Context;
 public class UpdateSingerInfoRequest extends BaseClient{
 
 	public static class Singername{
+		private String sid;
 		private String name;
-
-		public Singername(String name) {
+		public Singername(String sid, String name) {
 			super();
+			this.sid = sid;
 			this.name = name;
 		}
-		
 	}
 	
 	public static class Params{
@@ -37,9 +36,9 @@ public class UpdateSingerInfoRequest extends BaseClient{
 			this.sid = sid;
 			this.address = address;
 		}
-		public Params(String sid, Singername singername) {
+		public Params(Singername singername) {
 			super();
-			this.sid = sid;
+			this.sid = singername.sid;
 			this.singername = singername.name;
 		}
 		
@@ -75,6 +74,8 @@ public class UpdateSingerInfoRequest extends BaseClient{
 		if(this.params.singername != null){
 			params.add("singername", this.params.singername);
 		}
+		params.add("appid", "1217");
+		
 		
 		return params;
 	}

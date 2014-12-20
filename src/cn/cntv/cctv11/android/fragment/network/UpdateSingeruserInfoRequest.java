@@ -16,6 +16,7 @@ public class UpdateSingeruserInfoRequest extends BaseClient{
 		private String sid;
 		private String oldpassword;
 		private String newpassword;
+		private String phone;
 		public Params(String pkey, String sid, String oldpassword,
 				String newpassword) {
 			super();
@@ -24,6 +25,14 @@ public class UpdateSingeruserInfoRequest extends BaseClient{
 			this.oldpassword = oldpassword;
 			this.newpassword = newpassword;
 		}
+		public Params(String pkey, String sid, String phone) {
+			super();
+			this.pkey = pkey;
+			this.sid = sid;
+			this.phone = phone;
+		}
+		
+		
 		
 	}
 	
@@ -58,6 +67,10 @@ public class UpdateSingeruserInfoRequest extends BaseClient{
 		if(this.params.newpassword != null){
 			params.add("newpassword", ""+this.params.newpassword);
 		}
+		if(this.params.phone != null){
+			params.add("phone", ""+this.params.phone);
+		}
+		params.add("appid", "1217");
 		return params;
 	}
 

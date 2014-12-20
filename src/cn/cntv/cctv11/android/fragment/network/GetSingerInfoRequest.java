@@ -82,6 +82,7 @@ public class GetSingerInfoRequest extends BaseClient{
 	protected RequestParams getParams() {
 		RequestParams params = new RequestParams();
 		params.add("sid", this.params.sid);
+		params.add("appid", "1217");
 		return params;
 	}
 

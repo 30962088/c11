@@ -60,7 +60,8 @@ public abstract class BaseClient implements HttpResponseHandler {
 					JSONObject object = new JSONObject(new String(arg2));
 					int result = object.getInt("result");
 					if(result != 1000){
-						if(result == 1010){
+						requestHandler.onComplete();
+						if((getURL().indexOf(APP.getAppConfig().getRequest_news()) != -1 && result == 1010)||(getURL().indexOf(APP.getAppConfig().getRequest_user()) != -1 && result == 1011)){
 							
 							Utils.tip(context, "登录过期，请重新登录");
 							Intent intent = new Intent(context, MainActivity.class);
@@ -71,6 +72,7 @@ public abstract class BaseClient implements HttpResponseHandler {
 							APP.getSession().logout();
 							
 						}else{
+							requestHandler.onError(result, "请求失败");
 							handler.onError(result, "请求失败");
 						}
 						

@@ -262,7 +262,7 @@ public class UserSettingFragment extends BaseFragment implements
 	public void onNicknameFill(String nickname) {
 		
 		UpdateSingerInfoRequest request = new UpdateSingerInfoRequest(getActivity(), 
-				new UpdateSingerInfoRequest.Params(sid, new UpdateSingerInfoRequest.Singername(nickname)));
+				new UpdateSingerInfoRequest.Params(new UpdateSingerInfoRequest.Singername(sid,nickname)));
 		LoadingPopup.show(getActivity());
 		request.request(new BaseClient.SimpleRequestHandler(){
 			@Override

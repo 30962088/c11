@@ -73,11 +73,10 @@ public class FeedBackActivity extends BaseActivity implements OnClickListener{
 		request.request(new SimpleRequestHandler(){
 			@Override
 			public void onSuccess(Object object) {
-				FeedbackRequest.Result result = (FeedbackRequest.Result)object;
-				if(result.getResult() == 1000){
-					Utils.tip(FeedBackActivity.this, "反馈成功");
-					finish();
-				}
+			
+				Utils.tip(FeedBackActivity.this, "反馈成功");
+				finish();
+				
 			}
 			@Override
 			public void onComplete() {

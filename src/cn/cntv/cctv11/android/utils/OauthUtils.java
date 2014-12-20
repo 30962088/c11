@@ -59,7 +59,7 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 		}
 
 		public Params toParams() {
-			int type = 0;
+			int type = 2;
 			if (media == SHARE_MEDIA.SINA) {
 				type = 1;
 			}
@@ -67,7 +67,7 @@ public class OauthUtils implements UMAuthListener, FetchUserListener {
 		}
 
 		public Model toModel() {
-			int type = 1;
+			int type = 2;
 			if(media == SHARE_MEDIA.SINA){
 				type = 1;
 			}

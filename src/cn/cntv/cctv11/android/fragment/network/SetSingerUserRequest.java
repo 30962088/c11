@@ -74,6 +74,7 @@ public class SetSingerUserRequest extends BaseClient{
 		params.add("address", "" + this.params.address);
 		params.add("phone", "" + this.params.phone);
 		params.add("password", "" + this.params.password);
+		params.add("appid", "1217");
 		return params;
 	}
 	

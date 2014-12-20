@@ -28,24 +28,26 @@ import cn.cntv.cctv11.android.utils.AliyunUtils.UploadListener;
 import cn.cntv.cctv11.android.utils.LoadingPopup;
 import cn.cntv.cctv11.android.utils.AliyunUtils.UploadResult;
 
-public class BBSPublishActivity extends BaseActivity implements OnClickListener,OnGallerySelectionListener,OnFocusChangeListener,TextWatcher{
+public class BBSPublishActivity extends BaseActivity implements
+		OnClickListener, OnGallerySelectionListener, OnFocusChangeListener,
+		TextWatcher {
 
-	public static void open(Context context){
+	public static void open(Context context) {
 		context.startActivity(new Intent(context, BBSPublishActivity.class));
 	}
-	
+
 	private EditText titleText;
-	
+
 	private EditText contentText;
-	
+
 	private ImageView imageView;
-	
+
 	private View delView;
-	
+
 	private TextView tipView;
-	
+
 	private int defaultImg = R.drawable.icon_gallery;
-	
+
 	@Override
 	protected void onCreate(Bundle arg0) {
 		// TODO Auto-generated method stub
@@ -88,111 +90,112 @@ public class BBSPublishActivity extends BaseActivity implements OnClickListener,
 		default:
 			break;
 		}
-		
+
 	}
 
 	private void ondel() {
 		imageView.setImageResource(defaultImg);
 		imageView.setTag(null);
 		delView.setVisibility(View.GONE);
-		
+
 	}
 
 	private void onselect() {
-		InputMethodManager imm = (InputMethodManager)getSystemService(
-			      Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(currentEdit.getWindowToken(), 0);
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(currentEdit.getWindowToken(), 0);
 		getPhoto(this);
-		
+
 	}
 
 	private void onpublish() {
 		final String title = titleText.getText().toString();
 		final String content = contentText.getText().toString();
-		if(TextUtils.isEmpty(title)){
+		if (TextUtils.isEmpty(title)) {
 			Utils.tip(this, "请输入帖子标题");
 			return;
 		}
-		if(TextUtils.isEmpty(content)){
+		if (TextUtils.isEmpty(content)) {
 			Utils.tip(this, "请输入有效的帖子内容");
 			return;
 		}
-		String filepath = (String)imageView.getTag();
+		String filepath = (String) imageView.getTag();
 		LoadingPopup.show(this);
-		if(filepath != null){
-			
-			AliyunUtils.getInstance().upload(CropImageUtils.thumnailFile(filepath, 800), new UploadListener() {
-				
-				@Override
-				public void onsuccess(UploadResult result) {
-					send(new InsertTopicRequest.Params(content, APP.getSession().getSid(), title,result.getGuid(),result.getExt()));
-					
-				}
-			});
-		}else{
-			send(new InsertTopicRequest.Params(content, APP.getSession().getSid(), title));
+		if (filepath != null) {
+
+			AliyunUtils.getInstance().upload(
+					CropImageUtils.thumnailFile(filepath, 800),
+					new UploadListener() {
+
+						@Override
+						public void onsuccess(UploadResult result) {
+							send(new InsertTopicRequest.Params(content, APP
+									.getSession().getSid(), title, result
+									.getGuid(), result.getExt()));
+
+						}
+					});
+		} else {
+			send(new InsertTopicRequest.Params(content, APP.getSession()
+					.getSid(), title));
 		}
-		
+
 	}
-	
-	private void send(InsertTopicRequest.Params params){
-		
+
+	private void send(InsertTopicRequest.Params params) {
+
 		InsertTopicRequest request = new InsertTopicRequest(this, params);
-		
-		request.request(new BaseClient.SimpleRequestHandler(){
+
+		request.request(new BaseClient.SimpleRequestHandler() {
 			@Override
 			public void onSuccess(Object object) {
-				InsertTopicRequest.Result result = (InsertTopicRequest.Result)object;
-				if(result.getResult() == 1000){
-					Utils.tip(BBSPublishActivity.this, "发帖成功");
-					finish();
-				}else{
-					Utils.tip(BBSPublishActivity.this, "发帖失败");
-				}
+
+				Utils.tip(BBSPublishActivity.this, "发帖成功");
+				finish();
+
 			}
-			
+
 			@Override
 			public void onComplete() {
 				LoadingPopup.show(BBSPublishActivity.this);
 			}
-			
+
 			@Override
 			public void onError(int error, String msg) {
 				Utils.tip(BBSPublishActivity.this, "发帖失败");
 			}
-			
+
 		});
-		
+
 	}
-	
-	
+
 	private EditText currentEdit;
 
 	private void contentWord() {
-		
+
 		currentEdit = contentText;
-		tipView.setText(""+(1000-contentText.getText().toString().length()));
-		
+		tipView.setText("" + (1000 - contentText.getText().toString().length()));
+
 	}
 
 	private void titleWord() {
-	
+
 		currentEdit = titleText;
-		tipView.setText(""+(30-titleText.getText().toString().length()));
-		
+		tipView.setText("" + (30 - titleText.getText().toString().length()));
+
 	}
 
 	@Override
 	public void onGallerySelection(File file) {
 		imageView.setTag(file.toString());
-		ImageLoader.getInstance().displayImage(Uri.fromFile(file).toString(), imageView,APP.DisplayOptions.IMG.getOptions());
+		ImageLoader.getInstance().displayImage(Uri.fromFile(file).toString(),
+				imageView, APP.DisplayOptions.IMG.getOptions());
 		delView.setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	public void onFocusChange(View v, boolean hasFocus) {
-		
-		if(hasFocus){
+
+		if (hasFocus) {
 			switch (v.getId()) {
 			case R.id.title:
 				titleWord();
@@ -204,20 +207,20 @@ public class BBSPublishActivity extends BaseActivity implements OnClickListener,
 				break;
 			}
 		}
-		
+
 	}
 
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count,
 			int after) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -232,7 +235,7 @@ public class BBSPublishActivity extends BaseActivity implements OnClickListener,
 		default:
 			break;
 		}
-		
+
 	}
-	
+
 }

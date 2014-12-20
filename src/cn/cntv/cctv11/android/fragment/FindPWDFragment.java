@@ -7,7 +7,10 @@ import com.mengle.lib.utils.Utils;
 
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
+import cn.cntv.cctv11.android.fragment.network.BaseClient.SimpleRequestHandler;
+import cn.cntv.cctv11.android.fragment.network.ForgetpasswordRequest;
 import cn.cntv.cctv11.android.fragment.network.GetVerifyCodeRequest;
+import cn.cntv.cctv11.android.fragment.network.UpdateSingerInfoRequest;
 import cn.cntv.cctv11.android.utils.RegexUtils;
 import android.app.Activity;
 import android.os.Bundle;
@@ -85,14 +88,8 @@ public class FindPWDFragment extends BaseFragment implements OnClickListener {
 			@Override
 			public void onSuccess(Object object) {
 				GetVerifyCodeRequest.Result result = (GetVerifyCodeRequest.Result) object;
-				if(result.getResult() == 1015){
-					Utils.tip(getActivity(), "手机已经注册过了");
-				}else if(result.getResult() == 1000){
-					startTimer();
-					verifyCode = result.getCode();
-				}else{
-					Utils.tip(getActivity(), "验证码发送失败");
-				}
+				startTimer();
+				verifyCode = result.getCode();
 				
 			}
 
@@ -104,7 +101,14 @@ public class FindPWDFragment extends BaseFragment implements OnClickListener {
 
 			@Override
 			public void onError(int error, String msg) {
-				// TODO Auto-generated method stub
+				switch (error) {
+				case 1015:
+					Utils.tip(getActivity(), "手机已经注册过了");
+					break;
+				default:
+					Utils.tip(getActivity(), "发送验证码失败");
+					break;
+				}
 				
 			}
 		});
@@ -165,7 +169,20 @@ public class FindPWDFragment extends BaseFragment implements OnClickListener {
 			Utils.tip(getActivity(), "验证码输入有误");
 			return;
 		}
-		
+		ForgetpasswordRequest request = new ForgetpasswordRequest(getActivity(), new ForgetpasswordRequest.Params(phone, password));
+		request.request(new SimpleRequestHandler(){
+			@Override
+			public void onError(int error, String msg) {
+				Utils.tip(getActivity(), "提交失败");
+			}
+			
+			@Override
+			public void onSuccess(Object object) {
+				Utils.tip(getActivity(), "找回密码成功");
+				((MemberFragment) getParentFragment()).backFragment();
+			}
+			
+		});
 		
 		
 	}

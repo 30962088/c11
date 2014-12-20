@@ -7,8 +7,10 @@ import java.util.TimerTask;
 import org.apache.http.Header;
 
 
+import cn.cntv.cctv11.android.fragment.network.BaseClient.SimpleRequestHandler;
 import cn.cntv.cctv11.android.fragment.network.GetVerifyCodeRequest;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
+import cn.cntv.cctv11.android.fragment.network.UpdateSingeruserInfoRequest;
 import cn.cntv.cctv11.android.utils.RegexUtils;
 
 import com.mengle.lib.utils.Utils;
@@ -43,6 +45,7 @@ public class ModifyPhoneActivity extends BaseActivity implements OnClickListener
 		sendBtn = (TextView) findViewById(R.id.send);
 		sendBtn.setOnClickListener(this);
 		verifyEditText = (EditText)findViewById(R.id.verify);
+		findViewById(R.id.submit).setOnClickListener(this);
 	}
 	
 	private void sendVerify() {
@@ -69,22 +72,27 @@ public class ModifyPhoneActivity extends BaseActivity implements OnClickListener
 			@Override
 			public void onSuccess(Object object) {
 				GetVerifyCodeRequest.Result result = (GetVerifyCodeRequest.Result) object;
-				if(result.getResult() == 1015){
-					Utils.tip(ModifyPhoneActivity.this, "手机已经注册过了");
-				}else{
-					startTimer();
-					verifyCode = result.getCode();
-				}
+				startTimer();
+				verifyCode = result.getCode();
 				
 			}
+
 			@Override
 			public void onComplete() {
 				// TODO Auto-generated method stub
 				
 			}
+
 			@Override
 			public void onError(int error, String msg) {
-				// TODO Auto-generated method stub
+				switch (error) {
+				case 1015:
+					Utils.tip(ModifyPhoneActivity.this, "手机已经注册过了");
+					break;
+				default:
+					Utils.tip(ModifyPhoneActivity.this, "发送验证码失败");
+					break;
+				}
 				
 			}
 		});
@@ -118,12 +126,34 @@ public class ModifyPhoneActivity extends BaseActivity implements OnClickListener
 			Utils.tip(this, "验证码输入有误");
 			return;
 		}
-		Utils.tip(this, "修改还没有做呢");
-		String phone = phoneEditText.getText().toString();
-		Intent intent = new Intent();
-		intent.putExtra("phone", phone);
-		setResult(Activity.RESULT_OK, intent);
-		finish();
+		
+		final String phone = phoneEditText.getText().toString();
+		if(TextUtils.isEmpty(phone)){
+			Utils.tip(this, "请输入手机号");
+			return;
+		}
+		if (!RegexUtils.checkPhone(phone)) {
+			Utils.tip(this, "手机号格式错误");
+			return;
+		}
+		
+		UpdateSingeruserInfoRequest request = new UpdateSingeruserInfoRequest(this, new UpdateSingeruserInfoRequest.Params(APP.getSession().getPkey(), APP.getSession().getSid(), phone));
+		
+		request.request(new SimpleRequestHandler(){
+			@Override
+			public void onError(int error, String msg) {
+				Utils.tip(ModifyPhoneActivity.this, "修改失败");
+			}
+			
+			@Override
+			public void onSuccess(Object object) {
+				Intent intent = new Intent();
+				intent.putExtra("phone", phone);
+				setResult(Activity.RESULT_OK, intent);
+				finish();
+			}
+		});
+		
 		
 	}
 

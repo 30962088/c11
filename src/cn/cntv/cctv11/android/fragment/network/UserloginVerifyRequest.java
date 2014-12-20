@@ -71,6 +71,7 @@ public class UserloginVerifyRequest extends BaseClient{
 		RequestParams params = new RequestParams();
 		params.add("phone", this.params.phone);
 		params.add("password", ""+this.params.password);
+		params.add("appid", "1217");
 		return params;
 	}
 

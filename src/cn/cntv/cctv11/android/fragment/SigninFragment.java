@@ -88,14 +88,8 @@ public class SigninFragment extends BaseFragment implements OnClickListener {
 			@Override
 			public void onSuccess(Object object) {
 				GetVerifyCodeRequest.Result result = (GetVerifyCodeRequest.Result) object;
-				if(result.getResult() == 1015){
-					Utils.tip(getActivity(), "手机已经注册过了");
-				}else if(result.getResult() == 1000){
-					startTimer();
-					verifyCode = result.getCode();
-				}else{
-					Utils.tip(getActivity(), "验证码发送失败");
-				}
+				startTimer();
+				verifyCode = result.getCode();
 				
 			}
 
@@ -107,7 +101,14 @@ public class SigninFragment extends BaseFragment implements OnClickListener {
 
 			@Override
 			public void onError(int error, String msg) {
-				// TODO Auto-generated method stub
+				switch (error) {
+				case 1015:
+					Utils.tip(getActivity(), "手机已经注册过了");
+					break;
+				default:
+					Utils.tip(getActivity(), "发送验证码失败");
+					break;
+				}
 				
 			}
 		});

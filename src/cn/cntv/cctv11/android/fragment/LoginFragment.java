@@ -54,17 +54,16 @@ public class LoginFragment extends BaseFragment implements OnClickListener,
 		return inflater.inflate(R.layout.login_layout, null);
 	}
 
-	
 	private EditText phoneText;
-	
+
 	private EditText passwordText;
-	
+
 	private View nofityGoneView;
-	
+
 	private View nofityVisibleView;
-	
+
 	private TextView notifyCountView;
-	
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -77,6 +76,7 @@ public class LoginFragment extends BaseFragment implements OnClickListener,
 		view.findViewById(R.id.login_btn).setOnClickListener(this);
 		view.findViewById(R.id.setting_btn).setOnClickListener(this);
 		view.findViewById(R.id.info_btn).setOnClickListener(this);
+		view.findViewById(R.id.findpwd).setOnClickListener(this);
 		nofityGoneView = view.findViewById(R.id.nofity_gone);
 		nofityVisibleView = view.findViewById(R.id.notify_visible);
 		notifyCountView = (TextView) view.findViewById(R.id.notify_count);
@@ -85,6 +85,14 @@ public class LoginFragment extends BaseFragment implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.findpwd:
+			getParentFragment()
+					.getChildFragmentManager()
+					.beginTransaction()
+					.replace(R.id.fragment_container,
+							FindPWDFragment.newInstance())
+					.addToBackStack("password").commit();
+			break;
 		case R.id.info_btn:
 			InfoListActivity.open(getActivity());
 			break;
@@ -113,29 +121,29 @@ public class LoginFragment extends BaseFragment implements OnClickListener,
 		}
 
 	}
-	
+
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
 		getPushCount();
 	}
-	
-	private void getPushCount(){
+
+	private void getPushCount() {
 		GetPushInfoRequest request = new GetPushInfoRequest(getActivity());
-		request.request(new SimpleRequestHandler(){
+		request.request(new SimpleRequestHandler() {
 			@Override
 			public void onSuccess(Object object) {
 				GetPushInfoRequest.Result result = (GetPushInfoRequest.Result) object;
-				if(result.getResult() == 1000){
+				if (result.getResult() == 1000) {
 					int count = result.getPushinfolist().size();
-					if(count == 0){
+					if (count == 0) {
 						nofityVisibleView.setVisibility(View.GONE);
 						nofityGoneView.setVisibility(View.VISIBLE);
-					}else{
+					} else {
 						nofityVisibleView.setVisibility(View.VISIBLE);
 						nofityGoneView.setVisibility(View.GONE);
-						notifyCountView.setText(""+count);
+						notifyCountView.setText("" + count);
 					}
 				}
 			}
@@ -144,43 +152,47 @@ public class LoginFragment extends BaseFragment implements OnClickListener,
 
 	private void onlogin() {
 		String phone = phoneText.getText().toString();
-		String password  = passwordText.getText().toString();
-		if(TextUtils.isEmpty(phone)){
+		String password = passwordText.getText().toString();
+		if (TextUtils.isEmpty(phone)) {
 			Utils.tip(getActivity(), "请输入手机号码");
 			return;
 		}
-		if(TextUtils.isEmpty(password)){
+		if (TextUtils.isEmpty(password)) {
 			Utils.tip(getActivity(), "请输入密码");
 			return;
 		}
-		if(!RegexUtils.checkPhone(phone)){
+		if (!RegexUtils.checkPhone(phone)) {
 			Utils.tip(getActivity(), "手机号码格式错误");
 			return;
 		}
-		
-		UserloginVerifyRequest request = new UserloginVerifyRequest(getActivity(), 
-				new UserloginVerifyRequest.Params(phone, password));
-		
+
+		UserloginVerifyRequest request = new UserloginVerifyRequest(
+				getActivity(), new UserloginVerifyRequest.Params(phone,
+						password));
+
 		LoadingPopup.show(getActivity());
-		request.request(new SimpleRequestHandler(){
+		request.request(new SimpleRequestHandler() {
 			@Override
 			public void onComplete() {
 				LoadingPopup.hide(getActivity());
 			}
+
 			@Override
 			public void onSuccess(Object object) {
-				UserloginVerifyRequest.Result result = (UserloginVerifyRequest.Result)object;
-				if(result.getResult() == 1000){
-					((MemberFragment) getParentFragment()).initFragment(UserSettingFragment.newInstance(APP.getSession().getSid()));
-				}else{
-					Utils.tip(getActivity(), "用户名或密码错误");
-				}
-				
+
+				((MemberFragment) getParentFragment())
+						.initFragment(UserSettingFragment.newInstance(APP
+								.getSession().getSid()));
+
 			}
+
+			@Override
+			public void onError(int error, String msg) {
+				Utils.tip(getActivity(), "用户名或密码错误");
+			}
+
 		});
-		
-		
-		
+
 	}
 
 	@Override
@@ -206,18 +218,23 @@ public class LoginFragment extends BaseFragment implements OnClickListener,
 						.addToBackStack("fillinfo").commit();
 			}
 
-
 			@Override
 			public void onComplete() {
 				// TODO Auto-generated method stub
 
 			}
 
-
 			@Override
 			public void onError(int error, String msg) {
-				// TODO Auto-generated method stub
+				if(error == 1004){
+					getParentFragment().getChildFragmentManager()
+					.beginTransaction()
+					.replace(R.id.fragment_container, FillInfoFragment.newInstance(model))
+					.addToBackStack("fillinfo").commit();
+				}
 				
+				
+
 			}
 		});
 

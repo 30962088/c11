@@ -61,6 +61,7 @@ public class GetProvinceCityRequest extends BaseClient{
 		RequestParams params = new RequestParams();
 		params.add("axisX", ""+this.params.axisX);
 		params.add("axisY", ""+this.params.axisY);
+		params.add("appid", "1217");
 		return params;
 	}
 

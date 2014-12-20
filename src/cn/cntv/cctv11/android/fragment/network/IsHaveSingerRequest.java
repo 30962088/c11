@@ -65,6 +65,7 @@ public class IsHaveSingerRequest extends BaseClient{
 		RequestParams params = new RequestParams();
 		params.add("wbqqid", this.params.wbqqid);
 		params.add("type", ""+this.params.type);
+		params.add("appid", "1217");
 		return params;
 	}
 

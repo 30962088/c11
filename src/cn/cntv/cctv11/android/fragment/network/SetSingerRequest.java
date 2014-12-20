@@ -75,6 +75,7 @@ public class SetSingerRequest extends BaseClient{
 		params.add("singerimgguid", this.params.singerimgguid);
 		params.add("singerimgformat", this.params.singerimgformat);
 		params.add("address", this.params.address);
+		params.add("appid", "1217");
 		return params;
 	}
 

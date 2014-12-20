@@ -29,7 +29,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class StageCalendarFragment extends BaseFragment implements OnCalendarGridItemClickListener,OnRefreshClickListener{
+public class StageCalendarFragment extends BaseFragment implements
+		OnCalendarGridItemClickListener, OnRefreshClickListener {
 
 	public static StageCalendarFragment newInstance() {
 		StageCalendarFragment fragment = new StageCalendarFragment();
@@ -46,7 +47,7 @@ public class StageCalendarFragment extends BaseFragment implements OnCalendarGri
 	private ListView listView;
 
 	private CalendarListAdapter adapter;
-	
+
 	private NoResultView noResultView;
 
 	private List<CalendarListAdapter.Model> list = new ArrayList<CalendarListAdapter.Model>();
@@ -56,7 +57,7 @@ public class StageCalendarFragment extends BaseFragment implements OnCalendarGri
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
 		listView = (ListView) view.findViewById(R.id.listview);
-		adapter = new CalendarListAdapter(getActivity(), list,this);
+		adapter = new CalendarListAdapter(getActivity(), list, this);
 		listView.setAdapter(adapter);
 		noResultView = (NoResultView) view.findViewById(R.id.no_result);
 		noResultView.setOnRefreshClickListener(this);
@@ -78,36 +79,40 @@ public class StageCalendarFragment extends BaseFragment implements OnCalendarGri
 	private Date getEndDate() {
 		return getRelativeMonth(4);
 	}
-	
+
 	private CalendarDate current;
 
-	private List<CalendarListAdapter.Model> getModels(Date start, Date end,List<DateCount> dateCounts) {
-		int sy = DateUtils.toCalendar(start).get(Calendar.YEAR),ey = DateUtils.toCalendar(end).get(Calendar.YEAR),
-				ly = ey-sy;
+	private List<CalendarListAdapter.Model> getModels(Date start, Date end,
+			List<DateCount> dateCounts) {
+		int sy = DateUtils.toCalendar(start).get(Calendar.YEAR), ey = DateUtils
+				.toCalendar(end).get(Calendar.YEAR), ly = ey - sy;
 		int sm = DateUtils.toCalendar(start).get(Calendar.MONTH), em = DateUtils
-				.toCalendar(end).get(Calendar.MONTH), length = ly*12 + em - sm;
+				.toCalendar(end).get(Calendar.MONTH), length = ly * 12 + em
+				- sm;
 		List<CalendarListAdapter.Model> list = new ArrayList<CalendarListAdapter.Model>();
 		for (int i = 0; i <= length; i++) {
 			Calendar calendar = DateUtils.toCalendar(start);
 			calendar.add(Calendar.MONTH, i);
 			int year = calendar.get(Calendar.YEAR), month = calendar
-					.get(Calendar.MONTH)+1;
-			CurrentCalendarList model = CalendarUtils.getDay(year, month, dateCounts);
-			if(model.getCurrent() != null){
+					.get(Calendar.MONTH) + 1;
+			CurrentCalendarList model = CalendarUtils.getDay(year, month,
+					dateCounts);
+			if (model.getCurrent() != null) {
 				current = model.getCurrent();
 			}
-			
-			list.add(new CalendarListAdapter.Model(calendar.getTime(), model.getList()));
+
+			list.add(new CalendarListAdapter.Model(calendar.getTime(), model
+					.getList()));
 		}
-		
+
 		return list;
 
 	}
-	
+
 	private Date startDate;
-	
+
 	private Date endDate;
-	
+
 	private Result result;
 
 	private void request() {
@@ -120,42 +125,38 @@ public class StageCalendarFragment extends BaseFragment implements OnCalendarGri
 		request.request(new BaseClient.SimpleRequestHandler() {
 			@Override
 			public void onSuccess(Object object) {
-				
-				result = (StageRequest.Result) object;
-				if(result.getResult() == 1000){
-					list.addAll(getModels(startDate, endDate, result.getDateCounts()));
-					adapter.setLast(current);
-					adapter.notifyDataSetChanged();
-					listView.setVisibility(View.VISIBLE);
-					noResultView.setVisibility(View.GONE);
-				}else{
-					onError(result.getResult(), "请求失败");
-				}
-				
+				result = (StageRequest.Result)object;
+				list.addAll(getModels(startDate, endDate,
+						result.getDateCounts()));
+				adapter.setLast(current);
+				adapter.notifyDataSetChanged();
+				listView.setVisibility(View.VISIBLE);
+				noResultView.setVisibility(View.GONE);
+
 			}
-			
+
 			@Override
 			public void onError(int error, String msg) {
 				Utils.tip(getActivity(), msg);
 				listView.setVisibility(View.GONE);
 				noResultView.setVisibility(View.VISIBLE);
 			}
-			
+
 		});
 
-		
 	}
 
 	@Override
 	public void OnCalendarGridItemClick(Date date) {
-		StageActivity.open(getActivity(), new StageActivity.Model(startDate, endDate, result,date));
-		
+		StageActivity.open(getActivity(), new StageActivity.Model(startDate,
+				endDate, result, date));
+
 	}
 
 	@Override
 	public void onrefreshclick() {
 		request();
-		
+
 	}
 
 }
