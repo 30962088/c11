@@ -9,6 +9,7 @@ import org.apache.http.Header;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.adapter.TabsAdapter;
 import cn.cntv.cctv11.android.adapter.TabsAdapter.Pager;
 import cn.cntv.cctv11.android.fragment.NewsFragment;
@@ -91,9 +92,9 @@ public class CategoryRequest extends BaseClient {
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "cctv11/category";
+		return APP.getAppConfig().getRequest_news()+"cctv11/category";
 	}
 
 	@Override

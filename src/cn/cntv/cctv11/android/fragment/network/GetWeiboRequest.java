@@ -11,6 +11,7 @@ import org.apache.http.Header;
 
 import android.content.Context;
 
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.adapter.WeiboListAdapter;
 import cn.cntv.cctv11.android.widget.WeiboItemView.Content;
 import cn.cntv.cctv11.android.widget.WeiboItemView.Count;
@@ -129,9 +130,9 @@ public class GetWeiboRequest extends BaseClient {
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "weibo/cctv11/getweiboinfo";
+		return APP.getAppConfig().getRequest_news()+"weibo/cctv11/getweiboinfo";
 	}
 
 	@Override

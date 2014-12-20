@@ -4,6 +4,7 @@ import java.security.Signer;
 
 import org.apache.http.Header;
 
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.fragment.UserSettingFragment;
 
 import com.google.gson.Gson;
@@ -41,7 +42,7 @@ public class GetSingerInfoRequest extends BaseClient{
 			return singername;
 		}
 		public String getSingerimgurl() {
-			return BaseClient.getImage(singerimgguid, singerimgformat);
+			return APP.getAppConfig().getImage(singerimgguid, singerimgformat);
 		}
 		
 		public String getAddress() {
@@ -85,15 +86,9 @@ public class GetSingerInfoRequest extends BaseClient{
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "http://cctv11.1du1du.com/get.mvc/getSingerInfo";
-	}
-	
-	@Override
-	protected boolean isRelativeUrl() {
-		// TODO Auto-generated method stub
-		return false;
+		return APP.getAppConfig().getRequest_user()+"get.mvc/getSingerInfo";
 	}
 
 	@Override

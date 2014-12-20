@@ -2,6 +2,8 @@ package cn.cntv.cctv11.android.fragment.network;
 
 import org.apache.http.Header;
 
+import cn.cntv.cctv11.android.APP;
+
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 
@@ -60,16 +62,11 @@ public class UpdateSingeruserInfoRequest extends BaseClient{
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "http://cctv11.1du1du.com/get.mvc/updateSingeruserInfo";
+		return APP.getAppConfig().getRequest_user()+"get.mvc/updateSingeruserInfo";
 	}
 
-	@Override
-	protected boolean isRelativeUrl() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	@Override
 	protected Method getMethod() {
 		// TODO Auto-generated method stub

@@ -3,6 +3,8 @@ package cn.cntv.cctv11.android.fragment.network;
 
 import android.content.Context;
 
+import cn.cntv.cctv11.android.APP;
+
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 
@@ -68,9 +70,9 @@ public class InsertForumRequest extends BaseClient {
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 
-		return "cctv11/insertforumcomment";
+		return APP.getAppConfig().getRequest_news()+"cctv11/insertforumcomment";
 	}
 
 	@Override

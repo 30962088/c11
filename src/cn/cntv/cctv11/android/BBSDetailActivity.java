@@ -196,7 +196,7 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 									SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
 
 							ShareUtils.shareWebsite(BBSDetailActivity.this,
-									media, model.getTitle(), BaseClient
+									media, model.getTitle(), APP.getAppConfig()
 											.getShareForumcontent(model.getId()));
 
 						}

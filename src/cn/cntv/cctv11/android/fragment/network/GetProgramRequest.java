@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.http.Header;
 
+import cn.cntv.cctv11.android.APP;
+
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 
@@ -46,9 +48,9 @@ public class GetProgramRequest extends BaseClient{
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "cctv11/program";
+		return APP.getAppConfig().getRequest_news()+"cctv11/program";
 	}
 
 	@Override

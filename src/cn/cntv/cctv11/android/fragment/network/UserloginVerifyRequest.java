@@ -76,17 +76,11 @@ public class UserloginVerifyRequest extends BaseClient{
 
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "http://cctv11.1du1du.com/get.mvc/userloginVerify";
+		return APP.getAppConfig().getRequest_user()+"get.mvc/userloginVerify";
 	}
 	
-	@Override
-	protected boolean isRelativeUrl() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 
 	@Override
 	protected Method getMethod() {

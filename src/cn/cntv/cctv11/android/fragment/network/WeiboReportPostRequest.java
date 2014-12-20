@@ -60,7 +60,7 @@ public class WeiboReportPostRequest extends BaseClient{
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
 		return "https://api.weibo.com/2/statuses/repost.json";
 	}
@@ -70,13 +70,6 @@ public class WeiboReportPostRequest extends BaseClient{
 		// TODO Auto-generated method stub
 		return Method.POST;
 	}
-	
-	@Override
-	protected boolean isRelativeUrl() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	@Override
 	public void onError(int error, String msg) {
 		// TODO Auto-generated method stub

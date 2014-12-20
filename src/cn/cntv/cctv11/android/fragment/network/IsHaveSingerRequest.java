@@ -70,16 +70,11 @@ public class IsHaveSingerRequest extends BaseClient{
 
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "http://cctv11.1du1du.com/get.mvc/isHaveSinger";
+		return APP.getAppConfig().getRequest_user()+"get.mvc/isHaveSinger";
 	}
 	
-	@Override
-	protected boolean isRelativeUrl() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 
 	@Override

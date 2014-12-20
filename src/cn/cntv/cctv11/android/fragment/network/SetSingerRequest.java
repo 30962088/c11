@@ -2,6 +2,7 @@ package cn.cntv.cctv11.android.fragment.network;
 
 import org.apache.http.Header;
 
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.fragment.FillInfoFragment.Sex;
 import cn.cntv.cctv11.android.utils.Preferences.Session;
 
@@ -78,15 +79,9 @@ public class SetSingerRequest extends BaseClient{
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "http://cctv11.1du1du.com/get.mvc/setSinger";
-	}
-	
-	@Override
-	protected boolean isRelativeUrl() {
-		// TODO Auto-generated method stub
-		return false;
+		return APP.getAppConfig().getRequest_user()+"get.mvc/setSinger";
 	}
 
 	@Override

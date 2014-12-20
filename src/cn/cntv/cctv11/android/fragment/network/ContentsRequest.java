@@ -12,6 +12,7 @@ import org.apache.http.Header;
 
 
 import android.content.Context;
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.adapter.VideoListAdapter;
 import cn.cntv.cctv11.android.adapter.NewsListAdapter.Model;
 import cn.cntv.cctv11.android.adapter.NewsListAdapter.Model.Category;
@@ -174,9 +175,9 @@ public class ContentsRequest extends BaseClient{
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "cctv11/contents";
+		return APP.getAppConfig().getRequest_news()+"cctv11/contents";
 	}
 
 	@Override

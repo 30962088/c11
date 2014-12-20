@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 
 import android.content.Context;
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.utils.Preferences.Session;
 
 public class SetSingerUserRequest extends BaseClient{
@@ -76,16 +77,11 @@ public class SetSingerUserRequest extends BaseClient{
 		return params;
 	}
 	
-	@Override
-	protected boolean isRelativeUrl() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "http://cctv11.1du1du.com/get.mvc/setSingerUser";
+		return APP.getAppConfig().getRequest_user()+"get.mvc/setSingerUser";
 	}
 
 	@Override

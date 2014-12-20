@@ -90,9 +90,11 @@ public class SigninFragment extends BaseFragment implements OnClickListener {
 				GetVerifyCodeRequest.Result result = (GetVerifyCodeRequest.Result) object;
 				if(result.getResult() == 1015){
 					Utils.tip(getActivity(), "手机已经注册过了");
-				}else{
+				}else if(result.getResult() == 1000){
 					startTimer();
 					verifyCode = result.getCode();
+				}else{
+					Utils.tip(getActivity(), "验证码发送失败");
 				}
 				
 			}

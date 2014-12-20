@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.http.Header;
 
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.adapter.VoteListAdapter;
 import cn.cntv.cctv11.android.utils.DateUtils;
 
@@ -84,9 +85,9 @@ public class GetVoteListRequest extends BaseClient{
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "cctv11/vote";
+		return APP.getAppConfig().getRequest_news()+"cctv11/vote";
 	}
 	
 	@Override

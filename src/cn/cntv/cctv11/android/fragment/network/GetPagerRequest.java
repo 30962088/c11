@@ -11,6 +11,7 @@ import org.apache.http.Header;
 
 import android.content.Context;
 
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.adapter.BBSListAdapter;
 import cn.cntv.cctv11.android.adapter.WallPagerListAdapter;
 import cn.cntv.cctv11.android.adapter.WeiboListAdapter;
@@ -125,9 +126,9 @@ public class GetPagerRequest extends BaseClient {
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "cctv11/paper";
+		return APP.getAppConfig().getRequest_news()+"cctv11/paper";
 	}
 
 	@Override

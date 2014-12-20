@@ -98,6 +98,8 @@ public class APP extends Application {
 		private String QQ_APPKEY;
 		private String UMENG_APPKEY;
 		private String UMENG_CHANNEL;
+		private String request_news;
+		private String request_user;
 		private AppConfig(Context context) {
 			
 			try {
@@ -109,11 +111,19 @@ public class APP extends Application {
 				QQ_APPKEY = bundle.getString("QQ_APPKEY");
 				UMENG_APPKEY = bundle.getString("UMENG_APPKEY");
 				UMENG_CHANNEL = bundle.getString("UMENG_CHANNEL");
+				request_news = bundle.getString("request_news");
+				request_user = bundle.getString("request_user");
 			} catch (NameNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
+		}
+		public String getRequest_news() {
+			return request_news;
+		}
+		public String getRequest_user() {
+			return request_user;
 		}
 		public String getQQ_APPID() {
 			return QQ_APPID;
@@ -134,7 +144,19 @@ public class APP extends Application {
 			return WX_AppSecret;
 		}
 		
+		public String getImage(String filename,String format){
+			
+			return request_news+"cctv11/getTheImage?fileName="+filename+format;
+			
+		}
 		
+		public String getSharecontent(String id){
+			return request_news+"ContentsShares/ContentsShare?contentid="+id;
+		}
+		
+		public  String getShareForumcontent(String id){
+			return request_news+"ForumtopicShares/ForumtopicShare?topicid="+id;
+		}
 		
 	}
 	

@@ -90,15 +90,9 @@ public class GetLiveUrlRequest extends BaseClient {
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
 		return "http://vdn.live.cntv.cn/api2/live.do";
-	}
-
-	@Override
-	protected boolean isRelativeUrl() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

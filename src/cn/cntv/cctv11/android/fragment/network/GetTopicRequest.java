@@ -12,6 +12,7 @@ import org.apache.http.Header;
 import android.content.Context;
 import android.text.TextUtils;
 
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.adapter.BBSListAdapter;
 import cn.cntv.cctv11.android.adapter.WeiboListAdapter;
 import cn.cntv.cctv11.android.widget.WeiboItemView.Content;
@@ -47,7 +48,7 @@ public class GetTopicRequest extends BaseClient {
 		
 		private String getUploadImg(){
 			if(!TextUtils.isEmpty(uploadimgguid)){
-				return BaseClient.getImage(uploadimgguid, uploadimgformat);
+				return APP.getAppConfig().getImage(uploadimgguid, uploadimgformat);
 			}
 			return null;
 		}
@@ -127,9 +128,9 @@ public class GetTopicRequest extends BaseClient {
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "cctv11/topic";
+		return APP.getAppConfig().getRequest_news()+"cctv11/topic";
 	}
 
 	@Override

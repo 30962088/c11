@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.http.Header;
 
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.adapter.InfoListAdapter.InfoGroup;
 import cn.cntv.cctv11.android.adapter.InfoListAdapter.InfoItem;
 import cn.cntv.cctv11.android.utils.DateUtils;
@@ -85,9 +86,9 @@ public class GetPushInfoRequest extends BaseClient{
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "/cctv11/pushinfo";
+		return APP.getAppConfig().getRequest_news()+"/cctv11/pushinfo";
 	}
 
 	@Override

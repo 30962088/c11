@@ -1,5 +1,7 @@
 package cn.cntv.cctv11.android.fragment.network;
 
+import cn.cntv.cctv11.android.APP;
+
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 
@@ -80,9 +82,9 @@ public class ReportRequest extends BaseClient{
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "cctv11/report";
+		return APP.getAppConfig().getRequest_news()+"cctv11/report";
 	}
 
 	@Override

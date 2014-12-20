@@ -6,6 +6,8 @@ import org.apache.http.Header;
 
 import android.content.Context;
 
+import cn.cntv.cctv11.android.APP;
+
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 
@@ -65,9 +67,9 @@ public class InsertCommentRequest extends BaseClient {
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		
-		return "cctv11/insertcomment";
+		return APP.getAppConfig().getRequest_news()+"cctv11/insertcomment";
 	}
 
 	@Override

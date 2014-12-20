@@ -19,23 +19,6 @@ import com.mengle.lib.utils.Utils;
 
 public abstract class BaseClient implements HttpResponseHandler {
 	
-	public static final String BASE_URL = "http://cctv11news.1du1du.com/";
-	
-	private static final String BASE_HOST = "1dudu.com";
-
-	public static String getImage(String filename,String format){
-		
-		return BASE_URL+"cctv11/getTheImage?fileName="+filename+format;
-		
-	}
-	
-	public static String getSharecontent(String id){
-		return BASE_URL+"ContentsShares/ContentsShare?contentid="+id;
-	}
-	
-	public static String getShareForumcontent(String id){
-		return BASE_URL+"ForumtopicShares/ForumtopicShare?topicid="+id;
-	}
 	
 	private static AsyncHttpClient client = new AsyncHttpClient();
 
@@ -72,7 +55,7 @@ public abstract class BaseClient implements HttpResponseHandler {
 
 		@Override
 		public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-			if(getUrl().indexOf(BASE_HOST)!=-1){
+			if(getURL().indexOf(APP.getAppConfig().getRequest_news())!=-1 || getURL().indexOf(APP.getAppConfig().getRequest_user())!=-1){
 				try {
 					JSONObject object = new JSONObject(new String(arg2));
 					int result = object.getInt("result");
@@ -135,7 +118,7 @@ public abstract class BaseClient implements HttpResponseHandler {
 
 	protected abstract RequestParams getParams();
 
-	protected abstract String getUrl();
+	protected abstract String getURL();
 
 	protected abstract Method getMethod();
 
@@ -195,9 +178,9 @@ public abstract class BaseClient implements HttpResponseHandler {
 		
 		Method method = getMethod();
 		if (method == Method.GET) {
-			get(getUrl(), getParams(), this);
+			get(getURL(), getParams(), this);
 		} else if (method == Method.POST) {
-			post(getUrl(), getParams(), this);
+			post(getURL(), getParams(), this);
 		}
 	}
 	
@@ -214,10 +197,10 @@ public abstract class BaseClient implements HttpResponseHandler {
 			HttpResponseHandler handler) {
 		Header[] headers = fillHeaders();
 		if(headers == null){
-			handle = client.get(getAbsoluteUrl(url), params, new ResponseHandler(
+			handle = client.get(getURL(), params, new ResponseHandler(
 					handler));
 		}else{
-			handle = client.get(context,getAbsoluteUrl(url),headers, params, new ResponseHandler(
+			handle = client.get(context,getURL(),headers, params, new ResponseHandler(
 					handler));
 		}
 		
@@ -228,10 +211,10 @@ public abstract class BaseClient implements HttpResponseHandler {
 			HttpResponseHandler handler) {
 		Header[] headers = fillHeaders();
 		if(headers == null){
-			handle = client.post(getAbsoluteUrl(url),params, new ResponseHandler(
+			handle = client.post(getURL(),params, new ResponseHandler(
 					handler));
 		}else{
-			handle = client.post(context,getAbsoluteUrl(url),headers, params,contentType(), new ResponseHandler(
+			handle = client.post(context,getURL(),headers, params,contentType(), new ResponseHandler(
 					handler));
 		}
 		
@@ -248,23 +231,11 @@ public abstract class BaseClient implements HttpResponseHandler {
 		return null;
 	}
 	
-	protected boolean isRelativeUrl(){
-		return true;
-	}
 	
 	protected String contentType(){
 		return "application/json";
 	}
 
-	private  String getAbsoluteUrl(String relativeUrl) {
-		String url = "";
-		if(isRelativeUrl()){
-			url = BASE_URL + relativeUrl;
-		}else{
-			url = relativeUrl;
-		}
-		return url;
-	}
 
 	protected boolean useOffline() {
 		return true;

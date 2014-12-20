@@ -1,6 +1,7 @@
 package cn.cntv.cctv11.android.fragment.network;
 
-import org.apache.http.Header;
+
+import cn.cntv.cctv11.android.APP;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
@@ -48,23 +49,18 @@ public class GetVerifyCodeRequest extends BaseClient{
 	@Override
 	protected RequestParams getParams() {
 		RequestParams params = new RequestParams();
+		params.add("appid", "1217");
 		params.add("phone", this.params.phone);
 		params.add("type", ""+this.params.type);
 		return params;
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "http://cctv11.1du1du.com/get.mvc/getVerifyCode";
+		return APP.getAppConfig().getRequest_user()+"get.mvc/getVerifyCode";
 	}
 	
-	@Override
-	protected boolean isRelativeUrl() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	@Override
 	protected Method getMethod() {
 		// TODO Auto-generated method stub

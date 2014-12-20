@@ -339,7 +339,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 
 						ShareUtils.shareWebsite(SpecialDetailActivity.this,
 								media, params.title,
-								BaseClient.getSharecontent(params.contentId));
+								APP.getAppConfig().getSharecontent(params.contentId));
 
 					}
 

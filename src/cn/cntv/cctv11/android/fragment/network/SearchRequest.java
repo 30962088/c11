@@ -2,6 +2,8 @@ package cn.cntv.cctv11.android.fragment.network;
 
 import org.apache.http.Header;
 
+import cn.cntv.cctv11.android.APP;
+
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 
@@ -49,8 +51,8 @@ public class SearchRequest extends BaseClient{
 	}
 
 	@Override
-	protected String getUrl() {
-		return "cctv11/searchcontentsbykeyword";
+	protected String getURL() {
+		return APP.getAppConfig().getRequest_news()+"cctv11/searchcontentsbykeyword";
 	}
 
 	@Override

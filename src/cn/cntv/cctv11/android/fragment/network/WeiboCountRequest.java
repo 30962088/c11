@@ -75,13 +75,7 @@ public class WeiboCountRequest extends BaseClient {
 	}
 
 	@Override
-	protected boolean isRelativeUrl() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
 		return "https://api.weibo.com/2/statuses/count.json";
 	}

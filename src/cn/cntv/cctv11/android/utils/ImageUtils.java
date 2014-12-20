@@ -10,6 +10,7 @@ import android.content.Context;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.fragment.network.BaseClient;
 
 public class ImageUtils {
@@ -55,7 +56,7 @@ public class ImageUtils {
 			}
 		}
 		String param = StringUtils.join(params,"&");
-		return BaseClient.BASE_URL+"cctv11/getTheImage?"+param;
+		return APP.getAppConfig().getRequest_news()+"cctv11/getTheImage?"+param;
 		
 	}
 	

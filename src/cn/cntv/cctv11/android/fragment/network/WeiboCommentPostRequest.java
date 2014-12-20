@@ -56,7 +56,7 @@ public class WeiboCommentPostRequest extends BaseClient{
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
 		return "https://api.weibo.com/2/comments/create.json";
 	}
@@ -67,12 +67,6 @@ public class WeiboCommentPostRequest extends BaseClient{
 		return Method.POST;
 	}
 	
-	
-	@Override
-	protected boolean isRelativeUrl() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public void onError(int error, String msg) {

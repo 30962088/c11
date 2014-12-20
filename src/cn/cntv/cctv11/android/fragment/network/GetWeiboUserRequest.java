@@ -49,7 +49,7 @@ public class GetWeiboUserRequest extends BaseClient{
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
 		return "https://api.weibo.com/2/users/show.json";
 	}
@@ -60,11 +60,6 @@ public class GetWeiboUserRequest extends BaseClient{
 		return Method.GET;
 	}
 	
-	@Override
-	protected boolean isRelativeUrl() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public void onError(int error, String msg) {

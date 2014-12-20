@@ -2,6 +2,8 @@ package cn.cntv.cctv11.android.fragment.network;
 
 import org.apache.http.Header;
 
+import cn.cntv.cctv11.android.APP;
+
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 
@@ -61,9 +63,9 @@ public class FeedbackRequest extends BaseClient{
 	}
 
 	@Override
-	protected String getUrl() {
+	protected String getURL() {
 		// TODO Auto-generated method stub
-		return "cctv11/InsertFeedbackhelp";
+		return APP.getAppConfig().getRequest_news()+"cctv11/InsertFeedbackhelp";
 	}
 
 	@Override
