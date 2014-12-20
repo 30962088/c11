@@ -13,6 +13,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
+import android.media.MediaPlayer.OnInfoListener;
 import android.net.Uri;
 import android.util.AttributeSet;
 
@@ -24,6 +25,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -33,7 +35,7 @@ import android.widget.PopupWindow;
 
 public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 		MediaPlayer.OnPreparedListener, VideoControllerView.MediaPlayerControl,
-		MediaPlayer.OnBufferingUpdateListener,OnKeyListener {
+		MediaPlayer.OnBufferingUpdateListener,OnKeyListener,OnClickListener,OnInfoListener {
 
 	public VideoView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -54,13 +56,16 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 	private MediaPlayer player;
 	private VideoControllerView controller;
 	private SurfaceHolder videoHolder;
-	private View contaienr, loadingView;
+	private View loadingView,playView;
 	
 	private GestureDetector gestureDetector;
 
 	private void init() {
 		LayoutInflater.from(getContext()).inflate(
 				R.layout.activity_video_player, this);
+		playView = findViewById(R.id.play);
+		playView.setVisibility(View.VISIBLE);
+		playView.setOnClickListener(this);
 		gestureDetector = new GestureDetector(getContext(), new SingleTapConfirm());
 		videoSurface = (SurfaceView) findViewById(R.id.videoSurface);
 		loadingView = findViewById(R.id.loading);
@@ -71,43 +76,17 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 		
 		controller = new VideoControllerView(getContext());
 		player = new MediaPlayer();
+		player.setOnInfoListener(this);
 		player.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		player.setOnPreparedListener(this);
 		player.setScreenOnWhilePlaying(true);
 		setOnKeyListener(this);
 	}
-
-	public void setVideoPath(String url,
-			OnCompletionListener onCompletionListener,
-			final OnErrorListener onErrorListener) {
-
-		try {
-			loadingView.setVisibility(View.VISIBLE);
-			player.setOnErrorListener(new OnErrorListener() {
-				
-				@Override
-				public boolean onError(MediaPlayer mp, int what, int extra) {
-					loadingView.setVisibility(View.GONE);
-					onErrorListener.onError(mp, what, extra);
-					return false;
-				}
-			});
-			player.setOnCompletionListener(onCompletionListener);
-			player.setDataSource(getContext(), Uri.parse(url));
-			player.prepareAsync();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// player.setOnBufferingUpdateListener(this);
-
+	private String videpPath;
+	public void setVidepPath(String videpPath) {
+		this.videpPath = videpPath;
 	}
+
 
 	private boolean prepared = false;
 
@@ -135,13 +114,11 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 	}
 	
 
-	
-
 	// Implement SurfaceHolder.Callback
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
-
+		player.start();
 	}
 
 	@Override
@@ -152,7 +129,7 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-
+		
 	}
 
 	// End SurfaceHolder.Callback
@@ -160,9 +137,11 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 	// Implement MediaPlayer.OnPreparedListener
 	@Override
 	public void onPrepared(MediaPlayer mp) {
+		
 		controller.setMediaPlayer(this);
 		controller
 				.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
+		
 		player.start();
 		loadingView.setVisibility(View.GONE);
 		prepared = true;
@@ -255,6 +234,7 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 	@Override
 	public void toggleFullScreen() {
 		fullScreen = !fullScreen;
+		player.pause();
 		if (fullScreen) {
 			screenFull();
 		} else {
@@ -300,6 +280,67 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 			controller.fullscreenButtonPerformClick();
 			return true;
 		}
+		return false;
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.play:
+			onplay();
+			break;
+
+		default:
+			break;
+		}
+		
+	}
+
+	private void onplay() {
+		try {
+			playView.setVisibility(View.GONE);
+			loadingView.setVisibility(View.VISIBLE);
+			player.setOnErrorListener(new OnErrorListener() {
+				
+				@Override
+				public boolean onError(MediaPlayer mp, int what, int extra) {
+					playView.setVisibility(View.GONE);
+					return false;
+				}
+			});
+			player.setDataSource(getContext(), Uri.parse(videpPath));
+			player.prepareAsync();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public boolean onInfo(MediaPlayer mp, int what, int extra) {
+		switch (what) {  
+        case MediaPlayer.MEDIA_INFO_BUFFERING_START:  
+        	loadingView.setVisibility(View.VISIBLE);
+            break;  
+        case MediaPlayer.MEDIA_INFO_BUFFERING_END:  
+        	loadingView.setVisibility(View.GONE);
+            break;  
+        case MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING:  
+            break;  
+        case MediaPlayer.MEDIA_INFO_METADATA_UPDATE:  
+            break;  
+        case MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:  
+            break;  
+        case MediaPlayer.MEDIA_INFO_NOT_SEEKABLE:  
+            break;  
+        }  
 		return false;
 	}
 }

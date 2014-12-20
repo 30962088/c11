@@ -32,7 +32,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
-public class LiveFragment extends BaseFragment implements OnClickListener,OnErrorListener,OnCompletionListener{
+public class LiveFragment extends BaseFragment{
 	
 	public static LiveFragment newInstance(){
 		return new LiveFragment();
@@ -58,8 +58,7 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 
 	
 	private VideoView videoView;
-	
-	private View playView;
+
 	
 	private ListView listView;
 	
@@ -68,9 +67,8 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
-		playView = view.findViewById(R.id.play);
-		playView.setOnClickListener(this);
 		videoView = (VideoView) view.findViewById(R.id.video);
+		videoView.setVidepPath("http://m3u8.1du1du.com:1019/index.m3u8");
 		listView = (ListView) view.findViewById(R.id.listview);
 		adapter = new LiveListAdapter(getActivity(), list);
 		listView.setAdapter(adapter);
@@ -152,38 +150,6 @@ public class LiveFragment extends BaseFragment implements OnClickListener,OnErro
 	}
 	
 
-	
-	
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.play:
-			onplay();
-			
-			
-			break;
 
-		default:
-			break;
-		}
-		
-	}
-
-	private void onplay() {
-		playView.setVisibility(View.GONE);
-		videoView.setVideoPath("http://m3u8.1du1du.com:1019/index.m3u8", this, this);
-	}
-
-	@Override
-	public void onCompletion(MediaPlayer mp) {
-		
-		
-	}
-
-	@Override
-	public boolean onError(MediaPlayer mp, int what, int extra) {
-		playView.setVisibility(View.VISIBLE);
-		return true;
-	}
 
 }
