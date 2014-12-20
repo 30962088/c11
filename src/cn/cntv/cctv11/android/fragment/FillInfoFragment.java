@@ -163,8 +163,8 @@ public class FillInfoFragment extends BaseFragment implements OnClickListener,On
 	}
 
 	private void init() {
-		ImageLoader.getInstance().displayImage(model.avatar, avatarImageView,
-				DisplayOptions.IMG.getOptions());
+		/*ImageLoader.getInstance().displayImage(model.avatar, avatarImageView,
+				DisplayOptions.IMG.getOptions());*/
 		nicknameEditText.setText(model.nickname);
 		switch (model.sex) {
 		case Female:
