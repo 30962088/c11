@@ -3,6 +3,7 @@ package cn.cntv.cctv11.android;
 import java.io.Serializable;
 
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 import cn.cntv.cctv11.android.fragment.MainFragment1;
 import cn.cntv.cctv11.android.fragment.MainFragment2;
@@ -38,7 +39,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		MobclickAgent.setDebugMode(true);
+		UmengUpdateAgent.update(this);
 		MobclickAgent.updateOnlineConfig(this);
 		openGuide();
 		setContentView(R.layout.activity_main);

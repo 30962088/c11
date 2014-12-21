@@ -118,7 +118,7 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
-		player.start();
+//		player.start();
 	}
 
 	@Override
@@ -234,12 +234,13 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 	@Override
 	public void toggleFullScreen() {
 		fullScreen = !fullScreen;
-		player.pause();
+//		player.pause();
 		if (fullScreen) {
 			screenFull();
 		} else {
 			screenNormal();
 		}
+//		player.start();
 	}
 	
 	private void screenNormal(){

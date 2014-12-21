@@ -121,15 +121,15 @@ public class LiveFragment extends BaseFragment{
 	}
 	
 	
-	private boolean isPlaying;
+//	private boolean isPlaying;
 	@Override
 	public void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		isPlaying = videoView.isPlaying();
-		if(videoView.isPrepared() && videoView.isPlaying()){
+//		isPlaying = videoView.isPlaying();
+//		if(videoView.isPrepared() && videoView.isPlaying()){
 			videoView.pause();
-		}
+//		}
 		
 	}
 	
@@ -144,9 +144,9 @@ public class LiveFragment extends BaseFragment{
 	public void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		if(videoView.isPrepared() && isPlaying){
-			videoView.start();
-		}
+//		if(videoView.isPrepared() && isPlaying){
+//			videoView.start();
+//		}
 	}
 	
 

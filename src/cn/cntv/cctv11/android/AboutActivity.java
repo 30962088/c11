@@ -1,4 +1,8 @@
 package cn.cntv.cctv11.android;
+import java.io.IOException;
+
+import org.apache.commons.io.IOUtils;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +24,15 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
 		WebView webView = (WebView) findViewById(R.id.webview);
 		webView.getSettings().setJavaScriptEnabled(true);
 		findViewById(R.id.back).setOnClickListener(this);
-		webView.loadDataWithBaseURL(null, "关于戏曲频道", "text/html", "utf-8", null);
+		try {
+			String html = IOUtils.toString(getAssets()
+					.open("about.html"));
+			webView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override

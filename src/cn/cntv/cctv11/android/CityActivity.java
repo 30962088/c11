@@ -8,6 +8,7 @@ import cn.cntv.cctv11.android.fragment.network.GetProvinceCityRequest.Params;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -56,17 +57,22 @@ public class CityActivity extends BaseActivity implements LocationListener {
 	}
 
 	private void request() {
-
+		
 		mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 		mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
 				this);
+		
+		mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
+				this);
 
 	}
-
+	
+	
+	
 	@Override
 	public void onLocationChanged(Location location) {
-		mlocManager.removeUpdates(this);
+
 		GetProvinceCityRequest request = new GetProvinceCityRequest(this,
 				new Params(location.getLongitude(), location.getLatitude()));
 
@@ -78,7 +84,7 @@ public class CityActivity extends BaseActivity implements LocationListener {
 				provincecity = result.getProvincecity();
 				confirmBtn.setEnabled(true);
 				city.setText("您当前所在城市：" + provincecity);
-				
+				mlocManager.removeUpdates(CityActivity.this);
 			}
 
 

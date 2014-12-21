@@ -248,21 +248,32 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
+
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
         <!--
              <meta-data
             android:name="request_news"
-            android:value="http://cctv11news.1du1du.com/" />
+            android:value="http://cctv11news.1du1du.com/" />
         -->
         <meta-data
             android:name="request_news"
             android:value="http://cctv11news.1du1du.com/" />
-        <!-- <meta-data
+        <!--
+             <meta-data
             android:name="request_user"
-            android:value="http://cctv.wookong.cn/" /> -->
+            android:value="http://cctv.wookong.cn/" />
+        -->
         <meta-data
             android:name="request_user"
             android:value="http://cctv11.1du1du.com/" />
-        
         <meta-data
             android:name="WX_APPID"
             android:value="wx6e122120a18ff49c" />
@@ -310,6 +321,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
