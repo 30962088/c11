@@ -1,11 +1,9 @@
 package cn.cntv.cctv11.android;
 
-import java.io.File;
-import java.util.Dictionary;
-
 import cn.cntv.cctv11.android.utils.Dirctionary;
 import cn.cntv.cctv11.android.utils.Preferences.Session;
 
+import com.baidu.frontia.FrontiaApplication;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -13,21 +11,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.DisplayImageOptions.Builder;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.umeng.analytics.MobclickAgent;
-import com.umeng.socialize.sso.UMQQSsoHandler;
-import com.umeng.update.UmengUpdateAgent;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
-public class APP extends Application {
+public class APP extends FrontiaApplication {
 
 	
 	
@@ -102,6 +93,7 @@ public class APP extends Application {
 		private String UMENG_CHANNEL;
 		private String request_news;
 		private String request_user;
+		private String push_api_key;
 		private AppConfig(Context context) {
 			
 			try {
@@ -115,11 +107,15 @@ public class APP extends Application {
 				UMENG_CHANNEL = bundle.getString("UMENG_CHANNEL");
 				request_news = bundle.getString("request_news");
 				request_user = bundle.getString("request_user");
+				push_api_key = bundle.getString("push_api_key");
 			} catch (NameNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
+		}
+		public String getPush_api_key() {
+			return push_api_key;
 		}
 		public String getRequest_news() {
 			return request_news;

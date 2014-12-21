@@ -8,6 +8,8 @@ import cn.cntv.cctv11.android.utils.Dirctionary;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow;
 import cn.cntv.cctv11.android.widget.PhotoSelectPopupWindow.OnItemClickListener;
 
+import com.baidu.android.pushservice.CustomPushNotificationBuilder;
+import com.baidu.android.pushservice.PushManager;
 import com.mengle.lib.wiget.ConfirmDialog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.sso.QZoneSsoHandler;
@@ -15,11 +17,13 @@ import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;

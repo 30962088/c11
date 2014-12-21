@@ -76,6 +76,12 @@ public class InfoListActivity extends BaseActivity implements OnClickListener,On
 		request();
 		
 	}
+	
+	@Override
+	public void finish() {
+		MainActivity.open(this);
+		super.finish();
+	}
 
 	@Override
 	public void oninfoclick(InfoItem item) {

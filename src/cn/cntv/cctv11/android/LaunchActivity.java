@@ -103,6 +103,8 @@ public class LaunchActivity extends BaseActivity{
 				}
 			});
 			
+		}else{
+			finish();
 		}
 		
 	}

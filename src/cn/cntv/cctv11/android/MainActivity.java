@@ -1,7 +1,7 @@
 package cn.cntv.cctv11.android;
 
-import java.io.Serializable;
-
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
@@ -10,13 +10,10 @@ import cn.cntv.cctv11.android.fragment.MainFragment2;
 import cn.cntv.cctv11.android.fragment.MainFragment4;
 import cn.cntv.cctv11.android.fragment.MemberFragment;
 import cn.cntv.cctv11.android.fragment.StageCalendarFragment;
-import cn.cntv.cctv11.android.fragment.StageFragment;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -39,6 +36,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		initPush();
 		UmengUpdateAgent.update(this);
 		MobclickAgent.updateOnlineConfig(this);
 		openGuide();
@@ -132,6 +130,20 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		if(TextUtils.equals(ACTION_TOLOGIN, intent.getAction())){
 			tab5.performClick();
 		}
+	}
+	
+	private void initPush(){
+		if(APP.getSession().getNewsPush()){
+			PushManager.startWork(getApplicationContext(),
+	                PushConstants.LOGIN_TYPE_API_KEY,
+	                APP.getAppConfig().getPush_api_key());
+		}
+		if(APP.getSession().getVoice()){
+			PushManager.setNoDisturbMode(this, -1 , -1, -1, -1);
+		}else{
+			PushManager.setNoDisturbMode(this, 0, 0, 23, 59);
+		}
+		
 	}
 
 }

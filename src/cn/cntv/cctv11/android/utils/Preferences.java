@@ -2,6 +2,11 @@ package cn.cntv.cctv11.android.utils;
 
 
 
+import cn.cntv.cctv11.android.APP;
+
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -43,6 +48,11 @@ public class Preferences {
 		}
 		
 		public void setVoice(boolean voice){
+			if(voice){
+				PushManager.setNoDisturbMode(context, -1 , -1, -1, -1);
+			}else{
+				PushManager.setNoDisturbMode(context, 0, 0, 23, 59);
+			}
 			preferences.edit().putBoolean("voice", voice).commit();
 		}
 		
@@ -51,6 +61,13 @@ public class Preferences {
 		}
 		
 		public void setNewsPush(boolean push){
+			if(push){
+				PushManager.startWork(context,
+		                PushConstants.LOGIN_TYPE_API_KEY,
+		                APP.getAppConfig().getPush_api_key());
+			}else{
+				PushManager.stopWork(context);
+			}
 			preferences.edit().putBoolean("news_push", push).commit();
 		}
 		
