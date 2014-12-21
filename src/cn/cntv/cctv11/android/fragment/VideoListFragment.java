@@ -97,7 +97,7 @@ public class VideoListFragment extends BaseFragment implements OnLoadListener,
 		this.list.addAll(News.toVideoList(list));
 		adapter.notifyDataSetChanged();
 
-		return list.size() > limit ? true : false;
+		return list.size() >= limit ? true : false;
 	}
 
 	@Override
