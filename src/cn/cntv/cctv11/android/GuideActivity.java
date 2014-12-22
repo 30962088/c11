@@ -108,7 +108,7 @@ public class GuideActivity extends BaseActivity{
 		super.onCreate(arg0);
 		setContentView(R.layout.guide_layout);
 		ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
-		pager.setOffscreenPageLimit(3);
+		pager.setOffscreenPageLimit(5);
 		CirclePageIndicator indicator = (CirclePageIndicator) findViewById(R.id.indicator);
 		List<Pager> list = new ArrayList<TabsAdapter.Pager>(){{
 			add(new Pager("", ImageFragment.newInstance("drawable://"+R.drawable.guide_1)));

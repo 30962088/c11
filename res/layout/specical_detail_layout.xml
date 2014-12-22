@@ -28,22 +28,23 @@
             android:gravity="center" >
 
             <RelativeLayout
-                android:layout_width="59dp"
-                android:layout_height="25dp" >
+                android:layout_width="79dp"
+                android:layout_height="match_parent" >
 
                 <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/icon_scale_center" />
+                    android:layout_width="59dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/icon_scale_center" 
+                    android:layout_centerInParent="true"/>
 
                 <View
                     android:id="@+id/scaleUp"
-                    android:layout_width="29.5dp"
+                    android:layout_width="39.5dp"
                     android:layout_height="match_parent" />
 
                 <View
                     android:id="@+id/scaleDown"
-                    android:layout_width="29.5dp"
+                    android:layout_width="39.5dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true" />
             </RelativeLayout>
@@ -68,17 +69,58 @@
         android:layout_marginBottom="50.5dp"
         android:layout_marginTop="36dp" >
 
-        <ViewStub
-            android:id="@+id/sepical_detail_template"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout="@layout/sepical_detail_template" />
+            android:orientation="vertical" >
 
-        <ViewStub
-            android:id="@+id/detail_template"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout="@layout/detail_template" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fcf4f2"
+                android:orientation="vertical"
+                android:paddingBottom="14dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="14dp"
+                android:tag="sticky" >
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="京剧《翠屏山》上海戏剧学院演出"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="央视网 2014年06月27日 16:36"
+                    android:textColor="#80000000"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginRight="12dp"
+                android:layout_marginLeft="12dp"
+                android:background="#dbdbdb" />
+
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#00000000" />
+        </LinearLayout>
     </FrameLayout>
 
     <LinearLayout
@@ -126,12 +168,11 @@
                     android:layout_height="21dp"
                     android:background="@drawable/icon_send" />
             </LinearLayout>
-            
-            <View 
+
+            <View
+                android:id="@+id/not_login_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/not_login_view"/>
-            
+                android:layout_height="match_parent" />
         </RelativeLayout>
 
         <RelativeLayout

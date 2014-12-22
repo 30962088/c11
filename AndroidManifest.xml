@@ -18,7 +18,8 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme"
         android:vmSafeMode="true" >
-        <activity android:name=".LaunchActivity" >
+        <activity android:name=".LaunchActivity" 
+            android:hardwareAccelerated="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,6 +28,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:hardwareAccelerated="true"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
@@ -36,6 +38,7 @@
         </activity>
         <activity
             android:name=".CityActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,6 +46,7 @@
         </activity>
         <activity
             android:name=".SpecialDetailActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,6 +54,7 @@
         </activity>
         <activity
             android:name=".PhotoViewActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,6 +62,7 @@
         </activity>
         <activity
             android:name=".VideoActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,6 +70,7 @@
         </activity>
         <activity
             android:name=".WeiboDetailActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -71,6 +78,7 @@
         </activity>
         <activity
             android:name=".NewsCommentActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -78,6 +86,7 @@
         </activity>
         <activity
             android:name=".WallPagerActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -85,6 +94,7 @@
         </activity>
         <activity
             android:name=".BBSDetailActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -92,6 +102,7 @@
         </activity>
         <activity
             android:name=".WeiboPublishActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -99,6 +110,7 @@
         </activity>
         <activity
             android:name=".NicknameActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -106,6 +118,7 @@
         </activity>
         <activity
             android:name=".ModifyPhoneActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -113,6 +126,7 @@
         </activity>
         <activity
             android:name=".ModifyPasswordActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -120,6 +134,7 @@
         </activity>
         <activity
             android:name=".BindingWeiboActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -127,6 +142,7 @@
         </activity>
         <activity
             android:name=".SettingActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -134,6 +150,7 @@
         </activity>
         <activity
             android:name=".AppListActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -141,6 +158,7 @@
         </activity>
         <activity
             android:name=".VideoCommentActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -148,6 +166,7 @@
         </activity>
         <activity
             android:name=".WebViewActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -155,6 +174,7 @@
         </activity>
         <activity
             android:name=".BBSListActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -162,6 +182,7 @@
         </activity>
         <activity
             android:name=".StageActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -169,6 +190,7 @@
         </activity>
         <activity
             android:name=".SearchActivity"
+            android:hardwareAccelerated="true"
             android:configChanges="keyboard|keyboardHidden"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -177,6 +199,7 @@
         </activity>
         <activity
             android:name=".GuideActivity"
+            android:hardwareAccelerated="true"
             android:configChanges="keyboard|keyboardHidden"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -185,6 +208,7 @@
         </activity>
         <activity
             android:name=".BBSPublishActivity"
+            android:hardwareAccelerated="true"
             android:configChanges="keyboard|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" >
@@ -194,6 +218,7 @@
         </activity>
         <activity
             android:name=".AboutActivity"
+            android:hardwareAccelerated="true"
             android:configChanges="keyboard|keyboardHidden"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -202,6 +227,7 @@
         </activity>
         <activity
             android:name=".FeedBackActivity"
+            android:hardwareAccelerated="true"
             android:configChanges="keyboard|keyboardHidden"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -210,6 +236,7 @@
         </activity>
         <activity
             android:name=".InfoListActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -217,6 +244,7 @@
         </activity>
         <activity
             android:name=".InfoDetailActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -224,6 +252,7 @@
         </activity>
         <activity
             android:name=".ReportActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -318,19 +347,11 @@
         <meta-data
             android:name="push_api_key"
             android:value="Vai1qj0dCpTyEaCVGzOP3Nvo" />
-        <!--
-             <meta-data
-            android:name="request_news"
-            android:value="http://cctv11news.1du1du.com/" />
-        -->
+        <!--xiqu20.1du1du.com|cctv11news.1du1du.com-->
         <meta-data
             android:name="request_news"
             android:value="http://cctv11news.1du1du.com/" />
-        <!--
-             <meta-data
-            android:name="request_user"
-            android:value="http://cctv.wookong.cn/" />
-        -->
+        <!--cctv.wookong.cn|cctv11.1du1du.com-->
         <meta-data
             android:name="request_user"
             android:value="http://cctv11.1du1du.com/" />

@@ -23,6 +23,7 @@ import cn.cntv.cctv11.android.utils.ShareUtils;
 import cn.cntv.cctv11.android.widget.IOSPopupWindow;
 import cn.cntv.cctv11.android.widget.IOSPopupWindow.OnIOSItemClickListener;
 import cn.cntv.cctv11.android.R;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -119,8 +120,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 
 		private int fontIndex = ArrayUtils.indexOf(fonts, fontSize);
 
-		public ViewHolder(int template) {
-			((ViewStub) findViewById(template)).inflate();
+		@SuppressLint("NewApi") public ViewHolder() {
 			findViewById(R.id.back).setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -149,6 +149,12 @@ public class SpecialDetailActivity extends BaseActivity implements
 					});
 			webView = (WebView) findViewById(R.id.webView);
 			webView.setBackgroundColor(Color.TRANSPARENT);
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+				webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+			}
+			
+			webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+			webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
 			webView.getSettings().setAppCacheEnabled(true);
 			settings = webView.getSettings();
 			settings.setJavaScriptEnabled(true);
@@ -242,11 +248,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 		findViewById(R.id.sendBtn).setOnClickListener(this);
 		findViewById(R.id.comment_btn).setOnClickListener(this);
 		params = (Params) getIntent().getSerializableExtra("params");
-		int template = R.id.detail_template;
-		if (params.cover != null) {
-			template = R.id.sepical_detail_template;
-		}
-		holder = new ViewHolder(template);
+		holder = new ViewHolder();
 		holder.setModel(params.toModel());
 		request();
 	}
@@ -303,6 +305,8 @@ public class SpecialDetailActivity extends BaseActivity implements
 						public void onSuccess(Object object) {
 							Utils.tip(SpecialDetailActivity.this, "评论成功");
 							holder.editText.setText("");
+							params.comment++;
+							holder.comment.setText((params.comment)+ " 跟帖");
 
 						}
 
@@ -314,7 +318,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 
 						@Override
 						public void onComplete() {
-							LoadingPopup.show(SpecialDetailActivity.this);
+							LoadingPopup.hide(SpecialDetailActivity.this);
 
 						}
 					});
