@@ -28,6 +28,7 @@ public class IOSPopupWindow implements OnClickListener{
 	}
 	
 	public static class Params{
+		private String title;
 		private List<String> list;
 		private OnIOSItemClickListener onIOSItemClickListener;
 		public Params(List<String> list,
@@ -36,6 +37,14 @@ public class IOSPopupWindow implements OnClickListener{
 			this.list = list;
 			this.onIOSItemClickListener = onIOSItemClickListener;
 		}
+		public Params(String title, List<String> list,
+				OnIOSItemClickListener onIOSItemClickListener) {
+			super();
+			this.title = title;
+			this.list = list;
+			this.onIOSItemClickListener = onIOSItemClickListener;
+		}
+		
 		
 	}
 	
@@ -45,6 +54,14 @@ public class IOSPopupWindow implements OnClickListener{
 	
 	public IOSPopupWindow(Context context,final Params params) {
 		View view = LayoutInflater.from(context).inflate(R.layout.ios_popup,null);
+		View titleContainer = view.findViewById(R.id.titleContainer);
+		TextView titleView = (TextView) view.findViewById(R.id.title);
+		if(params.title == null){
+			titleContainer.setVisibility(View.GONE);
+		}else{
+			titleContainer.setVisibility(View.VISIBLE);
+			titleView.setText(params.title);
+		}
 		ViewGroup container = (ViewGroup) view.findViewById(R.id.container);
 		for(int i = 0;i<params.list.size();i++){
 			View item = LayoutInflater.from(context).inflate(R.layout.ios_popup_item,null);

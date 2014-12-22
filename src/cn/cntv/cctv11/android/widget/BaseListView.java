@@ -9,6 +9,7 @@ import com.cheshang8.library.R;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshPinnedSectionListView;
+import com.mengle.lib.utils.Utils;
 
 import android.content.Context;
 import android.text.format.DateUtils;
@@ -145,7 +146,7 @@ public class BaseListView extends PullToRefreshPinnedSectionListView {
 					} else {
 						mFooterLoading.setVisibility(View.VISIBLE);
 					}
-					BaseListView.this.onRefreshComplete();
+					
 					if (type == Type.OFFSET) {
 						offset += limit;
 					} else {
@@ -161,13 +162,13 @@ public class BaseListView extends PullToRefreshPinnedSectionListView {
 
 				@Override
 				public void onComplete() {
-					// TODO Auto-generated method stub
+					BaseListView.this.onRefreshComplete();
 					
 				}
 
 				@Override
 				public void onError(int error, String msg) {
-					// TODO Auto-generated method stub
+					Utils.tip(getContext(), "列表加载失败");
 					
 				}
 			});

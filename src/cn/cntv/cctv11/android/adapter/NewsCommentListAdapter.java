@@ -5,10 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hb.views.PinnedSectionListView.PinnedSectionListAdapter;
+import com.mengle.lib.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.adapter.BBSListAdapter.ViewHolder;
+import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
+import cn.cntv.cctv11.android.fragment.network.InsertcommentreportRequest;
+import cn.cntv.cctv11.android.fragment.network.InsertcommentreportRequest.Params;
+import cn.cntv.cctv11.android.widget.IOSPopupWindow;
+import cn.cntv.cctv11.android.APP;
 import cn.cntv.cctv11.android.R;
 
 import android.content.Context;
@@ -40,9 +46,11 @@ public class NewsCommentListAdapter extends BaseAdapter implements PinnedSection
 		private String time;
 		
 		private String userid;
+		
+		private int reportType;
 
 		public Model(String id,String avatar, String name, String content, String time,
-				String replynickname,String userid) {
+				String replynickname,String userid,int reportType) {
 			super();
 			this.id = id;
 			this.avatar = avatar;
@@ -50,6 +58,7 @@ public class NewsCommentListAdapter extends BaseAdapter implements PinnedSection
 			this.content = content;
 			this.time = time;
 			this.userid = userid;
+			this.reportType = reportType;
 			if(!TextUtils.isEmpty(replynickname)){
 				this.content = "回复<font color='#0b92c3'>"+replynickname+"</font>"+" "+this.content;
 			}
@@ -141,10 +150,58 @@ public class NewsCommentListAdapter extends BaseAdapter implements PinnedSection
 		
 		ImageLoader.getInstance().displayImage(model.avatar, holder.avatar,DisplayOptions.IMG.getOptions());
 		
+		holder.jubaoBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				onjubao(model);
+				
+			}
+
+			
+		});
 
 		return convertView;
 	}
+	
+	
+	private void onjubao(final Model model) {
+		new IOSPopupWindow(context, new IOSPopupWindow.Params("请输入举报理由", new ArrayList<String>(){{
+			add("营销诈骗");
+			add("淫秽色情");
+			add("地域攻击");
+			add("其他理由");
+		}},new IOSPopupWindow.OnIOSItemClickListener(){
 
+			@Override
+			public void oniositemclick(int pos, String text) {
+				InsertcommentreportRequest request = new InsertcommentreportRequest(context,
+						new InsertcommentreportRequest.Params(text, model.id, model.reportType, APP.getSession().getSid(), APP.getSession().getPkey()));
+				request.request(new RequestHandler() {
+					
+					@Override
+					public void onSuccess(Object object) {
+						Utils.tip(context, "举报成功");
+						
+					}
+					
+					@Override
+					public void onError(int error, String msg) {
+						Utils.tip(context, "举报失败");
+						
+					}
+					
+					@Override
+					public void onComplete() {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+			}
+			
+		}));
+		
+	}
 	
 
 	public static class ViewHolder {
@@ -158,6 +215,8 @@ public class NewsCommentListAdapter extends BaseAdapter implements PinnedSection
 		private TextView time;
 		
 		private View commentBtn;
+		
+		private View jubaoBtn;
 
 		public ViewHolder(View view) {
 			name = (TextView) view.findViewById(R.id.name);
@@ -165,7 +224,7 @@ public class NewsCommentListAdapter extends BaseAdapter implements PinnedSection
 			content = (TextView) view.findViewById(R.id.content);
 			time = (TextView) view.findViewById(R.id.time);
 			commentBtn = view.findViewById(R.id.comment_btn);
-
+			jubaoBtn = view.findViewById(R.id.jubao_btn);
 		}
 
 	}

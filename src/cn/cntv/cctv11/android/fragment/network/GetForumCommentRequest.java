@@ -32,6 +32,7 @@ public class GetForumCommentRequest extends BaseClient{
 	}
 	
 	public static class Comment{
+		private String commentid;
 		private String username;
 		private String userid;
 		private String datetime;
@@ -45,7 +46,7 @@ public class GetForumCommentRequest extends BaseClient{
 			return new Date(count);
 		}
 		public NewsCommentListAdapter.Model toModel(){
-			return new NewsCommentListAdapter.Model(null,userimgurl, username, remark, DATE_FORMAT.format(getDateTime()),isusername,userid);
+			return new NewsCommentListAdapter.Model(commentid,userimgurl, username, remark, DATE_FORMAT.format(getDateTime()),isusername,userid,2);
 		}
 	}
 	
