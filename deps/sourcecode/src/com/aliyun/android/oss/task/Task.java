@@ -30,12 +30,12 @@ public abstract class Task implements IHttpParameters, IHttpHeaders {
     /**
      * OSS地址
      */
-    public static String OSS_END_POINT = "http://oss-cn-hangzhou.aliyuncs.com";
+    public static String OSS_END_POINT = "http://oss-cn-qingdao.aliyuncs.com";
 
     /**
      * OSS HOST
      */
-    public static String OSS_HOST = "oss-cn-hangzhou.aliyuncs.com";
+    public static String OSS_HOST = "oss-cn-qingdao.aliyuncs.com";
 
     /**
      * 用户授权ID，匿名访问可以不设置

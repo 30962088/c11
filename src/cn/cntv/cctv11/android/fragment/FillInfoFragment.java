@@ -240,7 +240,7 @@ public class FillInfoFragment extends BaseFragment implements OnClickListener,On
 	@Override
 	public void onGallerySelection(File file) {
 		LoadingPopup.show(getActivity());
-		AliyunUtils.getInstance().upload(CropImageUtils.cropImage(file, 300, 300),this);
+		AliyunUtils.getInstance().upload(CropImageUtils.cropImage(file, 300, 300),"cctv11cdn",this);
 	}
 
 	@Override

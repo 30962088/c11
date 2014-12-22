@@ -123,7 +123,7 @@ public class BBSPublishActivity extends BaseActivity implements
 		if (filepath != null) {
 
 			AliyunUtils.getInstance().upload(
-					CropImageUtils.thumnailFile(filepath, 800),
+					CropImageUtils.thumnailFile(filepath, 800),"cctv11newscdn",
 					new UploadListener() {
 
 						@Override

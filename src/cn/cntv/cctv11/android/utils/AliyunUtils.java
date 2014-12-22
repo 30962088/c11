@@ -19,9 +19,7 @@ public class AliyunUtils {
 	private static final String ACCESS_ID = "LYk8ljJ9J2fhZ4XX";
 	private static final String ACCESS_KEY = "yPRp9E5reO4aO3YtRkrgAlaAWe34YA";
 
-	private static final String BUCKET_NAME = "cctv11";
-
-	private static final String OSS_ENDPOINT = "http://oss-cn-hangzhou.aliyuncs.com/";
+	private static final String OSS_ENDPOINT = "http://oss-cn-qingdao.aliyuncs.com/";
 
 	public static AliyunUtils instance;
 
@@ -38,8 +36,8 @@ public class AliyunUtils {
 		client.setAccessKey(ACCESS_KEY);
 	}
 
-	public void upload(File file, UploadListener uploadListener) {
-		new UploadTask(file,uploadListener).execute();
+	public void upload(File file,String bucketName, UploadListener uploadListener) {
+		new UploadTask(file,bucketName,uploadListener).execute();
 	}
 
 	private static UploadResult getFilenameBySha1(File file) {
@@ -115,12 +113,15 @@ public class AliyunUtils {
 	private class UploadTask extends AsyncTask<Void, Void, UploadResult> {
 
 		private File file;
+		
+		private String bucketName;
 
 		private UploadListener uploadListener;
 
-		public UploadTask(File file, UploadListener uploadListener) {
+		public UploadTask(File file,String bucketName, UploadListener uploadListener) {
 			super();
 			this.file = file;
+			this.bucketName = bucketName;
 			this.uploadListener = uploadListener;
 		}
 
@@ -128,7 +129,7 @@ public class AliyunUtils {
 		protected UploadResult doInBackground(Void... params) {
 			UploadResult result = getFilenameBySha1(file);
 			try {
-				client.uploadObject(BUCKET_NAME, result.filename, FileUtils.readFileToByteArray(file));
+				client.uploadObject(bucketName, result.filename, FileUtils.readFileToByteArray(file));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -138,7 +139,7 @@ public class AliyunUtils {
 
 		@Override
 		protected void onPostExecute(UploadResult result) {
-			result.url = OSS_ENDPOINT+BUCKET_NAME+"/"+result.filename;
+			result.url = OSS_ENDPOINT+bucketName+"/"+result.filename;
 			uploadListener.onsuccess(result);
 		}
 

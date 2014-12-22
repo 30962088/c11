@@ -295,7 +295,13 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 		if(TextUtils.equals(category.getCategoryname(),"视频")){
 			VideoCommentActivity.open(this, list2.get(position).toCommentModel());
 		}else{
-			SpecialDetailActivity.open(this, list1.get(position).toDetailParams());
+			NewsListAdapter.Model model = list1.get(position);
+			if(TextUtils.equals("视频", model.getCategory().getText()) ){
+				VideoCommentActivity.open(this, model.toCommentModel());
+			}else{
+				SpecialDetailActivity.open(this, model.toDetailParams());
+			}
+		
 		}
 		
 	}

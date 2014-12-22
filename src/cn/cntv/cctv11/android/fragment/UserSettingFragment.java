@@ -197,7 +197,7 @@ public class UserSettingFragment extends BaseFragment implements
 	@Override
 	public void onGallerySelection(File file) {
 		
-		AliyunUtils.getInstance().upload(CropImageUtils.cropImage(file, 300, 300),this);
+		AliyunUtils.getInstance().upload(CropImageUtils.cropImage(file, 300, 300),"cctv11cdn",this);
 		
 	}
 

@@ -7,6 +7,7 @@ import java.util.List;
 
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.SpecialDetailActivity;
+import cn.cntv.cctv11.android.VideoCommentActivity;
 import cn.cntv.cctv11.android.adapter.NewsListAdapter;
 import cn.cntv.cctv11.android.adapter.NewsListAdapter.Model;
 import cn.cntv.cctv11.android.fragment.SliderFragment.OnSliderItemClickListener;
@@ -148,7 +149,12 @@ public class NewsFragment extends BaseFragment implements OnLoadListener,OnSlide
 			long id) {
 		
 		Model model = (Model) adapter.getItem(position-2);
-		SpecialDetailActivity.open(getActivity(), model.toDetailParams());
+		if(TextUtils.equals("视频", model.getCategory().getText()) ){
+			VideoCommentActivity.open(getActivity(), model.toCommentModel());
+		}else{
+			SpecialDetailActivity.open(getActivity(), model.toDetailParams());
+		}
+		
 		
 		
 		

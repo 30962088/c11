@@ -144,7 +144,7 @@ public class APP extends FrontiaApplication {
 		
 		public String getImage(String filename,String format){
 			
-			return request_news+"get.mvc/getTheImage?fileName="+filename+format+"&appid=1217";
+			return appConfig.getRequest_user()+"get.mvc/getTheImage?fileName="+filename+format+"&appid=1217";
 			
 		}
 		
