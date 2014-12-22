@@ -2,12 +2,14 @@ package cn.cntv.cctv11.android;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.http.Header;
 
 import com.mengle.lib.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.adapter.NewsCommentListAdapter;
@@ -17,9 +19,12 @@ import cn.cntv.cctv11.android.fragment.network.InsertCommentRequest;
 import cn.cntv.cctv11.android.fragment.network.NewsCommentRequest;
 import cn.cntv.cctv11.android.fragment.network.BaseClient.RequestHandler;
 import cn.cntv.cctv11.android.fragment.network.NewsCommentRequest.Params;
+import cn.cntv.cctv11.android.utils.ShareUtils;
 import cn.cntv.cctv11.android.widget.BaseListView;
+import cn.cntv.cctv11.android.widget.IOSPopupWindow;
 import cn.cntv.cctv11.android.widget.BaseListView.OnLoadListener;
 import cn.cntv.cctv11.android.widget.BaseListView.Type;
+import cn.cntv.cctv11.android.widget.IOSPopupWindow.OnIOSItemClickListener;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -98,6 +103,9 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 		}else{
 			notLoginView.setVisibility(View.VISIBLE);
 		}
+		View shareView = findViewById(R.id.share);
+		shareView.setVisibility(View.VISIBLE);
+		shareView.setOnClickListener(this);
 		findViewById(R.id.back).setOnClickListener(this);
 		findViewById(R.id.header_container).setSelected(true);
 		editText = (EditText) findViewById(R.id.edit);
@@ -157,6 +165,9 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.share:
+			onshare();
+			break;
 		case R.id.not_login_view:
 			toLogin();
 			break;
@@ -195,6 +206,30 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 		default:
 			break;
 		}
+		
+	}
+
+
+
+	private void onshare() {
+		new IOSPopupWindow(this, new IOSPopupWindow.Params(
+				Arrays.asList(new String[] { "分享给QQ好友", "分享到QQ空间", "分享给微信好友",
+						"分享到朋友圈", "分享到新浪微博" }), new OnIOSItemClickListener() {
+
+					@Override
+					public void oniositemclick(int pos, String text) {
+
+						SHARE_MEDIA media = new SHARE_MEDIA[] { SHARE_MEDIA.QQ,
+								SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN,
+								SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
+
+						ShareUtils.shareWebsite(VideoCommentActivity.this,
+								media, model.title, APP.getAppConfig()
+										.getSharecontent(model.id));
+
+					}
+
+				}));
 		
 	}
 
