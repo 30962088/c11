@@ -26,13 +26,16 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class VideoCommentActivity extends BaseActivity implements OnLoadListener,OnClickListener,OnCommentBtnClickListener{
+public class VideoCommentActivity extends BaseActivity implements OnLoadListener,OnClickListener,OnCommentBtnClickListener,OnTouchListener{
 
 	public static class Model implements Serializable{
 		private String id;
@@ -73,17 +76,34 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 	
 	private EditText editText;
 	
+	private View notLoginView;
+	
+	private String isuserid = "0";
+	
+	private String iscommentid = "0";
+	
+	private View container;
+	
 	@Override
 	protected void onCreate(Bundle arg0) {
 		// TODO Auto-generated method stub
 		super.onCreate(arg0);
 		model = (Model) getIntent().getSerializableExtra("model");
 		setContentView(R.layout.news_comment_layout);
+		container = findViewById(R.id.container);
+		notLoginView = findViewById(R.id.not_login_view);
+		notLoginView.setOnClickListener(this);
+		if(APP.getSession().isLogin()){
+			notLoginView.setVisibility(View.GONE);
+		}else{
+			notLoginView.setVisibility(View.VISIBLE);
+		}
 		findViewById(R.id.back).setOnClickListener(this);
 		findViewById(R.id.header_container).setSelected(true);
 		editText = (EditText) findViewById(R.id.edit);
 		findViewById(R.id.sendBtn).setOnClickListener(this);
 		listView = (BaseListView) findViewById(R.id.listview);
+		listView.getRefreshableView().setOnTouchListener(this);
 		View headerView = LayoutInflater.from(this).inflate(R.layout.video_comment_header, null);
 		headerView.findViewById(R.id.play_btn).setOnClickListener(this);
 		listView.getRefreshableView().addHeaderView(headerView);
@@ -137,6 +157,9 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.not_login_view:
+			toLogin();
+			break;
 		case R.id.play_btn:
 			onplay();
 			break;
@@ -145,13 +168,13 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 			break;
 		case R.id.sendBtn:
 			String content = editText.getText().toString();
-			new InsertCommentRequest(this, new  InsertCommentRequest.Params(model.id,"0", "0", "134", content,APP.getSession().getPkey())).request(new RequestHandler() {
+			new InsertCommentRequest(this, new  InsertCommentRequest.Params(model.id,iscommentid, isuserid, APP.getSession().getSid(), content,APP.getSession().getPkey())).request(new RequestHandler() {
 				
 				@Override
 				public void onSuccess(Object object) {
 					Utils.tip(VideoCommentActivity.this, "评论成功");
 					editText.setText("");
-					listView.load(true);
+//					listView.load(true);
 					
 				}
 				
@@ -187,8 +210,32 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 	@Override
 	public void onCommentBtnClick(
 			cn.cntv.cctv11.android.adapter.NewsCommentListAdapter.Model model) {
-		// TODO Auto-generated method stub
+		if(!APP.getSession().isLogin()){
+			toLogin();
+			return;
+		}
+		InputMethodManager inputMethodManager=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+	    inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+		isuserid = model.getUserid();
+		iscommentid = model.getId();
+		editText.requestFocus();
 		
+	}
+
+
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		if(editText.isFocused()){
+			isuserid = "0";
+			iscommentid = "0";
+			container.requestFocus();
+			InputMethodManager imm = (InputMethodManager)getSystemService(
+				      Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+			return true;
+		}
+		return false;
 	}
 	
 }

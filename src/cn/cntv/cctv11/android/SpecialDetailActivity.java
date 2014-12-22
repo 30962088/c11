@@ -28,9 +28,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -120,7 +124,8 @@ public class SpecialDetailActivity extends BaseActivity implements
 
 		private int fontIndex = ArrayUtils.indexOf(fonts, fontSize);
 
-		@SuppressLint("NewApi") public ViewHolder() {
+		@SuppressLint("NewApi")
+		public ViewHolder() {
 			findViewById(R.id.back).setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -152,15 +157,17 @@ public class SpecialDetailActivity extends BaseActivity implements
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
 				webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 			}
-			
+
 			webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-			webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+			webView.getSettings().setRenderPriority(
+					WebSettings.RenderPriority.HIGH);
 			webView.getSettings().setAppCacheEnabled(true);
 			settings = webView.getSettings();
 			settings.setJavaScriptEnabled(true);
 
 			coverView = (ImageView) findViewById(R.id.cover);
 			title = (TextView) findViewById(R.id.title);
+
 			subTitle = (TextView) findViewById(R.id.subtitle);
 			comment = (TextView) findViewById(R.id.comment);
 			editText = (EditText) findViewById(R.id.edit);
@@ -171,6 +178,24 @@ public class SpecialDetailActivity extends BaseActivity implements
 		private void setModel(final Model model) {
 			if (model.title != null) {
 				title.setText(model.title);
+				ViewTreeObserver vto = title.getViewTreeObserver();
+				vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+				    @Override
+				    public void onGlobalLayout() {
+				       Layout l = title.getLayout();
+				       if ( l != null){
+				          int lines = l.getLineCount();
+				          if ( lines > 0){
+				        	  if ( l.getEllipsisCount(lines-1) > 0){
+				        		  title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+				              }
+				          }
+				              
+				            	  
+				       }  
+				    }
+				});
+				
 			}
 
 			if (model.subTitle != null) {
@@ -306,7 +331,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 							Utils.tip(SpecialDetailActivity.this, "评论成功");
 							holder.editText.setText("");
 							params.comment++;
-							holder.comment.setText((params.comment)+ " 跟帖");
+							holder.comment.setText((params.comment) + " 跟帖");
 
 						}
 
@@ -342,8 +367,8 @@ public class SpecialDetailActivity extends BaseActivity implements
 								SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
 
 						ShareUtils.shareWebsite(SpecialDetailActivity.this,
-								media, params.title,
-								APP.getAppConfig().getSharecontent(params.contentId));
+								media, params.title, APP.getAppConfig()
+										.getSharecontent(params.contentId));
 
 					}
 

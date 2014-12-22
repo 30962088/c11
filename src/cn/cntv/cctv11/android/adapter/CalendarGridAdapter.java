@@ -3,6 +3,8 @@ package cn.cntv.cctv11.android.adapter;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import cn.cntv.cctv11.android.R;
 import cn.cntv.cctv11.android.utils.CalendarUtils.CalendarDate;
 import android.content.Context;
@@ -72,6 +74,12 @@ public class CalendarGridAdapter extends BaseAdapter{
 		}
 		
 		holder.selected.setVisibility(model.isSelected()?View.VISIBLE:View.GONE);
+		holder.selected2.setVisibility(View.GONE);
+		if(holder.selected.getVisibility() != View.VISIBLE){
+			if(DateUtils.isSameDay(model.getDate(), new Date())){
+				holder.selected2.setVisibility(View.VISIBLE);
+			}
+		}
 		
 		return convertView;
 	}
@@ -83,11 +91,14 @@ public class CalendarGridAdapter extends BaseAdapter{
 		private TextView popup;
 		
 		private View selected;
+		
+		private View selected2;
 
 		public ViewHolder(View view) {
 			day = (TextView) view.findViewById(R.id.day);
 			popup = (TextView) view.findViewById(R.id.popup);
 			selected =  view.findViewById(R.id.selected);
+			selected2 =  view.findViewById(R.id.selected2);
 		}
 
 	}

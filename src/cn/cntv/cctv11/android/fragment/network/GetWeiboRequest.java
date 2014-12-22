@@ -132,7 +132,7 @@ public class GetWeiboRequest extends BaseClient {
 	@Override
 	protected String getURL() {
 		// TODO Auto-generated method stub
-		return APP.getAppConfig().getRequest_news()+"weibo/cctv11/getweiboinfo";
+		return "http://xiqu.1du1du.com/weibo/cctv11/getweiboinfo";
 	}
 
 	@Override

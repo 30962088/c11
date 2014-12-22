@@ -38,6 +38,12 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_day_selected"/>
         
+        <View 
+            android:id="@+id/selected2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_day_selected2"/>
+        
     </RelativeLayout>
     
 </cn.cntv.cctv11.android.widget.SquareFrameLayout>

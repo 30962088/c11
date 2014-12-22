@@ -79,19 +79,18 @@
                 android:layout_height="wrap_content"
                 android:background="#fcf4f2"
                 android:orientation="vertical"
-                android:paddingBottom="14dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:paddingTop="14dp"
                 android:tag="sticky" >
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45dp"
                     android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="京剧《翠屏山》上海戏剧学院演出"
+                    android:maxLines="2"
+                    android:gravity="left|center_vertical"
+                    android:text="京剧《翠屏山》上海戏剧"
                     android:textColor="#000"
                     android:textSize="20sp" />
 
@@ -99,12 +98,12 @@
                     android:id="@+id/subtitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="央视网 2014年06月27日 16:36"
                     android:textColor="#80000000"
-                    android:textSize="12sp" />
+                    android:textSize="12sp" 
+                    android:layout_marginBottom="5dp"/>
             </LinearLayout>
 
             <View
