@@ -1,5 +1,6 @@
 package cn.cntv.cctv11.android;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -365,10 +366,10 @@ public class SpecialDetailActivity extends BaseActivity implements
 						SHARE_MEDIA media = new SHARE_MEDIA[] { SHARE_MEDIA.QQ,
 								SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN,
 								SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
-
+						File bitmapFile = ImageLoader.getInstance().getDiscCache().get(params.cover);	
 						ShareUtils.shareWebsite(SpecialDetailActivity.this,
 								media, params.title, APP.getAppConfig()
-										.getSharecontent(params.contentId));
+										.getSharecontent(params.contentId),bitmapFile);
 
 					}
 

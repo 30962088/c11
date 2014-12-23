@@ -37,6 +37,7 @@ public class GetTopicRequest extends BaseClient {
 		private String userimgguid;
 		private String userimgformat;
 		private String uploadimgguid;
+		private String uploadimgurl;
 		private String uploadimgformat;
 		private String userimgurl;
 		private int totopstatus;
@@ -47,10 +48,8 @@ public class GetTopicRequest extends BaseClient {
 		}
 		
 		private String getUploadImg(){
-			if(!TextUtils.isEmpty(uploadimgguid)){
-				return APP.getAppConfig().getImage(uploadimgguid, uploadimgformat);
-			}
-			return null;
+			
+			return uploadimgurl;
 		}
 		
 		private Date getDate(){

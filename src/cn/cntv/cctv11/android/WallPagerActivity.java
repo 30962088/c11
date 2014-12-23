@@ -202,12 +202,8 @@ public class WallPagerActivity extends BaseActivity implements OnClickListener,O
 									SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
 									SHARE_MEDIA.WEIXIN,
 									SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[index];
-							File file = ImageLoader.getInstance().getDiscCache().get(model.thunbnail);
-							Bitmap bitmap = null;
-							if(file.exists()){
-								bitmap = BitmapFactory.decodeFile(file.toString());
-							}
-							ShareUtils.shareImage(WallPagerActivity.this, media, "央视戏曲官方壁纸下载链接",bitmap, model.origin);
+							File bitmapFile = ImageLoader.getInstance().getDiscCache().get(model.thunbnail);;
+							ShareUtils.shareWebsite(WallPagerActivity.this,media, "央视戏曲官方壁纸下载链接", model.origin, bitmapFile);
 						}
 					}
 

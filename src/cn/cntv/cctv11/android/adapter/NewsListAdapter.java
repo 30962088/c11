@@ -91,12 +91,8 @@ public class NewsListAdapter extends BaseAdapter implements Serializable,PinnedS
 		}
 
 		public Params toDetailParams(){
-			Params params = null;
-			if(isZhuanlan){
-				params = new Params(id, title, subtitle, null, comment);
-			}else{
-				params = new Params(id, title, subtitle, null, comment);
-			}
+			Params params = new Params(id, title, subtitle, img, comment);
+			
 			return params;
 		}
 

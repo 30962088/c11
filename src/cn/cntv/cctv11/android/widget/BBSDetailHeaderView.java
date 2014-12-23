@@ -104,6 +104,9 @@ public class BBSDetailHeaderView extends FrameLayout{
 		public String getTitle() {
 			return title;
 		}
+		public String getImg() {
+			return img;
+		}
 	}
 	
 

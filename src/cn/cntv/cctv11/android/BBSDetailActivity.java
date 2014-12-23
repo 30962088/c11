@@ -1,5 +1,6 @@
 package cn.cntv.cctv11.android;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import org.apache.http.Header;
 
 import com.mengle.lib.utils.Utils;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import cn.cntv.cctv11.android.adapter.NewsCommentListAdapter;
@@ -194,10 +196,10 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 									SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
 									SHARE_MEDIA.WEIXIN,
 									SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
-
+							File bitmapFile = ImageLoader.getInstance().getDiscCache().get(model.getImg());
 							ShareUtils.shareWebsite(BBSDetailActivity.this,
 									media, model.getTitle(), APP.getAppConfig()
-											.getShareForumcontent(model.getId()));
+											.getShareForumcontent(model.getId()),bitmapFile);
 
 						}
 

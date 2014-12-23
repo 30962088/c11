@@ -1,5 +1,6 @@
 package cn.cntv.cctv11.android;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -222,10 +223,10 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 						SHARE_MEDIA media = new SHARE_MEDIA[] { SHARE_MEDIA.QQ,
 								SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN,
 								SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
-
+						File bitmapFile = ImageLoader.getInstance().getDiscCache().get(model.img);
 						ShareUtils.shareWebsite(VideoCommentActivity.this,
 								media, model.title, APP.getAppConfig()
-										.getSharecontent(model.id));
+										.getSharecontent(model.id),bitmapFile);
 
 					}
 

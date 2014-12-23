@@ -1,6 +1,7 @@
 package cn.cntv.cctv11.android.utils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.Arrays;
 
 import com.mengle.lib.utils.Utils;
@@ -27,6 +28,7 @@ import cn.cntv.cctv11.android.widget.IOSPopupWindow;
 import cn.cntv.cctv11.android.widget.IOSPopupWindow.OnIOSItemClickListener;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -35,19 +37,19 @@ import android.graphics.drawable.Drawable;
 public class ShareUtils {
 
 	public static void shareWeixinWeb(Context context, String title,
-			String url, SHARE_MEDIA media) {
+			String url, SHARE_MEDIA media,Bitmap bitmap) {
 		int scene = SendMessageToWX.Req.WXSceneSession;
 		if (media == SHARE_MEDIA.WEIXIN_CIRCLE) {
 			scene = SendMessageToWX.Req.WXSceneTimeline;
 		}
+		
 		WXWebpageObject localWXWebpageObject = new WXWebpageObject();
 		localWXWebpageObject.webpageUrl = url;
 		WXMediaMessage localWXMediaMessage = new WXMediaMessage(
 				localWXWebpageObject);
 		localWXMediaMessage.title = title;
 		localWXMediaMessage.description = title;
-		localWXMediaMessage.thumbData = getBitmapBytes(drawableToBitmap(context
-				.getResources().getDrawable(R.drawable.ic_launcher)), false);
+		localWXMediaMessage.thumbData = getBitmapBytes(bitmap, false);
 		SendMessageToWX.Req localReq = new SendMessageToWX.Req();
 		localReq.scene = scene;
 		localReq.transaction = System.currentTimeMillis() + "";
@@ -183,9 +185,18 @@ public class ShareUtils {
 	
 
 	public static void shareWebsite(final Context context, SHARE_MEDIA media,
-			final String title, final String url) {
+			final String title, final String url,File bitmapFile) {
+		Bitmap bitmap = null;
+		if(bitmapFile != null && bitmapFile.exists()){
+			bitmap = BitmapFactory.decodeFile(bitmapFile.toString());
+		}
+		if(bitmap == null){
+			bitmap = drawableToBitmap(context
+					.getResources().getDrawable(R.drawable.ic_launcher));
+		}
+		
 		if (media == SHARE_MEDIA.WEIXIN || media == SHARE_MEDIA.WEIXIN_CIRCLE) {
-			shareWeixinWeb(context, title, url, media);
+			shareWeixinWeb(context, title, url, media,bitmap);
 		} else {
 
 			final UMSocialService mController = UMServiceFactory
@@ -197,6 +208,7 @@ public class ShareUtils {
 				content.setTitle(title);
 				content.setAppWebSite(url);
 				content.setShareContent(url);
+				content.setShareImage(new UMImage(context,bitmap));
 				content.setTargetUrl(url);
 				mController.setShareMedia(content);
 			}
@@ -207,6 +219,7 @@ public class ShareUtils {
 				content.setAppWebSite(url);
 				content.setShareContent(title + " " + url);
 				content.setTargetUrl(url);
+				content.setShareImage(new UMImage(context,bitmap));
 				mController.setShareMedia(content);
 			}
 				break;
