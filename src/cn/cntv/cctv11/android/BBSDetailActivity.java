@@ -153,7 +153,7 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 						public void onSuccess(Object object) {
 							Utils.tip(BBSDetailActivity.this, "评论成功");
 							editText.setText("");
-							listView.load(true);
+//							listView.load(true);
 
 						}
 						
