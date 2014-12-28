@@ -27,7 +27,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	public static void open(Context context) {
 		Intent intent = new Intent(context, MainActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP
-				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				| Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 		context.startActivity(intent);
 	}
 	
@@ -75,6 +75,13 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	}
 
 	private View lastView;
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onRestoreInstanceState(savedInstanceState);
+		onCreate(savedInstanceState);
+	}
 
 	@Override
 	public void onClick(View v) {

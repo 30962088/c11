@@ -111,7 +111,7 @@ public class CalendarUtils {
 			}
 			
 			CalendarDate calendarDate = new CalendarDate(date, enable,total);
-			if(DateUtils.isSameDay(calendarDate.getDate(),new Date())){
+			if(DateUtils.isSameDay(calendarDate.getDate(),new Date())&&calendarDate.enable){
 				calendarDate.setSelected(true);
 				current = calendarDate;
 			}

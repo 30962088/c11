@@ -73,10 +73,10 @@ public class CalendarGridAdapter extends BaseAdapter{
 			holder.popup.setVisibility(View.GONE);
 		}
 		
-		holder.selected.setVisibility(model.isSelected()?View.VISIBLE:View.GONE);
+		holder.selected.setVisibility(model.isSelected()&&model.isEnable()?View.VISIBLE:View.GONE);
 		holder.selected2.setVisibility(View.GONE);
 		if(holder.selected.getVisibility() != View.VISIBLE){
-			if(DateUtils.isSameDay(model.getDate(), new Date())){
+			if(DateUtils.isSameDay(model.getDate(), new Date())&&model.isEnable()){
 				holder.selected2.setVisibility(View.VISIBLE);
 			}
 		}

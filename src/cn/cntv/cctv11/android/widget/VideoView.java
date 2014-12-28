@@ -305,7 +305,8 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 				
 				@Override
 				public boolean onError(MediaPlayer mp, int what, int extra) {
-					playView.setVisibility(View.GONE);
+					playView.setVisibility(View.VISIBLE);
+					loadingView.setVisibility(View.GONE);
 					return false;
 				}
 			});
