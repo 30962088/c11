@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onRestoreInstanceState(savedInstanceState);
-		onCreate(savedInstanceState);
+		
 	}
 
 	@Override
