@@ -154,12 +154,12 @@ public class SpecialDetailActivity extends BaseActivity implements
 						}
 					});
 			webView = (WebView) findViewById(R.id.webView);
-			webView.setBackgroundColor(Color.TRANSPARENT);
-			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+			webView.setBackgroundColor(Color.WHITE);
+			/*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
 				webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-			}
+			}*/
 
-			webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+//			webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 			webView.getSettings().setRenderPriority(
 					WebSettings.RenderPriority.HIGH);
 			webView.getSettings().setAppCacheEnabled(true);
@@ -353,6 +353,13 @@ public class SpecialDetailActivity extends BaseActivity implements
 			break;
 		}
 
+	}
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		holder.webView.loadUrl("about:blank");
 	}
 
 	private void onshare() {

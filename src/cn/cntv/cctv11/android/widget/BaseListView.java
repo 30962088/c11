@@ -52,7 +52,7 @@ public class BaseListView extends PullToRefreshPinnedSectionListView {
 
 	protected boolean hasMode = false;
 
-	private int limit = 10;
+	private int limit = 20;
 
 	public void setLimit(int limit) {
 		this.limit = limit;

@@ -78,6 +78,13 @@ public class WebViewActivity extends BaseActivity{
 	}
 	
 	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		webView.loadUrl("about:blank");
+	}
+	
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if(webView.canGoBack()){
