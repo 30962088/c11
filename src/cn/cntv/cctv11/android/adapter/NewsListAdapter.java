@@ -74,7 +74,7 @@ public class NewsListAdapter extends BaseAdapter implements Serializable,PinnedS
 		}
 		public Model(String id, String img, String title, int comment,
 				boolean isNew, Category category, String subtitle,
-				boolean isZhuanlan) {
+				boolean isZhuanlan,String url) {
 			super();
 			this.id = id;
 			this.img = img;
@@ -84,6 +84,7 @@ public class NewsListAdapter extends BaseAdapter implements Serializable,PinnedS
 			this.category = category;
 			this.subtitle = subtitle;
 			this.isZhuanlan = isZhuanlan;
+			this.url = url;
 		}
 		
 		public Category getCategory() {

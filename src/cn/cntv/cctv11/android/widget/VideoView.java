@@ -315,7 +315,6 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 				
 				@Override
 				public boolean onError(MediaPlayer mp, int what, int extra) {
-					Utils.tip(getContext(), "播放失败，请重试");
 					playView.setVisibility(View.VISIBLE);
 					loadingView.setVisibility(View.GONE);
 					return false;

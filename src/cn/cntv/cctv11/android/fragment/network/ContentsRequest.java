@@ -79,7 +79,7 @@ public class ContentsRequest extends BaseClient{
 			if(categoryname != null){
 				category = new Category(getBackground(categoryid),categoryname);
 			}
-			return new Model(contentsid, attachment.attachmentimgurl, contentstitle, commentcount, false,category,poemauthor+" "+format.format(getDate()),categoryid == 3 ? true:false);
+			return new Model(contentsid, attachment.attachmentimgurl, contentstitle, commentcount, false,category,poemauthor+" "+format.format(getDate()),categoryid == 3 ? true:false,videositeurl);
 		}
 		
 		public VideoListAdapter.Model toVideoModel(){
