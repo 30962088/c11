@@ -69,6 +69,8 @@ public class LiveFragment extends BaseFragment{
 		super.onViewCreated(view, savedInstanceState);
 		videoView = (VideoView) view.findViewById(R.id.video);
 		videoView.setVidepPath("http://m3u8.1du1du.com:1019/index.m3u8");
+//		videoView.setVidepPath("http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4");
+		
 		listView = (ListView) view.findViewById(R.id.listview);
 		adapter = new LiveListAdapter(getActivity(), list);
 		listView.setAdapter(adapter);

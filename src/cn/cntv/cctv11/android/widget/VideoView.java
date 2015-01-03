@@ -2,6 +2,8 @@ package cn.cntv.cctv11.android.widget;
 
 import java.io.IOException;
 
+import com.mengle.lib.utils.Utils;
+
 import cn.cntv.cctv11.android.R;
 
 import android.annotation.SuppressLint;
@@ -118,7 +120,12 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
-//		player.start();
+		if(isPlaying){
+			player.start();
+			controller.updatePausePlay();
+			isPlaying = false;
+		}
+		
 	}
 
 	@Override
@@ -229,12 +236,15 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 	private ViewGroup parent;
 
 	private int indexOfChild;
+	
+	private boolean isPlaying;
 
 	@SuppressLint("NewApi")
 	@Override
 	public void toggleFullScreen() {
 		fullScreen = !fullScreen;
-//		player.pause();
+		isPlaying = player.isPlaying();
+		player.pause();
 		if (fullScreen) {
 			screenFull();
 		} else {
@@ -305,6 +315,7 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 				
 				@Override
 				public boolean onError(MediaPlayer mp, int what, int extra) {
+					Utils.tip(getContext(), "播放失败，请重试");
 					playView.setVisibility(View.VISIBLE);
 					loadingView.setVisibility(View.GONE);
 					return false;
