@@ -134,7 +134,12 @@ public class NewsFragment extends BaseFragment implements OnLoadListener,OnSlide
 	@Override
 	public void OnSliderItemClick(
 			cn.cntv.cctv11.android.fragment.SliderFragment.Model model) {
-		SpecialDetailActivity.open(getActivity(), model.toDetailParams());
+		if(TextUtils.equals("视频", model.getCategoryName()) ){
+			VideoCommentActivity.open(getActivity(), model.toCommentModel());
+		}else{
+			SpecialDetailActivity.open(getActivity(), model.toDetailParams());
+		}
+		
 		
 	}
 

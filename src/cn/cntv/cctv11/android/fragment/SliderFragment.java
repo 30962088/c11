@@ -7,6 +7,7 @@ import java.util.List;
 import cn.cntv.cctv11.android.APP.DisplayOptions;
 import cn.cntv.cctv11.android.SpecialDetailActivity.Params;
 import cn.cntv.cctv11.android.R;
+import cn.cntv.cctv11.android.VideoCommentActivity;
 
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -121,8 +122,10 @@ public class SliderFragment extends Fragment {
 		private String subtitle;
 		private boolean iszhuanlan;
 		private int comment;
+		private String categoryName;
+		private String url;
 		public Model(String id, String img, String title, String subtitle,
-				boolean iszhuanlan,int comment) {
+				boolean iszhuanlan,int comment,String categoryName,String url) {
 			super();
 			this.id = id;
 			this.img = img;
@@ -130,6 +133,16 @@ public class SliderFragment extends Fragment {
 			this.subtitle = subtitle;
 			this.iszhuanlan = iszhuanlan;
 			this.comment = comment;
+			this.categoryName = categoryName;
+			this.url = url;
+		}
+		
+		public String getCategoryName() {
+			return categoryName;
+		}
+		
+		public VideoCommentActivity.Model toCommentModel(){
+			return new VideoCommentActivity.Model(id, comment, title, img, url);
 		}
 		
 		public Params toDetailParams(){

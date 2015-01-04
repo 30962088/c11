@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.http.Header;
 
 
@@ -79,7 +80,8 @@ public class ContentsRequest extends BaseClient{
 			if(categoryname != null){
 				category = new Category(getBackground(categoryid),categoryname);
 			}
-			return new Model(contentsid, attachment.attachmentimgurl, contentstitle, commentcount, false,category,poemauthor+" "+format.format(getDate()),categoryid == 3 ? true:false,videositeurl);
+			boolean isNew = DateUtils.isSameDay(new Date(), getDate());
+			return new Model(contentsid, attachment.attachmentimgurl, contentstitle, commentcount, isNew,category,poemauthor+" "+format.format(getDate()),categoryid == 3 ? true:false,videositeurl);
 		}
 		
 		public VideoListAdapter.Model toVideoModel(){
@@ -99,22 +101,22 @@ public class ContentsRequest extends BaseClient{
 		public static List<Model> toNewsList(List<News> list){
 			List<Model> models = new ArrayList<Model>();
 			for(News n : list){
-				if(n.islunbo == 0){
+//				if(n.islunbo == 0){
 					models.add(n.toNewsModel());
-				}
+//				}
 			}
 			return models;
 		}
 		public SliderFragment.Model toSliderModel(){
-			return new SliderFragment.Model(contentsid, attachment.attachmentimgurl, contentstitle,poemauthor+" "+format.format(getDate()),categoryid == 3 ? true:false,commentcount);
+			return new SliderFragment.Model(contentsid, attachment.attachmentimgurl, contentstitle,poemauthor+" "+format.format(getDate()),categoryid == 3 ? true:false,commentcount,categoryname,videositeurl);
 		}
 		public static ArrayList<SliderFragment.Model> toSliderList(List<News> list){
 			ArrayList<SliderFragment.Model> models = new ArrayList<SliderFragment.Model>();
 			if(list != null){
 				for(News n : list){
-					if(n.islunbo == 1){
+//					if(n.islunbo == 1){
 						models.add(n.toSliderModel());
-					}
+//					}
 				}
 			}
 			
