@@ -43,7 +43,7 @@
         android:background="@drawable/bg_h2"
         android:orientation="vertical" >
 
-        <cn.cntv.cctv11.android.widget.HIndicator
+        <com.cctv.xiqu.android.widget.HIndicator
             android:id="@+id/indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

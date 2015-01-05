@@ -71,7 +71,7 @@
             android:layout_width="fill_parent"
            	android:layout_height="match_parent"/>
         
-        <cn.cntv.cctv11.android.widget.NoResultView
+        <com.cctv.xiqu.android.widget.NoResultView
             android:id="@+id/no_result"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

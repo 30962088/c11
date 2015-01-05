@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.cntv.cctv11.android"
+    package="com.cctv.xiqu.android"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -9,7 +9,7 @@
         android:targetSdkVersion="19" />
 
     <application
-        android:name=".APP"
+        android:name="com.cctv.xiqu.android.APP"
         android:allowBackup="true"
         android:allowClearUserData="true"
         android:hardwareAccelerated="true"
@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme"
         android:vmSafeMode="true" >
         <activity
-            android:name=".LaunchActivity"
+            android:name="com.cctv.xiqu.android.LaunchActivity"
             android:hardwareAccelerated="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.cctv.xiqu.android.MainActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
             android:label="@string/app_name"
@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CityActivity"
+            android:name="com.cctv.xiqu.android.CityActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -46,7 +46,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SpecialDetailActivity"
+            android:name="com.cctv.xiqu.android.SpecialDetailActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -54,7 +54,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PhotoViewActivity"
+            android:name="com.cctv.xiqu.android.PhotoViewActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -62,7 +62,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".VideoActivity"
+            android:name="com.cctv.xiqu.android.VideoActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="landscape" >
             <intent-filter>
@@ -70,7 +70,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WeiboDetailActivity"
+            android:name="com.cctv.xiqu.android.WeiboDetailActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -78,7 +78,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewsCommentActivity"
+            android:name="com.cctv.xiqu.android.NewsCommentActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -86,7 +86,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WallPagerActivity"
+            android:name="com.cctv.xiqu.android.WallPagerActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -94,7 +94,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BBSDetailActivity"
+            android:name="com.cctv.xiqu.android.BBSDetailActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -102,7 +102,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WeiboPublishActivity"
+            android:name="com.cctv.xiqu.android.WeiboPublishActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -110,7 +110,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NicknameActivity"
+            android:name="com.cctv.xiqu.android.NicknameActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -118,7 +118,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ModifyPhoneActivity"
+            android:name="com.cctv.xiqu.android.ModifyPhoneActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -126,7 +126,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ModifyPasswordActivity"
+            android:name="com.cctv.xiqu.android.ModifyPasswordActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -134,7 +134,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BindingWeiboActivity"
+            android:name="com.cctv.xiqu.android.BindingWeiboActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -142,7 +142,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingActivity"
+            android:name="com.cctv.xiqu.android.SettingActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -150,7 +150,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AppListActivity"
+            android:name="com.cctv.xiqu.android.AppListActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -158,7 +158,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".VideoCommentActivity"
+            android:name="com.cctv.xiqu.android.VideoCommentActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -166,7 +166,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WebViewActivity"
+            android:name="com.cctv.xiqu.android.WebViewActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -174,7 +174,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BBSListActivity"
+            android:name="com.cctv.xiqu.android.BBSListActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -182,7 +182,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StageActivity"
+            android:name="com.cctv.xiqu.android.StageActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -190,7 +190,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SearchActivity"
+            android:name="com.cctv.xiqu.android.SearchActivity"
             android:configChanges="keyboard|keyboardHidden"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
@@ -199,7 +199,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GuideActivity"
+            android:name="com.cctv.xiqu.android.GuideActivity"
             android:configChanges="keyboard|keyboardHidden"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
@@ -208,7 +208,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BBSPublishActivity"
+            android:name="com.cctv.xiqu.android.BBSPublishActivity"
             android:configChanges="keyboard|keyboardHidden"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
@@ -218,7 +218,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name="com.cctv.xiqu.android.AboutActivity"
             android:configChanges="keyboard|keyboardHidden"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
@@ -227,7 +227,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FeedBackActivity"
+            android:name="com.cctv.xiqu.android.FeedBackActivity"
             android:configChanges="keyboard|keyboardHidden"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
@@ -236,7 +236,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".InfoListActivity"
+            android:name="com.cctv.xiqu.android.InfoListActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -244,7 +244,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".InfoDetailActivity"
+            android:name="com.cctv.xiqu.android.InfoDetailActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -252,7 +252,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ReportActivity"
+            android:name="com.cctv.xiqu.android.ReportActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -367,10 +367,10 @@
             android:value="36655f294c4246c7f44a22da46bb94c5" />
         <meta-data
             android:name="QQ_APPID"
-            android:value="\ 1102097926" />
+            android:value="\ 1101888988" />
         <meta-data
             android:name="QQ_APPKEY"
-            android:value="3EUkAIBsBTMgrNsH" />
+            android:value="MsiPi1Xo1BRJOI2R" />
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5491a448fd98c519a9000c53" >

@@ -4,13 +4,13 @@
     android:layout_height="match_parent" 
     android:background="#fff">
 
-    <cn.cntv.cctv11.android.widget.BaseListView
+    <com.cctv.xiqu.android.widget.BaseListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
         android:dividerHeight="0dp"
          >
-    </cn.cntv.cctv11.android.widget.BaseListView>
+    </com.cctv.xiqu.android.widget.BaseListView>
 
 </FrameLayout>

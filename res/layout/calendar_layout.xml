@@ -28,7 +28,7 @@
             android:background="#f0f0f4"
       		android:padding="1px">
 
-            <cn.cntv.cctv11.android.widget.MyGridView
+            <com.cctv.xiqu.android.widget.MyGridView
                 android:id="@+id/gridview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                 android:horizontalSpacing="1px"
                 android:numColumns="7"
                 android:verticalSpacing="1px" >
-            </cn.cntv.cctv11.android.widget.MyGridView>
+            </com.cctv.xiqu.android.widget.MyGridView>
         </RelativeLayout>
     </LinearLayout>
 

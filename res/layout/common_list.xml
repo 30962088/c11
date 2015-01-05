@@ -5,12 +5,12 @@
     android:background="#fff">
     
 
-    <cn.cntv.cctv11.android.widget.BaseListView
+    <com.cctv.xiqu.android.widget.BaseListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/list"
         android:divider="@null">
         
-    </cn.cntv.cctv11.android.widget.BaseListView>
+    </com.cctv.xiqu.android.widget.BaseListView>
     
 </FrameLayout>
