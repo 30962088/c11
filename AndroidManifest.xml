@@ -269,7 +269,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- 100424468，如果你使用的公用账号，则不需要修改；否则修改成你在QQ开放平台申请的 APP ID -->
-                <data android:scheme="tencent1101888988" />
+                <data android:scheme="tencent1103964369" />
             </intent-filter>
         </activity>
         <activity android:name="com.tencent.plus.ImageActivity" />
@@ -357,6 +357,7 @@
             android:value="http://xiqu20.1du1du.com/" />
         <!-- cctv.wookong.cn|cctv11.1du1du.com -->
         <meta-data
+            
             android:name="request_user"
             android:value="http://cctv.wookong.cn/" />
         <meta-data
@@ -367,10 +368,10 @@
             android:value="36655f294c4246c7f44a22da46bb94c5" />
         <meta-data
             android:name="QQ_APPID"
-            android:value="\ 1101888988" />
+            android:value="\ 1103964369" />
         <meta-data
             android:name="QQ_APPKEY"
-            android:value="MsiPi1Xo1BRJOI2R" />
+            android:value="feTG1TXyUIcTjhR7" />
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5491a448fd98c519a9000c53" >
