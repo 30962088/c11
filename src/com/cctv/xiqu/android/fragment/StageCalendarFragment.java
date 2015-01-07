@@ -49,6 +49,8 @@ public class StageCalendarFragment extends BaseFragment implements
 	private CalendarListAdapter adapter;
 
 	private NoResultView noResultView;
+	
+	private View loadingView;
 
 	private List<CalendarListAdapter.Model> list = new ArrayList<CalendarListAdapter.Model>();
 
@@ -56,6 +58,8 @@ public class StageCalendarFragment extends BaseFragment implements
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
+		loadingView = view.findViewById(R.id.loading);
+		loadingView.setVisibility(View.VISIBLE);
 		listView = (ListView) view.findViewById(R.id.listview);
 		adapter = new CalendarListAdapter(getActivity(), list, this);
 		listView.setAdapter(adapter);
@@ -140,6 +144,11 @@ public class StageCalendarFragment extends BaseFragment implements
 				Utils.tip(getActivity(), msg);
 				listView.setVisibility(View.GONE);
 				noResultView.setVisibility(View.VISIBLE);
+			}
+			
+			@Override
+			public void onComplete() {
+				loadingView.setVisibility(View.GONE);
 			}
 
 		});
