@@ -2,6 +2,9 @@ package com.cctv.xiqu.android;
 
 
 import com.cctv.xiqu.android.R;
+import com.cctv.xiqu.android.fragment.network.BaseClient.RequestHandler;
+import com.cctv.xiqu.android.fragment.network.IsHaveSingerName;
+import com.cctv.xiqu.android.utils.LoadingPopup;
 
 import com.mengle.lib.utils.Utils;
 
@@ -50,16 +53,39 @@ public class NicknameActivity extends BaseActivity implements OnClickListener {
 	}
 
 	private void onconfirm() {
-		String nickname = nicknameText.getText().toString();
+		final String nickname = nicknameText.getText().toString();
 		if(TextUtils.isEmpty(nickname)){
 			Utils.tip(this, "请输入新的昵称");
 			return;
 		}
+		IsHaveSingerName haveSingerName = new IsHaveSingerName(this, nickname);
+		LoadingPopup.show(this);
+		haveSingerName.request(new RequestHandler() {
+			
+			@Override
+			public void onSuccess(Object object) {
+				Intent intent = new Intent();
+				intent.putExtra("nickname", nickname);
+				setResult(Activity.RESULT_OK, intent);
+				finish();
+				
+			}
+			
+			@Override
+			public void onError(int error, String msg) {
+				if(error == 1006){
+					Utils.tip(NicknameActivity.this, "昵称已存在");
+				}
+				
+			}
+			
+			@Override
+			public void onComplete() {
+				LoadingPopup.hide(NicknameActivity.this);
+				
+			}
+		});
 		
-		Intent intent = new Intent();
-		intent.putExtra("nickname", nickname);
-		setResult(Activity.RESULT_OK, intent);
-		finish();
 
 	}
 
