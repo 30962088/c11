@@ -14,7 +14,7 @@
         android:allowClearUserData="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
+        android:label="央视戏曲"
         android:largeHeap="true"
         android:theme="@style/AppTheme"
         android:vmSafeMode="true" >
@@ -31,7 +31,7 @@
             android:name="com.cctv.xiqu.android.MainActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
-            android:label="@string/app_name"
+            android:label="央视戏曲"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
