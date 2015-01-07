@@ -11,6 +11,8 @@ import com.cctv.xiqu.android.APP.DisplayOptions;
 import com.cctv.xiqu.android.BaseActivity.OnCitySelectionListener;
 import com.cctv.xiqu.android.BaseActivity.OnGallerySelectionListener;
 import com.cctv.xiqu.android.fragment.network.BaseClient;
+import com.cctv.xiqu.android.fragment.network.BaseClient.RequestHandler;
+import com.cctv.xiqu.android.fragment.network.IsHaveSingerName;
 import com.cctv.xiqu.android.fragment.network.SetSingerRequest;
 import com.cctv.xiqu.android.fragment.network.SetSingerUserRequest;
 import com.cctv.xiqu.android.utils.AliyunUtils;
@@ -206,34 +208,63 @@ public class FillInfoFragment extends BaseFragment implements OnClickListener,On
 			Utils.tip(getActivity(), "请选择头像");
 			return;
 		}
-		String nickname = nicknameEditText.getText().toString();
+		final String nickname = nicknameEditText.getText().toString();
 		if(TextUtils.isEmpty(nickname)){
 			Utils.tip(getActivity(), "请填写昵称");
 			return;
 		}
-		String city = "";
-		if(cityTextView.getTag() != null){
-			city = cityTextView.getTag().toString();
-		}
-		Sex sex = (Sex)sexRadioGroup.findViewById(sexRadioGroup.getCheckedRadioButtonId()).getTag();
-		
-		BaseClient request = null;
-		
-		if(model.account != null){
-			request = new SetSingerRequest(getActivity(), 
-					new SetSingerRequest.Params(model.account.wbqqid, model.account.type, nickname, sex, result.getGuid(), result.getExt(), city));
-		}else{
-			request = new SetSingerUserRequest(getActivity(), 
-					new SetSingerUserRequest.Params(nickname, sex.getCode(), result.getGuid(), result.getExt(), city, model.phoneAccount.phone,model.phoneAccount.password));
-		}
-
-		request.request(new BaseClient.SimpleRequestHandler(){
+		LoadingPopup.show(getActivity());
+		IsHaveSingerName haveSingerName = new IsHaveSingerName(getActivity(), nickname);
+		haveSingerName.request(new RequestHandler() {
+			
 			@Override
 			public void onSuccess(Object object) {
+				String city = "";
+				if(cityTextView.getTag() != null){
+					city = cityTextView.getTag().toString();
+				}
+				Sex sex = (Sex)sexRadioGroup.findViewById(sexRadioGroup.getCheckedRadioButtonId()).getTag();
 				
-				((MemberFragment) getParentFragment()).initFragment(UserSettingFragment.newInstance(APP.getSession().getSid()));
+				BaseClient request = null;
+				
+				if(model.account != null){
+					request = new SetSingerRequest(getActivity(), 
+							new SetSingerRequest.Params(model.account.wbqqid, model.account.type, nickname, sex, result.getGuid(), result.getExt(), city));
+				}else{
+					request = new SetSingerUserRequest(getActivity(), 
+							new SetSingerUserRequest.Params(nickname, sex.getCode(), result.getGuid(), result.getExt(), city, model.phoneAccount.phone,model.phoneAccount.password));
+				}
+
+				request.request(new BaseClient.SimpleRequestHandler(){
+					@Override
+					public void onSuccess(Object object) {
+						
+						((MemberFragment) getParentFragment()).initFragment(UserSettingFragment.newInstance(APP.getSession().getSid()));
+					}
+					@Override
+					public void onComplete() {
+						LoadingPopup.hide(getActivity());
+					}
+				});
+				
+			}
+			
+			@Override
+			public void onError(int error, String msg) {
+				if(error == 1006){
+					Utils.tip(getActivity(),"昵称重复");
+				}
+				
+			}
+			
+			@Override
+			public void onComplete() {
+				LoadingPopup.hide(getActivity());
+				
 			}
 		});
+		
+		
 		
 	}
 

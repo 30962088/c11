@@ -200,6 +200,7 @@ public class LoginFragment extends BaseFragment implements OnClickListener,
 		final Model model = result.toModel();
 		IsHaveSingerRequest request = new IsHaveSingerRequest(getActivity(),
 				result.toParams());
+		LoadingPopup.show(getActivity());
 		request.request(new RequestHandler() {
 
 			@Override
@@ -220,7 +221,7 @@ public class LoginFragment extends BaseFragment implements OnClickListener,
 
 			@Override
 			public void onComplete() {
-				// TODO Auto-generated method stub
+				LoadingPopup.hide(getActivity());
 
 			}
 

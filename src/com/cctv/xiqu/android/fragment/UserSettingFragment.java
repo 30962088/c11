@@ -90,10 +90,14 @@ public class UserSettingFragment extends BaseFragment implements
 	
 	private TextView notifyCountView;
 	
+	private View loadingView;
+	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
+		loadingView = view.findViewById(R.id.loading);
+		loadingView.setVisibility(View.VISIBLE);
 		containerView = view.findViewById(R.id.container);
 		containerView.setVisibility(View.GONE);
 		avatar = (ImageView) view.findViewById(R.id.avatar);
@@ -147,6 +151,10 @@ public class UserSettingFragment extends BaseFragment implements
 					phoneContainer.setVisibility(View.GONE);
 				}
 				containerView.setVisibility(View.VISIBLE);
+			}
+			@Override
+			public void onComplete() {
+				loadingView.setVisibility(View.GONE);
 			}
 		});
 		

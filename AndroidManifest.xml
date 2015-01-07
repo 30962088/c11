@@ -359,7 +359,7 @@
         <meta-data
             
             android:name="request_user"
-            android:value="http://cctv.wookong.cn/" />
+            android:value="http://cctv11.1du1du.com/" />
         <meta-data
             android:name="WX_APPID"
             android:value="wx6e122120a18ff49c" />
