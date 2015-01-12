@@ -77,14 +77,16 @@ public class StageCalendarFragment extends BaseFragment implements
 	}
 
 	private Date getStartDate() {
-		return getRelativeMonth(-2);
+		return getRelativeMonth(-1);
 	}
 
 	private Date getEndDate() {
-		return getRelativeMonth(4);
+		return getRelativeMonth(3);
 	}
 
 	private CalendarDate current;
+	
+	private Integer currentMonth;
 
 	private List<CalendarListAdapter.Model> getModels(Date start, Date end,
 			List<DateCount> dateCounts) {
@@ -93,12 +95,19 @@ public class StageCalendarFragment extends BaseFragment implements
 		int sm = DateUtils.toCalendar(start).get(Calendar.MONTH), em = DateUtils
 				.toCalendar(end).get(Calendar.MONTH), length = ly * 12 + em
 				- sm;
+		int monthNow = DateUtils.toCalendar(new Date()).get(Calendar.MONTH);
+		
+		
+		
 		List<CalendarListAdapter.Model> list = new ArrayList<CalendarListAdapter.Model>();
 		for (int i = 0; i <= length; i++) {
 			Calendar calendar = DateUtils.toCalendar(start);
 			calendar.add(Calendar.MONTH, i);
 			int year = calendar.get(Calendar.YEAR), month = calendar
 					.get(Calendar.MONTH) + 1;
+			if(monthNow ==  month -1){
+				currentMonth = i;
+			}
 			CurrentCalendarList model = CalendarUtils.getDay(year, month,
 					dateCounts);
 			if (model.getCurrent() != null) {
@@ -111,6 +120,19 @@ public class StageCalendarFragment extends BaseFragment implements
 
 		return list;
 
+	}
+	
+	public void setCurrent(){
+		if(currentMonth != null){
+			listView.setSelection(currentMonth);
+		}
+	}
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		setCurrent();
 	}
 
 	private Date startDate;
@@ -136,7 +158,7 @@ public class StageCalendarFragment extends BaseFragment implements
 				adapter.notifyDataSetChanged();
 				listView.setVisibility(View.VISIBLE);
 				noResultView.setVisibility(View.GONE);
-
+				setCurrent();
 			}
 
 			@Override

@@ -42,7 +42,7 @@ public class GetVoteListRequest extends BaseClient{
 		private Attachment attachment;
 		public VoteListAdapter.Model toModel(){
 			return new VoteListAdapter.Model(attachment.attachmentimgurl, 
-					votetitle, DateUtils.getDate(datetime), voteusercount,"http://cctv11news.1du1du.com/votepage/index?voteid="+voteid);
+					votetitle, DateUtils.getDate(datetime), voteusercount,APP.getAppConfig().getRequest_news()+ "votepage/index?voteid="+voteid);
 		}
 		
 		
