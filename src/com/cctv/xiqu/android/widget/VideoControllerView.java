@@ -262,8 +262,9 @@ public class VideoControllerView extends FrameLayout {
      * @param timeout The timeout in milliseconds. Use 0 to show
      * the controller until hide() is called.
      */
-    public void show(int timeout) {
-        if (!mShowing && mAnchor != null) {
+    private void _show(){
+
+    	if (!mShowing && mAnchor != null) {
             setProgress();
             if (mPauseButton != null) {
                 mPauseButton.requestFocus();
@@ -279,6 +280,9 @@ public class VideoControllerView extends FrameLayout {
             mAnchor.addView(this, tlp);
             mShowing = true;
         }
+    }
+    public void show(int timeout) {
+        _show();
         updatePausePlay();
         updateFullScreen();
         
@@ -302,6 +306,9 @@ public class VideoControllerView extends FrameLayout {
      * Remove the controller from the screen.
      */
     public void hide() {
+    	if(!mPlayer.isPlaying()){
+    		return;
+    	}
         if (mAnchor == null) {
             return;
         }
@@ -440,6 +447,7 @@ public class VideoControllerView extends FrameLayout {
         if (mPlayer.isPlaying()) {
             mPauseButton.setImageResource(R.drawable.ic_media_pause);
         } else {
+        	_show();
             mPauseButton.setImageResource(R.drawable.ic_media_play);
         }
     }

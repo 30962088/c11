@@ -125,9 +125,10 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 			int height) {
 		if(isPlaying){
 			player.start();
-			controller.updatePausePlay();
+			
 			isPlaying = false;
 		}
+		controller.updatePausePlay();
 		
 	}
 
@@ -311,7 +312,7 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 					
 					@Override
 					public void onPositiveClick() {
-						
+						onplay();
 						
 					}
 					

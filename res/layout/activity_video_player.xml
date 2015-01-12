@@ -23,20 +23,21 @@
         </FrameLayout>
 
         <View
-            android:visibility="gone"
             android:id="@+id/play"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/icon_play" />
+            android:background="@drawable/icon_play"
+            android:visibility="gone" />
 
         <ProgressBar
-            android:visibility="gone"
             android:id="@+id/loading"
-            style="?android:attr/progressBarStyleLarge"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/progress"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </LinearLayout>
