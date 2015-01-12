@@ -267,7 +267,11 @@ public class BaseActivity extends FragmentActivity implements Serializable{
 	}
 	
 	public void toLogin(){
-		ConfirmDialog.open(this, "提醒", "您需要登录才能评论", new ConfirmDialog.OnClickListener() {
+		toLogin("您需要登录才能评论");
+	}
+	
+	public void toLogin(String title){
+		ConfirmDialog.open(this, "提醒", title, new ConfirmDialog.OnClickListener() {
 			
 			@Override
 			public void onPositiveClick() {

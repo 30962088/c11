@@ -9,6 +9,7 @@ import com.cctv.xiqu.android.R;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -59,7 +60,9 @@ public class BBSDetailHeaderView extends FrameLayout{
 		nameView.setText(model.name);
 		timeView.setText(model.time);
 		contentView.setText(model.content);
+		imgView.setVisibility(View.GONE);
 		if(model.img != null){
+			imgView.setVisibility(View.VISIBLE);
 			ImageLoader.getInstance().displayImage(model.img, imgView,DisplayOptions.IMG.getOptions());
 		}
 	}
@@ -76,7 +79,18 @@ public class BBSDetailHeaderView extends FrameLayout{
 		private String img;
 		
 		
-
+		public String getAvatar() {
+			return avatar;
+		}
+		public String getContent() {
+			return content;
+		}
+		public String getName() {
+			return name;
+		}
+		public String getTime() {
+			return time;
+		}
 		
 		public Model(String id, String title, String avatar, String name,
 				String time, String content, String userid, String commentid,

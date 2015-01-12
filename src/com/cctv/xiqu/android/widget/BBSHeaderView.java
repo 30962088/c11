@@ -60,19 +60,20 @@ public class BBSHeaderView extends FrameLayout{
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.publish_btn:
-				if(check()){
+				if(check("您需要登录才能发帖")){
 					BBSPublishActivity.open(getContext());
 				}
 				break;
 			case R.id.published_btn:
-				if(check()){
+				if(check("您需要登录才能查看我发表的帖子")){
 					BBSListActivity.open(getContext(), BBSListActivity.TYPE_PUBLISH);
 					
 				}
 				
 				break;
 			case R.id.ipublish_btn:
-				if(check()){
+				
+				if(check("您需要登录才能查看我回复的帖子")){
 					BBSListActivity.open(getContext(), BBSListActivity.TYPE_REPLY);
 				}
 				break;
@@ -81,10 +82,10 @@ public class BBSHeaderView extends FrameLayout{
 			}
 			
 		}
-		private boolean check() {
+		private boolean check(String title) {
 			
 			if(!APP.getSession().isLogin()){
-				((BaseActivity)getContext()).toLogin();
+				((BaseActivity)getContext()).toLogin(title);
 				return false;
 			}
 			

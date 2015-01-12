@@ -59,6 +59,8 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 
 	private EditText editText;
 	
+	private View notLoginView;
+	
 	private View container;
 
 	private String replyUid;
@@ -70,6 +72,13 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 		model = (Model) getIntent().getSerializableExtra("model");
 //		list.add(model);
 		setContentView(R.layout.bbs_detail_layout);
+		notLoginView = findViewById(R.id.not_login_view);
+		notLoginView.setOnClickListener(this);
+		if(APP.getSession().isLogin()){
+			notLoginView.setVisibility(View.GONE);
+		}else{
+			notLoginView.setVisibility(View.VISIBLE);
+		}
 		container = findViewById(R.id.container);
 		editText = (EditText) findViewById(R.id.edit);
 		findViewById(R.id.back).setOnClickListener(this);
@@ -124,6 +133,9 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.not_login_view:
+			toLogin();
+			break;
 		case R.id.share:
 			onshare();
 			break;
