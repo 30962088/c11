@@ -15,6 +15,12 @@ import com.cctv.xiqu.android.widget.VideoView;
 import com.cctv.xiqu.android.widget.VideoView.OnToggleFullScreenListener;
 
 import com.cctv.xiqu.android.R;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.PullToRefreshPinnedSectionListView;
+
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
@@ -33,7 +39,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
-public class LiveFragment extends BaseFragment{
+public class LiveFragment extends BaseFragment implements OnRefreshListener<ListView>{
 	
 	public static LiveFragment newInstance(){
 		return new LiveFragment();
@@ -55,13 +61,11 @@ public class LiveFragment extends BaseFragment{
 	private List<LiveListAdapter.Model> list = new ArrayList<LiveListAdapter.Model>();
 	
 	private LiveListAdapter adapter;
-	
 
-	
 	private VideoView videoView;
 
 	
-	private ListView listView;
+	private PullToRefreshListView listView;
 	
 	
 	@Override
@@ -72,9 +76,10 @@ public class LiveFragment extends BaseFragment{
 		videoView.setVidepPath("http://m3u8.1du1du.com:1019/index.m3u8");
 //		videoView.setVidepPath("http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4");
 		
-		listView = (ListView) view.findViewById(R.id.listview);
+		listView = (PullToRefreshListView) view.findViewById(R.id.listview);
 		adapter = new LiveListAdapter(getActivity(), list);
 		listView.setAdapter(adapter);
+		listView.setOnRefreshListener(this);
 		request();
 	}
 	
@@ -101,10 +106,11 @@ public class LiveFragment extends BaseFragment{
 						break;
 					}
 				}
+				
 				list.addAll(models);
 				adapter.notifyDataSetChanged();
-				listView.setSelection(index);
-
+				listView.getRefreshableView().setSelection(index);
+				listView.onRefreshComplete();
 			}
 
 
@@ -150,6 +156,12 @@ public class LiveFragment extends BaseFragment{
 //		if(videoView.isPrepared() && isPlaying){
 //			videoView.start();
 //		}
+	}
+
+	@Override
+	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+		request();
+		
 	}
 	
 
