@@ -45,7 +45,9 @@ public class VoteListAdapter extends BaseAdapter implements Serializable,PinnedS
 			this.count = count;
 			this.url = url;
 		}
-		
+		public String getImg() {
+			return img;
+		}
 		public String getUrl() {
 			return url;
 		}

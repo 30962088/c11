@@ -10,6 +10,7 @@ import com.cctv.xiqu.android.R;
 import android.content.Intent;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,9 @@ public class VideoActivity extends BaseActivity {
 
 	public static void open(Context context, String url) {
 		Intent intent = new Intent(context, VideoActivity.class);
+		if(url == null){
+			url = "";
+		}
 		intent.putExtra("url", url);
 		context.startActivity(intent);
 	}
@@ -63,6 +67,14 @@ public class VideoActivity extends BaseActivity {
 				}
 			}
 			
+		});
+		videoView.setOnErrorListener(new OnErrorListener() {
+			
+			@Override
+			public boolean onError(MediaPlayer mp, int what, int extra) {
+				loadingView.setVisibility(View.GONE);
+				return false;
+			}
 		});
 
 	}

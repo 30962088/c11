@@ -1,6 +1,15 @@
 package com.cctv.xiqu.android;
 
+import java.io.File;
+import java.util.Arrays;
+
 import com.cctv.xiqu.android.R;
+import com.cctv.xiqu.android.utils.ShareUtils;
+import com.cctv.xiqu.android.widget.IOSPopupWindow;
+import com.cctv.xiqu.android.widget.IOSPopupWindow.OnIOSItemClickListener;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,11 +21,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
-public class WebViewActivity extends BaseActivity{
+public class WebViewActivity extends BaseActivity implements OnClickListener{
 
 	public static final String PARAM_URL = "url";
 	
 	public static final String PARAM_TITLE = "title";
+	
+	public static final String PARAM_IMG = "img";
 	
 	private WebView webView;
 	
@@ -24,13 +35,24 @@ public class WebViewActivity extends BaseActivity{
 	
 	private String title;
 	
+	private String img;
 	
 	@Override
 	protected void onCreate(Bundle bundle) {
 		// TODO Auto-generated method stub
 		super.onCreate(bundle);
 		title = getIntent().getStringExtra(PARAM_TITLE);
+		img = getIntent().getStringExtra(PARAM_IMG);
+		
 		setContentView(R.layout.webview_layout);
+		View share = findViewById(R.id.share);
+		share.setOnClickListener(this);
+		if(img != null){
+			share.setVisibility(View.VISIBLE);
+			
+		}else{
+			share.setVisibility(View.GONE);
+		}
 		titleView = (TextView) findViewById(R.id.title);
 		if(title != null){
 			titleView.setText(title);
@@ -67,15 +89,20 @@ public class WebViewActivity extends BaseActivity{
 	
 	
 	
-	public static void open(Context context,String title,String url){
+	public static void open(Context context,String title,String url,String img){
 		Intent intent = new Intent(context, WebViewActivity.class);
 		intent.putExtra(PARAM_TITLE, title);
 		intent.putExtra(WebViewActivity.PARAM_URL,url);
+		intent.putExtra(WebViewActivity.PARAM_IMG,img);
 		context.startActivity(intent);
 	}
 	
 	public static void open(Context context,String url){
-		open(context, null, url);
+		open(context, null, url,null);
+	}
+	
+	public static void open(Context context,String title,String url){
+		open(context, title, url,null);
 	}
 	
 	@Override
@@ -84,6 +111,7 @@ public class WebViewActivity extends BaseActivity{
 		super.onDestroy();
 		webView.loadUrl("about:blank");
 	}
+	
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -96,6 +124,45 @@ public class WebViewActivity extends BaseActivity{
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+
+
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.share:
+			onshare();
+			break;
+
+		default:
+			break;
+		}
+		
+	}
+
+
+
+	private void onshare() {
+		new IOSPopupWindow(this, new IOSPopupWindow.Params(
+				Arrays.asList(new String[] { "分享给QQ好友", "分享到QQ空间", "分享给微信好友",
+						"分享到朋友圈", "分享到新浪微博" }), new OnIOSItemClickListener() {
+
+					@Override
+					public void oniositemclick(int pos, String text) {
+
+						SHARE_MEDIA media = new SHARE_MEDIA[] { SHARE_MEDIA.QQ,
+								SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN,
+								SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
+						String url = webView.getUrl();
+						File bitmapFile = ImageLoader.getInstance().getDiscCache().get(img);	
+						ShareUtils.shareWebsite(WebViewActivity.this,
+								media, title, url,bitmapFile);
+
+					}
+
+				}));
+		
 	}
 
 	

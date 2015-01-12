@@ -80,10 +80,12 @@ public class NewsFragment extends BaseFragment implements OnLoadListener,OnSlide
 		listView.setOnItemClickListener(this);
 		listHeaderInner = listHeader.findViewById(R.id.list_header);
 		boolean showCategory = false;
+		boolean bold = false;
 		if(TextUtils.equals(categoryName, "头条")){
 			showCategory = true;
+			bold = true;
 		}
-		adapter = new NewsListAdapter(getActivity(), list,showCategory);
+		adapter = new NewsListAdapter(getActivity(), list,showCategory,bold);
 		listView.setAdapter(adapter);
 		listView.load(true);
 	}

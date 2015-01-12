@@ -3,6 +3,7 @@ package com.cctv.xiqu.android.widget;
 import java.io.IOException;
 
 import com.mengle.lib.utils.Utils;
+import com.mengle.lib.wiget.ConfirmDialog;
 
 import com.cctv.xiqu.android.R;
 
@@ -16,6 +17,8 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.AttributeSet;
 
@@ -298,7 +301,27 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.play:
-			onplay();
+			ConnectivityManager connManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+			if (mWifi.isConnected()) {
+				onplay();
+			}else{
+				ConfirmDialog.open(getContext(), "提示", "你现在使用的是非WIFI网络，建议在Wifi下观看，土豪请随意～", new ConfirmDialog.OnClickListener() {
+					
+					@Override
+					public void onPositiveClick() {
+						
+						
+					}
+					
+					@Override
+					public void onNegativeClick() {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+			}
 			break;
 
 		default:

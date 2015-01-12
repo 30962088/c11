@@ -9,38 +9,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    
-    
-    
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#80000000"
+        android:ellipsize="end"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:singleLine="true"
+        android:textColor="#fff"
+        android:textSize="16sp" />
+
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/indicator"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:paddingLeft="5dp"
         app:fillColor="#ffffff"
         app:pageColor="#80ffffff"
         app:radius="3dp"
-        android:layout_marginBottom="6dp"
         app:strokeColor="#4c4948"
-        app:strokeWidth="0px" 
-        android:layout_alignParentBottom="true">
+        app:strokeWidth="0px" >
     </com.viewpagerindicator.CirclePageIndicator>
-
-    <TextView
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:gravity="left"
-        android:ellipsize="end"
-        android:textColor="#fff"
-		android:textSize="16sp"
-		android:layout_marginBottom="18dp"
-		android:layout_alignParentBottom="true"/>
-
 
 </RelativeLayout>

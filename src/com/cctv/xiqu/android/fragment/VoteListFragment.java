@@ -103,7 +103,7 @@ public class VoteListFragment extends BaseFragment implements OnLoadListener,OnI
 		
 		Model model = list.get(position-1);
 		
-		WebViewActivity.open(getActivity(), model.getTitle(), model.getUrl());
+		WebViewActivity.open(getActivity(), model.getTitle(), model.getUrl(),model.getImg());
 		
 //		WallPagerActivity.open(getActivity(), list.get(position-1).toModel()) ;
 		

@@ -161,7 +161,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener,
 				adapter = new VideoListAdapter(this, list2);
 			}else{
 				list1 = new ArrayList<NewsListAdapter.Model>();
-				adapter = new NewsListAdapter(this, list1,true);
+				adapter = new NewsListAdapter(this, list1,true,false);
 			}
 			
 			listView.setAdapter(adapter);

@@ -13,6 +13,7 @@ import com.cctv.xiqu.android.R;
 
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,12 +112,15 @@ public class NewsListAdapter extends BaseAdapter implements Serializable,PinnedS
 	private List<Model> list;
 	
 	private boolean showCategory;
+	
+	private boolean bold;
 
-	public NewsListAdapter(Context context, List<Model> list,boolean showCategory) {
+	public NewsListAdapter(Context context, List<Model> list,boolean showCategory,boolean bold) {
 		super();
 		this.context = context;
 		this.list = list;
 		this.showCategory = showCategory;
+		this.bold = bold;
 	}
 
 	@Override
@@ -152,9 +156,13 @@ public class NewsListAdapter extends BaseAdapter implements Serializable,PinnedS
 		}
 
 		ImageLoader.getInstance().displayImage(model.img, holder.img,DisplayOptions.IMG.getOptions());
-
+		if(bold){
+			holder.title.setTypeface(null, Typeface.BOLD);
+			holder.comment.setTypeface(null, Typeface.BOLD);
+			holder.category.setTypeface(null, Typeface.BOLD);
+		}
 		holder.title.setText(model.title);
-
+		
 		holder.comment.setText("" + model.comment+"评论");
 
 		holder.isNew.setVisibility(model.isNew ? View.VISIBLE : View.GONE);

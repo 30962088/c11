@@ -23,6 +23,7 @@ import com.cctv.xiqu.android.widget.BaseListView.OnLoadListener;
 import com.cctv.xiqu.android.widget.BaseListView.Type;
 import com.cctv.xiqu.android.widget.IOSPopupWindow.OnIOSItemClickListener;
 import com.mengle.lib.utils.Utils;
+import com.mengle.lib.wiget.ConfirmDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
@@ -30,6 +31,8 @@ import com.cctv.xiqu.android.R;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -238,7 +241,28 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 
 
 	private void onplay() {
-		VideoActivity.open(this, model.url);
+		ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		if (mWifi.isConnected()) {
+			VideoActivity.open(this, model.url);
+		}else{
+			ConfirmDialog.open(this, "提示", "你现在使用的是非WIFI网络，建议在Wifi下观看，土豪请随意～", new ConfirmDialog.OnClickListener() {
+				
+				@Override
+				public void onPositiveClick() {
+					
+					VideoActivity.open(VideoCommentActivity.this, model.url);
+				}
+				
+				@Override
+				public void onNegativeClick() {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+		}
+		
 		
 	}
 
