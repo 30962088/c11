@@ -4,6 +4,7 @@ import org.apache.http.Header;
 
 import com.cctv.xiqu.android.fragment.network.GetLiveUrlRequest;
 import com.cctv.xiqu.android.fragment.network.BaseClient.RequestHandler;
+import com.cctv.xiqu.android.utils.LoadingPopup;
 
 import com.cctv.xiqu.android.R;
 
@@ -31,8 +32,6 @@ public class VideoActivity extends BaseActivity {
 
 	private VideoView videoView;
 
-	private View loadingView;
-
 	private MediaController mediaControls;
 	
 	private String url;
@@ -47,7 +46,6 @@ public class VideoActivity extends BaseActivity {
 		url = getIntent().getStringExtra("url");
 		setContentView(R.layout.activity_video_layout);
 		videoView = (VideoView) findViewById(R.id.video);
-		loadingView = findViewById(R.id.loading);
 		if (mediaControls == null) {
 			mediaControls = new MediaController(this);
 		}
@@ -58,7 +56,7 @@ public class VideoActivity extends BaseActivity {
 
 			@Override
 			public void onPrepared(MediaPlayer mp) {
-				loadingView.setVisibility(View.GONE);
+				LoadingPopup.hide(VideoActivity.this);
 				videoView.seekTo(position);
 				if (position == 0) {
 					videoView.start();
@@ -72,11 +70,11 @@ public class VideoActivity extends BaseActivity {
 			
 			@Override
 			public boolean onError(MediaPlayer mp, int what, int extra) {
-				loadingView.setVisibility(View.GONE);
+				LoadingPopup.hide(VideoActivity.this);
 				return false;
 			}
 		});
-
+		LoadingPopup.show(this);
 	}
 	
 	@Override

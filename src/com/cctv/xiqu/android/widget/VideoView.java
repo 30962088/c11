@@ -73,6 +73,7 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 		playView.setOnClickListener(this);
 		gestureDetector = new GestureDetector(getContext(), new SingleTapConfirm());
 		videoSurface = (SurfaceView) findViewById(R.id.videoSurface);
+		videoSurface.setVisibility(View.GONE);
 		loadingView = findViewById(R.id.loading);
 		loadingView.setVisibility(View.GONE);
 		videoHolder = videoSurface.getHolder();
@@ -148,7 +149,7 @@ public class VideoView extends FrameLayout implements SurfaceHolder.Callback,
 	// Implement MediaPlayer.OnPreparedListener
 	@Override
 	public void onPrepared(MediaPlayer mp) {
-		
+		videoSurface.setVisibility(View.VISIBLE);
 		controller.setMediaPlayer(this);
 		controller
 				.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));

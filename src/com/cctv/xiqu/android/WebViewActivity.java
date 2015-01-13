@@ -60,6 +60,10 @@ public class WebViewActivity extends BaseActivity implements OnClickListener{
 		webView = (WebView) findViewById(R.id.webview);
 		final View loading = findViewById(R.id.loading);
 		webView.getSettings().setJavaScriptEnabled(true);
+		if(img != null){
+			webView.getSettings().setLoadWithOverviewMode(true);
+			webView.getSettings().setUseWideViewPort(true);
+		}
 		webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 		webView.loadUrl(getIntent().getStringExtra(PARAM_URL));
 		webView.setWebViewClient(new WebViewClient() {
