@@ -5,14 +5,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 import com.cctv.xiqu.android.adapter.BBSCommentListAdapter;
 import com.cctv.xiqu.android.adapter.NewsCommentListAdapter;
 import com.cctv.xiqu.android.adapter.NewsCommentListAdapter.OnCommentBtnClickListener;
 import com.cctv.xiqu.android.fragment.network.BaseClient;
 import com.cctv.xiqu.android.fragment.network.GetForumCommentRequest;
 import com.cctv.xiqu.android.fragment.network.InsertForumRequest;
+import com.cctv.xiqu.android.fragment.network.UpdateContentCommentRequest;
 import com.cctv.xiqu.android.fragment.network.BaseClient.RequestHandler;
+import com.cctv.xiqu.android.fragment.network.UpdateForumCommentRequest;
 import com.cctv.xiqu.android.utils.LoadingPopup;
 import com.cctv.xiqu.android.utils.ShareUtils;
 import com.cctv.xiqu.android.widget.BaseListView;
@@ -29,15 +30,19 @@ import com.cctv.xiqu.android.R;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
-		OnClickListener,OnCommentBtnClickListener,OnTouchListener {
+		OnClickListener, OnCommentBtnClickListener, OnTouchListener,
+		OnItemClickListener {
 
 	public static void open(Context context, Model model) {
 
@@ -58,9 +63,9 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 	private Model model;
 
 	private EditText editText;
-	
+
 	private View notLoginView;
-	
+
 	private View container;
 
 	private String replyUid;
@@ -70,13 +75,13 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 		// TODO Auto-generated method stub
 		super.onCreate(arg0);
 		model = (Model) getIntent().getSerializableExtra("model");
-//		list.add(model);
+		// list.add(model);
 		setContentView(R.layout.bbs_detail_layout);
 		notLoginView = findViewById(R.id.not_login_view);
 		notLoginView.setOnClickListener(this);
-		if(APP.getSession().isLogin()){
+		if (APP.getSession().isLogin()) {
 			notLoginView.setVisibility(View.GONE);
-		}else{
+		} else {
 			notLoginView.setVisibility(View.VISIBLE);
 		}
 		container = findViewById(R.id.container);
@@ -86,8 +91,9 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 		findViewById(R.id.share).setOnClickListener(this);
 		listView = (BaseListView) findViewById(R.id.listview);
 		listView.getRefreshableView().setOnTouchListener(this);
-		adapter = new BBSCommentListAdapter(this, list,this);
+		adapter = new BBSCommentListAdapter(this, list, this);
 		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(this);
 		listView.setOnLoadListener(this);
 		listView.load(true);
 	}
@@ -158,35 +164,34 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 			}
 			new InsertForumRequest(this, new InsertForumRequest.Params(
 					model.getId(), commentId, userid,
-					APP.getSession().getSid(), content,APP.getSession().getPkey()))
-					.request(new RequestHandler() {
+					APP.getSession().getSid(), content, APP.getSession()
+							.getPkey())).request(new RequestHandler() {
 
-						@Override
-						public void onSuccess(Object object) {
-							Utils.tip(BBSDetailActivity.this, "评论成功");
-							editText.setText("");
-//							listView.load(true);
+				@Override
+				public void onSuccess(Object object) {
+					Utils.tip(BBSDetailActivity.this, "评论成功");
+					editText.setText("");
+					// listView.load(true);
 
-						}
-						
-						@Override
-						public void onError(int error, String msg) {
-							if(error == 1011){
-								Utils.tip(BBSDetailActivity.this, "评论频率过于频繁");
-							}else{
-								Utils.tip(BBSDetailActivity.this, "评论失败");
-							}
-							
-							
-						}
+				}
 
-						@Override
-						public void onComplete() {
-							LoadingPopup.hide(BBSDetailActivity.this);
+				@Override
+				public void onError(int error, String msg) {
+					if (error == 1011) {
+						Utils.tip(BBSDetailActivity.this, "评论频率过于频繁");
+					} else {
+						Utils.tip(BBSDetailActivity.this, "评论失败");
+					}
 
-						}
+				}
 
-					});
+				@Override
+				public void onComplete() {
+					LoadingPopup.hide(BBSDetailActivity.this);
+
+				}
+
+			});
 			break;
 
 		default:
@@ -204,52 +209,110 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 					@Override
 					public void oniositemclick(int pos, String text) {
 						if (pos == 5) {
-							ReportActivity.open(BBSDetailActivity.this, new ReportActivity.Model(model.getId()));
+							ReportActivity.open(BBSDetailActivity.this,
+									new ReportActivity.Model(model.getId()));
 						} else {
 
 							SHARE_MEDIA media = new SHARE_MEDIA[] {
 									SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
 									SHARE_MEDIA.WEIXIN,
 									SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
-							File bitmapFile = ImageLoader.getInstance().getDiscCache().get(model.getImg());
-							ShareUtils.shareWebsite(BBSDetailActivity.this,
-									media, model.getTitle(), APP.getAppConfig()
-											.getShareForumcontent(model.getId()),bitmapFile);
+							File bitmapFile = ImageLoader.getInstance()
+									.getDiscCache().get(model.getImg());
+							ShareUtils.shareWebsite(
+									BBSDetailActivity.this,
+									media,
+									model.getTitle(),
+									APP.getAppConfig().getShareForumcontent(
+											model.getId()), bitmapFile);
 
 						}
 
 					}
 
 				}));
-		
-	}
 
-	
+	}
 
 	@Override
 	public void onCommentBtnClick(
 			com.cctv.xiqu.android.adapter.NewsCommentListAdapter.Model model) {
-		if(!APP.getSession().isLogin()){
+		if (!APP.getSession().isLogin()) {
 			toLogin();
 			return;
 		}
-		InputMethodManager inputMethodManager=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-	    inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputMethodManager.toggleSoftInputFromWindow(
+				editText.getApplicationWindowToken(),
+				InputMethodManager.SHOW_FORCED, 0);
 		replyUid = model.getUserid();
 		editText.requestFocus();
 	}
-	
+
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		if(editText.isFocused()){
+		if (editText.isFocused()) {
 			container.requestFocus();
-			InputMethodManager imm = (InputMethodManager)getSystemService(
-				      Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-				replyUid = null;
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+			replyUid = null;
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		final Object obj = list.get(position - 1);
+		final String sid = APP.getSession().getSid();
+		final String pkey = APP.getSession().getPkey();
+		if (obj instanceof NewsCommentListAdapter.Model) {
+			final NewsCommentListAdapter.Model model = (NewsCommentListAdapter.Model)obj;
+			if (TextUtils.equals(sid, model.getUserid())) {
+				new IOSPopupWindow(this, new IOSPopupWindow.Params("删除评论",
+						new ArrayList<String>() {
+							{
+								add("删除");
+							}
+						}, new IOSPopupWindow.OnIOSItemClickListener() {
+
+							@Override
+							public void oniositemclick(int pos, String text) {
+								LoadingPopup.show(BBSDetailActivity.this);
+								UpdateForumCommentRequest request = new UpdateForumCommentRequest(
+										BBSDetailActivity.this,
+										new UpdateForumCommentRequest.Params(
+												sid, pkey, model.getId()));
+								request.request(new RequestHandler() {
+
+									@Override
+									public void onSuccess(Object object) {
+										list.remove(model);
+										adapter.notifyDataSetChanged();
+										Utils.tip(BBSDetailActivity.this,
+												"删除成功");
+									}
+
+									@Override
+									public void onError(int error, String msg) {
+										Utils.tip(BBSDetailActivity.this,
+												"删除失败");
+
+									}
+
+									@Override
+									public void onComplete() {
+										LoadingPopup
+												.hide(BBSDetailActivity.this);
+
+									}
+								});
+							}
+						}));
+			}
+		}
+
 	}
 
 }

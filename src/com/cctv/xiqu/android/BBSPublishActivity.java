@@ -130,14 +130,14 @@ public class BBSPublishActivity extends BaseActivity implements
 						@Override
 						public void onsuccess(UploadResult result) {
 							send(new InsertTopicRequest.Params(content, APP
-									.getSession().getSid(), title, result
+									.getSession().getSid(),APP.getSession().getPkey(), title, result
 									.getGuid(), result.getExt()));
 
 						}
 					});
 		} else {
 			send(new InsertTopicRequest.Params(content, APP.getSession()
-					.getSid(), title));
+					.getSid(),APP.getSession().getPkey(), title));
 		}
 
 	}
@@ -157,12 +157,16 @@ public class BBSPublishActivity extends BaseActivity implements
 
 			@Override
 			public void onComplete() {
-				LoadingPopup.show(BBSPublishActivity.this);
+				LoadingPopup.hide(BBSPublishActivity.this);
 			}
 
 			@Override
 			public void onError(int error, String msg) {
-				Utils.tip(BBSPublishActivity.this, "发帖失败");
+				if(error == 1011){
+					Utils.tip(BBSPublishActivity.this, "发帖频率过于频繁");
+				}else{
+					Utils.tip(BBSPublishActivity.this, "发帖失败");
+				}
 			}
 
 		});

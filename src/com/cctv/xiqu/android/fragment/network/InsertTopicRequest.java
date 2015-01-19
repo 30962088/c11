@@ -13,22 +13,25 @@ public class InsertTopicRequest extends BaseClient{
 	public static class Params{
 		private String topiccontent;
 		private String sid;
+		private String pkey;
 		private String topictitle;
 		private String uploadimgguid;
 		private String uploadimgformat;
-		public Params(String topiccontent, String sid, String topictitle,
+		public Params(String topiccontent, String sid,String pkey, String topictitle,
 				String uploadimgguid, String uploadimgformat) {
 			super();
 			this.topiccontent = topiccontent;
 			this.sid = sid;
+			this.pkey = pkey;
 			this.topictitle = topictitle;
 			this.uploadimgguid = uploadimgguid;
 			this.uploadimgformat = uploadimgformat;
 		}
-		public Params(String topiccontent, String sid, String topictitle) {
+		public Params(String topiccontent, String sid,String pkey, String topictitle) {
 			super();
 			this.topiccontent = topiccontent;
 			this.sid = sid;
+			this.pkey = pkey;
 			this.topictitle = topictitle;
 		}
 		
@@ -59,6 +62,7 @@ public class InsertTopicRequest extends BaseClient{
 		RequestParams params = new RequestParams();
 		params.add("topiccontent", ""+this.params.topiccontent);
 		params.add("sid", ""+this.params.sid);
+		params.add("pkey", ""+this.params.pkey);
 		params.add("topictitle", ""+this.params.topictitle);
 		if(this.params.uploadimgguid != null){
 			params.add("uploadimgguid", ""+this.params.uploadimgguid);
