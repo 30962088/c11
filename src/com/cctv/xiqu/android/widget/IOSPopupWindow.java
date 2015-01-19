@@ -10,6 +10,7 @@ import com.cctv.xiqu.android.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,6 +68,9 @@ public class IOSPopupWindow implements OnClickListener{
 			View item = LayoutInflater.from(context).inflate(R.layout.ios_popup_item,null);
 			TextView textView = (TextView) item.findViewById(R.id.text);
 			final String text = params.list.get(i);
+			if(TextUtils.equals("删除", text)){
+				textView.setTextColor(Color.parseColor("#e82321"));
+			}
 			textView.setText(text);
 			View sep = item.findViewById(R.id.sep);
 			if(i != params.list.size() -1){

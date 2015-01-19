@@ -171,7 +171,12 @@ public class BBSDetailActivity extends BaseActivity implements OnLoadListener,
 						
 						@Override
 						public void onError(int error, String msg) {
-							Utils.tip(BBSDetailActivity.this, "评论失败");
+							if(error == 1011){
+								Utils.tip(BBSDetailActivity.this, "评论频率过于频繁");
+							}else{
+								Utils.tip(BBSDetailActivity.this, "评论失败");
+							}
+							
 							
 						}
 

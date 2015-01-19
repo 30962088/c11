@@ -14,8 +14,10 @@ import com.cctv.xiqu.android.adapter.NewsCommentListAdapter.OnCommentBtnClickLis
 import com.cctv.xiqu.android.fragment.network.BaseClient;
 import com.cctv.xiqu.android.fragment.network.InsertCommentRequest;
 import com.cctv.xiqu.android.fragment.network.NewsCommentRequest;
+import com.cctv.xiqu.android.fragment.network.UpdateContentCommentRequest;
 import com.cctv.xiqu.android.fragment.network.BaseClient.RequestHandler;
 import com.cctv.xiqu.android.fragment.network.NewsCommentRequest.Params;
+import com.cctv.xiqu.android.utils.LoadingPopup;
 import com.cctv.xiqu.android.utils.ShareUtils;
 import com.cctv.xiqu.android.widget.BaseListView;
 import com.cctv.xiqu.android.widget.IOSPopupWindow;
@@ -35,17 +37,20 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class VideoCommentActivity extends BaseActivity implements OnLoadListener,OnClickListener,OnCommentBtnClickListener,OnTouchListener{
+public class VideoCommentActivity extends BaseActivity implements OnLoadListener,OnClickListener,OnCommentBtnClickListener,OnTouchListener,OnItemClickListener{
 
 	public static class Model implements Serializable{
 		private String id;
@@ -127,6 +132,7 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 		countView.setText("热门评论("+model.count+")");
 		adapter = new NewsCommentListAdapter(this, list,this);
 		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(this);
 		listView.setOnLoadListener(this);
 		listView.load(true);
 	}
@@ -297,6 +303,54 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 			return true;
 		}
 		return false;
+	}
+
+
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		final NewsCommentListAdapter.Model model = list.get(position - 2);
+		final String sid = APP.getSession().getSid();
+		final String pkey = APP.getSession().getPkey();
+		if (TextUtils.equals(sid, model.getUserid())) {
+			new IOSPopupWindow(this, new IOSPopupWindow.Params("删除评论",
+					new ArrayList<String>() {
+						{
+							add("删除");
+						}
+					}, new IOSPopupWindow.OnIOSItemClickListener() {
+
+						@Override
+						public void oniositemclick(int pos, String text) {
+							LoadingPopup.show(VideoCommentActivity.this);
+							UpdateContentCommentRequest request = new UpdateContentCommentRequest(VideoCommentActivity.this, 
+									new UpdateContentCommentRequest.Params(sid, pkey, model.getId()));
+							request.request(new RequestHandler() {
+								
+								@Override
+								public void onSuccess(Object object) {
+									list.remove(model);
+									adapter.notifyDataSetChanged();
+									Utils.tip(VideoCommentActivity.this, "删除成功");
+								}
+								
+								@Override
+								public void onError(int error, String msg) {
+									Utils.tip(VideoCommentActivity.this, "删除失败");
+									
+								}
+								
+								@Override
+								public void onComplete() {
+									LoadingPopup.hide(VideoCommentActivity.this);
+									
+								}
+							});
+						}
+					}));
+		}
+		
 	}
 	
 }

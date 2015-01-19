@@ -338,7 +338,11 @@ public class SpecialDetailActivity extends BaseActivity implements
 
 						@Override
 						public void onError(int error, String msg) {
-							Utils.tip(SpecialDetailActivity.this, "评论失败");
+							if(error == 1011){
+								Utils.tip(SpecialDetailActivity.this, "评论频率过于频繁");
+							}else{
+								Utils.tip(SpecialDetailActivity.this, "评论失败");
+							}
 
 						}
 
