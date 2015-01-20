@@ -10,6 +10,7 @@ import org.apache.http.Header;
 
 import com.cctv.xiqu.android.APP.DisplayOptions;
 import com.cctv.xiqu.android.adapter.NewsCommentListAdapter;
+import com.cctv.xiqu.android.adapter.SGridAdapter;
 import com.cctv.xiqu.android.adapter.NewsCommentListAdapter.OnCommentBtnClickListener;
 import com.cctv.xiqu.android.fragment.network.BaseClient;
 import com.cctv.xiqu.android.fragment.network.InsertCommentRequest;
@@ -21,6 +22,7 @@ import com.cctv.xiqu.android.utils.LoadingPopup;
 import com.cctv.xiqu.android.utils.ShareUtils;
 import com.cctv.xiqu.android.widget.BaseListView;
 import com.cctv.xiqu.android.widget.IOSPopupWindow;
+import com.cctv.xiqu.android.widget.SPopupWindow;
 import com.cctv.xiqu.android.widget.BaseListView.OnLoadListener;
 import com.cctv.xiqu.android.widget.BaseListView.Type;
 import com.cctv.xiqu.android.widget.IOSPopupWindow.OnIOSItemClickListener;
@@ -223,24 +225,27 @@ public class VideoCommentActivity extends BaseActivity implements OnLoadListener
 
 
 	private void onshare() {
-		new IOSPopupWindow(this, new IOSPopupWindow.Params(
-				Arrays.asList(new String[] { "分享给QQ好友", "分享到QQ空间", "分享给微信好友",
-						"分享到朋友圈", "分享到新浪微博" }), new OnIOSItemClickListener() {
+		new SPopupWindow(this, new ArrayList<SGridAdapter.Model>(){{
+			add(new SGridAdapter.Model(R.drawable.s_qq, "QQ好友"));
+			add(new SGridAdapter.Model(R.drawable.s_qzone, "QQ空间"));
+			add(new SGridAdapter.Model(R.drawable.s_weixin, "微信好友"));
+			add(new SGridAdapter.Model(R.drawable.s_timeline, "微信朋友圈"));
+			add(new SGridAdapter.Model(R.drawable.s_sina, "新浪微博"));
+		}}, new OnItemClickListener() {
 
-					@Override
-					public void oniositemclick(int pos, String text) {
-
-						SHARE_MEDIA media = new SHARE_MEDIA[] { SHARE_MEDIA.QQ,
-								SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN,
-								SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[pos];
-						File bitmapFile = ImageLoader.getInstance().getDiscCache().get(model.img);
-						ShareUtils.shareWebsite(VideoCommentActivity.this,
-								media, model.title, APP.getAppConfig()
-										.getSharecontent(model.id),bitmapFile);
-
-					}
-
-				}));
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				SHARE_MEDIA media = new SHARE_MEDIA[] { SHARE_MEDIA.QQ,
+						SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN,
+						SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[position];
+				File bitmapFile = ImageLoader.getInstance().getDiscCache().get(model.img);
+				ShareUtils.shareWebsite(VideoCommentActivity.this,
+						media, model.title, APP.getAppConfig()
+								.getSharecontent(model.id),bitmapFile);
+				
+			}
+		});
 		
 	}
 

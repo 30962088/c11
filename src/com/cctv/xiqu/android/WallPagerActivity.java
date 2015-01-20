@@ -11,11 +11,13 @@ import org.apache.commons.io.FileUtils;
 
 import com.cctv.xiqu.android.APP.DisplayOptions;
 import com.cctv.xiqu.android.PhotoViewActivity.Photo;
+import com.cctv.xiqu.android.adapter.SGridAdapter;
 import com.cctv.xiqu.android.utils.Dirctionary;
 import com.cctv.xiqu.android.utils.ImageUtils;
 import com.cctv.xiqu.android.utils.ShareUtils;
 import com.cctv.xiqu.android.widget.IOSPopupWindow;
 import com.cctv.xiqu.android.widget.OnLongTapFrameLayout;
+import com.cctv.xiqu.android.widget.SPopupWindow;
 import com.cctv.xiqu.android.widget.IOSPopupWindow.OnIOSItemClickListener;
 import com.mengle.lib.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -45,7 +47,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
@@ -142,73 +146,80 @@ public class WallPagerActivity extends BaseActivity implements OnClickListener,O
 	
 
 	private void onshare() {
-		new IOSPopupWindow(this, new IOSPopupWindow.Params(
-				Arrays.asList(new String[] { "保存到相册", "分享给QQ好友", "分享到QQ空间",
-						"分享给微信好友", "分享到朋友圈", "分享到新浪微博", "用邮件发送" }),
-				new OnIOSItemClickListener() {
+		new SPopupWindow(this, new ArrayList<SGridAdapter.Model>(){{
+			add(new SGridAdapter.Model(R.drawable.s_image, "保存到相册"));
+			add(new SGridAdapter.Model(R.drawable.s_qq, "QQ好友"));
+			add(new SGridAdapter.Model(R.drawable.s_qzone, "QQ空间"));
+			add(new SGridAdapter.Model(R.drawable.s_weixin, "微信好友"));
+			add(new SGridAdapter.Model(R.drawable.s_timeline, "微信朋友圈"));
+			add(new SGridAdapter.Model(R.drawable.s_sina, "新浪微博"));
+			add(new SGridAdapter.Model(R.drawable.s_mail, "用邮件发送"));
+		}}, new OnItemClickListener() {
 
-					@Override
-					public void oniositemclick(final int pos, String text) {
-						if(pos == 0 || pos ==6){
-							ImageLoader.getInstance().loadImage(model.origin,APP.DisplayOptions.IMG.getOptions(),new ImageLoadingListener() {
-								
-								@Override
-								public void onLoadingStarted(String imageUri, View view) {
-									// TODO Auto-generated method stub
-									
-								}
-								
-								@Override
-								public void onLoadingFailed(String imageUri, View view,
-										FailReason failReason) {
-									// TODO Auto-generated method stub
-									
-								}
-								
-								@Override
-								public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-									File file = ImageLoader.getInstance().getDiscCache().get(imageUri);
-									if(pos == 0){
-										File dest = new File(Dirctionary.getPictureDir(),new Date().getTime()+".jpg");
-										try {
-											FileUtils.copyFile(file, dest);
-											ImageUtils.addImageToGallery(dest.toString(), WallPagerActivity.this);
-											Utils.tip(WallPagerActivity.this, "保存成功");
-										} catch (IOException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-									}else{
-										Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE); 
-										emailIntent.setType("application/image");
-//										emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{strEmail}); 
-										emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"央视戏曲官方壁纸下载链接"); 
-//										emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "From My App"); 
-										emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-										startActivity(Intent.createChooser(emailIntent, "发送邮件"));
-									}
-								}
-								
-								@Override
-								public void onLoadingCancelled(String imageUri, View view) {
-									// TODO Auto-generated method stub
-									
-								}
-							});
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					final int position, long id) {
+				if(position == 0 || position ==6){
+					ImageLoader.getInstance().loadImage(model.origin,APP.DisplayOptions.IMG.getOptions(),new ImageLoadingListener() {
+						
+						@Override
+						public void onLoadingStarted(String imageUri, View view) {
+							// TODO Auto-generated method stub
 							
 						}
-						if (pos >= 1 && pos <= 5) {
-							int index = pos-1;
-							SHARE_MEDIA media = new SHARE_MEDIA[] {
-									SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
-									SHARE_MEDIA.WEIXIN,
-									SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[index];
-							File bitmapFile = ImageLoader.getInstance().getDiscCache().get(model.thunbnail);;
-							ShareUtils.shareWebsite(WallPagerActivity.this,media, "央视戏曲官方壁纸下载链接", model.origin, bitmapFile);
+						
+						@Override
+						public void onLoadingFailed(String imageUri, View view,
+								FailReason failReason) {
+							// TODO Auto-generated method stub
+							
 						}
-					}
-
-				}));
+						
+						@Override
+						public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+							File file = ImageLoader.getInstance().getDiscCache().get(imageUri);
+							if(position == 0){
+								File dest = new File(Dirctionary.getPictureDir(),new Date().getTime()+".jpg");
+								try {
+									FileUtils.copyFile(file, dest);
+									ImageUtils.addImageToGallery(dest.toString(), WallPagerActivity.this);
+									Utils.tip(WallPagerActivity.this, "保存成功");
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}else{
+								Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE); 
+								emailIntent.setType("application/image");
+//								emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{strEmail}); 
+								emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"央视戏曲官方壁纸下载链接"); 
+//								emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "From My App"); 
+								emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+								startActivity(Intent.createChooser(emailIntent, "发送邮件"));
+							}
+						}
+						
+						@Override
+						public void onLoadingCancelled(String imageUri, View view) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+					
+				}
+				if (position >= 1 && position <= 5) {
+					int index = position-1;
+					SHARE_MEDIA media = new SHARE_MEDIA[] {
+							SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
+							SHARE_MEDIA.WEIXIN,
+							SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA }[index];
+					File bitmapFile = ImageLoader.getInstance().getDiscCache().get(model.thunbnail);;
+					ShareUtils.shareWebsite(WallPagerActivity.this,media, "央视戏曲官方壁纸下载链接", model.origin, bitmapFile);
+				}
+				
+			}
+		});
+		
 		
 	}
 
