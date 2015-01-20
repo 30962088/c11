@@ -17,6 +17,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -55,18 +56,38 @@ public class BBSListAdapter extends BaseAdapter implements Serializable,PinnedSe
 		public BBSDetailHeaderView.Model toModel(){
 			return new BBSDetailHeaderView.Model(id, title, avatar, nickname, time, content,userid,commentid,img);
 		}
+		public String getId() {
+			return id;
+		}
 		
 
 	}
+	
+	public static interface OnDelClickListener{
+		public void ondelclick(int pos);
+	}
 
 	private Context context;
+	
+	private OnDelClickListener onDelClickListener;
 
 	private List<Model> list;
+	
+	private boolean edit;
+	
+	public void setOnDelClickListener(OnDelClickListener onDelClickListener) {
+		this.onDelClickListener = onDelClickListener;
+	}
 
 	public BBSListAdapter(Context context, List<Model> list) {
 		super();
 		this.context = context;
 		this.list = list;
+	}
+	
+	public void setEdit(boolean edit) {
+		this.edit = edit;
+		notifyDataSetChanged();
 	}
 
 	@Override
@@ -87,8 +108,12 @@ public class BBSListAdapter extends BaseAdapter implements Serializable,PinnedSe
 		return position;
 	}
 
+	public boolean isEdit() {
+		return edit;
+	}
+	
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		ViewHolder holder = null;
 		Model model = list.get(position);
@@ -101,8 +126,24 @@ public class BBSListAdapter extends BaseAdapter implements Serializable,PinnedSe
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
+		if(edit){
+			holder.del.setVisibility(View.VISIBLE);
+		}else{
+			holder.del.setVisibility(View.GONE);
+		}
+		
+		holder.del.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(onDelClickListener != null){
+					onDelClickListener.ondelclick(position);
+				}
+				
+			}
+		});
+		
 		holder.top.setVisibility(model.top?View.VISIBLE:View.GONE);
-
 
 		holder.time.setText(model.time);
 
@@ -126,8 +167,11 @@ public class BBSListAdapter extends BaseAdapter implements Serializable,PinnedSe
 		private TextView comment;
 		
 		private View top;
+		
+		private View del;
 
 		public ViewHolder(View view) {
+			del = view.findViewById(R.id.s_del);
 			time = (TextView) view.findViewById(R.id.time);
 			title = (TextView) view.findViewById(R.id.title);
 			comment =  (TextView) view.findViewById(R.id.comment);
