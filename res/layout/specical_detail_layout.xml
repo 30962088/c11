@@ -149,7 +149,7 @@
                     android:layout_height="16dp"
                     android:background="@drawable/icon_pen" />
 
-                <EditText
+                <com.rockerhieu.emojicon.EmojiconEditText
                     android:id="@+id/edit"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

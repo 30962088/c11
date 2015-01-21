@@ -58,7 +58,7 @@ public class InsertForumRequest extends BaseClient {
 
 	@Override
 	protected RequestParams getParams() {
-		RequestParams params = new RequestParams();
+		RequestParams params = new EscapeRequestParams();
 		params.add("method", "insertforumcomment");
 		params.add("topicid", this.params.topicid);
 		params.add("iscommentid", this.params.iscommentid);

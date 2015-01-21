@@ -55,7 +55,7 @@ public class InsertCommentRequest extends BaseClient {
 	
 	@Override
 	protected RequestParams getParams() {
-		RequestParams params = new RequestParams();
+		RequestParams params = new EscapeRequestParams();
 		params.add("method", "insertcomment");
 		params.add("contentsid", this.params.contentsid);
 		params.add("iscommentid", this.params.iscommentid);

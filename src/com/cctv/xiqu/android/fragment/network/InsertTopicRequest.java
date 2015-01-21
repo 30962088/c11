@@ -59,7 +59,7 @@ public class InsertTopicRequest extends BaseClient{
 
 	@Override
 	protected RequestParams getParams() {
-		RequestParams params = new RequestParams();
+		RequestParams params = new EscapeRequestParams();
 		params.add("topiccontent", ""+this.params.topiccontent);
 		params.add("sid", ""+this.params.sid);
 		params.add("pkey", ""+this.params.pkey);

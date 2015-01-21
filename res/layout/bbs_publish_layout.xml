@@ -50,7 +50,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <EditText
+            <com.rockerhieu.emojicon.EmojiconEditText
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -68,7 +68,7 @@
                 android:layout_height="1px"
                 android:background="#d9d9d9" />
 
-            <EditText
+            <com.rockerhieu.emojicon.EmojiconEditText
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
