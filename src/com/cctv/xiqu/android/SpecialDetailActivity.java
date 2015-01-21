@@ -193,7 +193,7 @@ public class SpecialDetailActivity extends BaseActivity implements
 				          int lines = l.getLineCount();
 				          if ( lines > 0){
 				        	  if ( l.getEllipsisCount(lines-1) > 0){
-				        		  title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+				        		  title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 				              }
 				          }
 				              

@@ -1,6 +1,11 @@
 package com.cctv.xiqu.android.fragment.network;
 
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,9 +60,12 @@ public abstract class BaseClient implements HttpResponseHandler {
 
 		@Override
 		public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+			String str = new String(arg2);
+			String dstr = decode1(str);
+			
 			if(getURL().indexOf(APP.getAppConfig().getRequest_news())!=-1 || getURL().indexOf(APP.getAppConfig().getRequest_user())!=-1){
 				try {
-					JSONObject object = new JSONObject(new String(arg2));
+					JSONObject object = new JSONObject(str);
 					int result = object.getInt("result");
 					if(result != 1000){
 						requestHandler.onComplete();
@@ -83,7 +91,7 @@ public abstract class BaseClient implements HttpResponseHandler {
 					e.printStackTrace();
 				}
 			}
-			requestHandler.onSuccess(handler.onSuccess(new String(arg2)));
+			requestHandler.onSuccess(handler.onSuccess(new String(dstr)));
 			requestHandler.onComplete();
 			/*String json = new String(arg2);
 			if (json.startsWith("[")) {
@@ -241,6 +249,19 @@ public abstract class BaseClient implements HttpResponseHandler {
 
 	protected boolean useOffline() {
 		return true;
+	}
+	
+	static final Pattern reUnicode = Pattern.compile("\\\\\\\\u([0-9a-zA-Z]{4})");
+
+	public static String decode1(String s) {
+	    Matcher m = reUnicode.matcher(s);
+	    StringBuffer sb = new StringBuffer(s.length());
+	    while (m.find()) {
+	        m.appendReplacement(sb,
+	                Character.toString((char) Integer.parseInt(m.group(1), 16)));
+	    }
+	    m.appendTail(sb);
+	    return sb.toString();
 	}
 
 }

@@ -48,7 +48,7 @@
                     android:textColor="#80000000"
                     android:textSize="10sp" />
 
-                <TextView
+                <com.rockerhieu.emojicon.EmojiconTextView
                     android:id="@+id/content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

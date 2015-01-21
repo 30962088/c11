@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.cctv.xiqu.android.APP.DisplayOptions;
 import com.cctv.xiqu.android.SpecialDetailActivity.Params;
+import com.cctv.xiqu.android.fragment.network.BaseClient;
 import com.cctv.xiqu.android.utils.RelativeDateFormat;
 import com.cctv.xiqu.android.widget.BBSDetailHeaderView;
 import com.hb.views.PinnedSectionListView.PinnedSectionListAdapter;
