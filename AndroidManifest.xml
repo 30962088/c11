@@ -355,7 +355,7 @@
         <!-- xiqu20.1du1du.com|cctv11news.1du1du.com -->
         <meta-data
             android:name="request_news"
-            android:value="http://xiqu20.1du1du.com/" />
+            android:value="http://cctv11news.1du1du.com/" />
         <!-- cctv.wookong.cn|cctv11.1du1du.com -->
         <meta-data
             
