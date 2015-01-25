@@ -75,39 +75,59 @@ public class SliderFragment extends Fragment {
 		viewPager.setOffscreenPageLimit(models.size());
 		indicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
 		titleView = (TextView) view.findViewById(R.id.title);
-
-		MyAdapter adapter = new MyAdapter();
-
-		viewPager.setAdapter(adapter);
-		
-
-		indicator.setViewPager(viewPager);
-		indicator.setOnPageChangeListener(new OnPageChangeListener() {
-
-			@Override
-			public void onPageSelected(int position) {
-
-				Model model = models.get(position);
-				titleView.setText(model.title);
-
-			}
-
-			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onPageScrollStateChanged(int arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		if (models != null && models.size() > 0) {
+		ImageView imgView = (ImageView) view.findViewById(R.id.img);
+		if(models.size() == 1){
+			indicator.setVisibility(View.GONE);
+			viewPager.setVisibility(View.GONE);
 			titleView.setText(models.get(0).title);
+			imgView.setVisibility(View.VISIBLE);
+			ImageLoader.getInstance().displayImage(models.get(0).img, imgView, DisplayOptions.IMG.getOptions());
+			imgView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					onSliderItemClickListener.OnSliderItemClick(models.get(0));
+					
+				}
+			});
+		}else{
+			imgView.setVisibility(View.GONE);
+			
+			MyAdapter adapter = new MyAdapter();
+			
+			viewPager.setAdapter(adapter);
+			
+
+			indicator.setViewPager(viewPager);
+			indicator.setOnPageChangeListener(new OnPageChangeListener() {
+
+				@Override
+				public void onPageSelected(int position) {
+
+					Model model = models.get(position);
+					titleView.setText(model.title);
+
+				}
+
+				@Override
+				public void onPageScrolled(int arg0, float arg1, int arg2) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void onPageScrollStateChanged(int arg0) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+
+			if (models != null && models.size() > 0) {
+				titleView.setText(models.get(0).title);
+			}
 		}
+		
+		
 
 	}
 
@@ -135,6 +155,10 @@ public class SliderFragment extends Fragment {
 			this.comment = comment;
 			this.categoryName = categoryName;
 			this.url = url;
+		}
+		
+		public String getUrl() {
+			return url;
 		}
 		
 		public String getCategoryName() {
