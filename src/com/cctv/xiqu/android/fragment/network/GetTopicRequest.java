@@ -10,6 +10,8 @@ import java.util.List;
 import org.apache.http.Header;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.text.TextUtils;
 
 
@@ -123,6 +125,14 @@ public class GetTopicRequest extends BaseClient {
 		if(this.params.type != null){
 			params.add("type", "" + this.params.type);
 		}
+		try {
+			PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+			params.add("versiontype", ""+pInfo.versionCode);
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return params;
 	}
 
