@@ -171,11 +171,11 @@ public class SliderFragment extends Fragment {
 		
 		public Params toDetailParams(){
 			Params params = null;
-			if(iszhuanlan){
+//			if(iszhuanlan){
 				params = new Params(id, title, subtitle, img, comment);
-			}else{
-				params = new Params(id, title, subtitle, null, comment);
-			}
+//			}else{
+//				params = new Params(id, title, subtitle, null, comment);
+//			}
 			return params;
 		}
 
